@@ -1,10 +1,12 @@
 import React from 'react';
+import Layout from './components/Layout';
+import WelcomePage from './pages/WelcomePage/WelcomePage';
 
 function App() {
   return (
-    <div className="App">
-      <h1>Devico final project</h1>
-    </div>
+    <Layout>
+      <WelcomePage />
+    </Layout>
   );
 }
 
