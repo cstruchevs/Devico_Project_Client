@@ -30,7 +30,7 @@ const MainNavigation = () => {
   const toggleRegHandler = () => {
     dispatch(uiActions.toggleReg());
   };
-  const toggleLoginHandler = () => {
+  const toggleLogHandler = () => {
     dispatch(uiActions.toggleLog());
   };
 
@@ -78,10 +78,10 @@ const MainNavigation = () => {
                 }}
                 direction="column"
               >
-                <StyledButton onClick={toggleRegHandler} size="medium">
+                <StyledButton onClick={toggleLogHandler} size="medium">
                   Sign In
                 </StyledButton>
-                <StyledButton onClick={toggleLoginHandler} size="medium">
+                <StyledButton onClick={toggleRegHandler} size="medium">
                   Sign Up
                 </StyledButton>
               </Stack>
