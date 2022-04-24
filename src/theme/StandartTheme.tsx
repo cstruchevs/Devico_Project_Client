@@ -12,6 +12,9 @@ const standartTheme = createTheme({
       main: "#C0EB6A",
     },
   },
+  shape: {
+    borderRadius: "0px",
+}
 });
 
 interface StandartThemeProviderProps {
