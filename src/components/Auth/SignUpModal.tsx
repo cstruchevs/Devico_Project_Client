@@ -25,6 +25,8 @@ import {
   StyledTextField,
   ConfirmStyledButton,
   StyledTypographyHandler,
+  StyledDialogTitle,
+  StyledStackDescription,
 } from "./AuthStyles";
 
 const initialState = {
@@ -42,10 +44,7 @@ const schema = yup.object().shape({
   password: yup.string().min(8).max(32).required("Write correct password"),
   confirmPassword: yup
     .string()
-    .min(8)
-    .max(32)
-    .required("Write the same password"),
-  phone: yup.string().matches(phoneRegex, "Phone number is not valid"),
+    .oneOf([yup.ref("password"), null], "Passwords must match"),
 });
 
 const Auth = () => {
@@ -56,10 +55,9 @@ const Auth = () => {
     handleSubmit,
     formState: { errors },
     reset,
-    setValue,
   } = useForm({
-    defaultValues: initialState,
     resolver: yupResolver(schema),
+    mode: "onChange",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,9 +65,11 @@ const Auth = () => {
   };
 
   const onSubmitHandler = (data: object) => {
-    alert("ds");
     console.log({ data });
+
+    dispatch(uiActions.toggleCongratAuth());
     reset();
+    toggleHandler();
   };
 
   const [checked, setChecked] = useState(true);
@@ -82,8 +82,14 @@ const Auth = () => {
   );
 
   const toggleHandler = () => {
+    if (
+      Boolean(errors.email) ||
+      Boolean(errors.password) ||
+      Boolean(errors.confirmPassword)
+    )
+      return;
+    reset();
     if (regCartIsShown) dispatch(uiActions.toggleReg());
-    if (logCartIsShown) dispatch(uiActions.toggleLog());
   };
 
   const changeSignHandler = () => {
@@ -96,42 +102,18 @@ const Auth = () => {
   };
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmitHandler)}>
-        <Dialog open={regCartIsShown || logCartIsShown} onClose={toggleHandler}>
-          {regCartIsShown ? (
-            <DialogTitle
-              sx={{
-                margin: "auto",
-                fontWeight: "bold",
-                fontSize: "26px",
-                lineHeight: "30px",
-              }}
-            >
-              Sign Up
-            </DialogTitle>
-          ) : (
-            <DialogTitle
-              sx={{
-                margin: "auto",
-                fontWeight: "bold",
-                fontSize: "26px",
-                lineHeight: "30px",
-              }}
-            >
-              Sign In
-            </DialogTitle>
-          )}
-          <Divider />
-          <Stack pt={2} direction="row" sx={{ margin: "auto" }}>
-            <StyledButton variant="contained">
-              CONNECT WITH FACEBOOK
-            </StyledButton>
-            <StyledButton variant="contained">CONNECT WITH GOOGLE</StyledButton>
-          </Stack>
-          <Divider sx={{ marginTop: "13px" }} variant="middle">
-            OR
-          </Divider>
-          <DialogContent>
+      <Dialog open={regCartIsShown} onClose={toggleHandler}>
+        <StyledDialogTitle>Sign Up</StyledDialogTitle>
+        <Divider />
+        <Stack pt={2} direction="row" sx={{ margin: "auto" }}>
+          <StyledButton variant="contained">CONNECT WITH FACEBOOK</StyledButton>
+          <StyledButton variant="contained">CONNECT WITH GOOGLE</StyledButton>
+        </Stack>
+        <Divider sx={{ marginTop: "13px" }} variant="middle">
+          OR
+        </Divider>
+        <DialogContent>
+          <form onSubmit={handleSubmit(onSubmitHandler)}>
             <Stack direction="row">
               <Stack direction="column" sx={{ margin: "auto" }}>
                 <StyledTypography>EMAIL*</StyledTypography>
@@ -143,7 +125,7 @@ const Auth = () => {
                   fullWidth
                   id="outlined-basic"
                   variant="outlined"
-                  onChange={handleChange}
+                  error={Boolean(errors.email)}
                 />
                 <StyledTypography>PASSWORD*</StyledTypography>
                 <StyledTextField
@@ -154,7 +136,7 @@ const Auth = () => {
                   fullWidth
                   id="outlined-basic"
                   variant="outlined"
-                  onChange={handleChange}
+                  error={Boolean(errors.password)}
                 />
               </Stack>
               {regCartIsShown && (
@@ -163,30 +145,26 @@ const Auth = () => {
                   <StyledTextField
                     {...register("phone")}
                     name="phone"
-                    onChange={handleChange}
                     id="outlined-basic"
                     variant="outlined"
+                    error={Boolean(errors.phone)}
                   />
                   <StyledTypography>CONFIRM PASSWORD*</StyledTypography>
                   <StyledTextField
+                    {...register("confirmPassword")}
                     id="outlined-basic"
                     variant="outlined"
-                    {...register("confirmPassword")}
                     name="confirmPassword"
-                    onChange={handleChange}
                     required
+                    error={Boolean(errors.confirmPassword)}
                   />
                 </Stack>
               )}
             </Stack>
-          </DialogContent>
-          <DialogActions
-            sx={{ paddingBottom: "20px", flexDirection: "column" }}
-          >
-            <Stack
+            <StyledStackDescription
               direction="row"
               sx={{
-                marginRight: "auto",
+                marginTop: "15px",
                 paddingLeft: "10px",
                 alignItems: "center",
               }}
@@ -195,6 +173,7 @@ const Auth = () => {
                 checked={checked}
                 onChange={handleChangeCheckBox}
                 inputProps={{ "aria-label": "controlled" }}
+                sx={{ padding: "0" }}
               />
               <Typography sx={{ fontSize: "14px" }}>
                 I agree to{" "}
@@ -205,8 +184,8 @@ const Auth = () => {
                   Proccesing, use, dissemination and access to my personal data
                 </Typography>
               </Typography>
-            </Stack>
-            {regCartIsShown ? (
+            </StyledStackDescription>
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
               <ConfirmStyledButton
                 type="submit"
                 disabled={checked ? false : true}
@@ -214,46 +193,30 @@ const Auth = () => {
                 onClick={toggleHandler}
                 sx={{
                   margin: "auto",
-                  marginTop: "12px",
-                  width: "80%",
-                  backgroundColor: "#6A6968",
-                  color: "#fff",
-                  height: "39px",
                 }}
               >
                 Sign Up
               </ConfirmStyledButton>
-            ) : (
-              <ConfirmStyledButton
-                type="submit"
-                disabled={checked ? false : true}
-                variant="outlined"
-                onClick={toggleHandler}
-                sx={{ margin: "auto" }}
-              >
-                Sign In
-              </ConfirmStyledButton>
-            )}
-            <Box mt={2}>
-              {regCartIsShown ? (
-                <Typography sx={{ fontSize: "16px" }}>
-                  Already a member?{" "}
-                  <StyledTypographyHandler onClick={changeSignHandler}>
-                    Sign in
-                  </StyledTypographyHandler>
-                </Typography>
-              ) : (
-                <Typography sx={{ fontSize: "16px" }}>
-                  No account?{" "}
-                  <StyledTypographyHandler onClick={changeSignHandler}>
-                    Sign Up
-                  </StyledTypographyHandler>
-                </Typography>
-              )}
             </Box>
-          </DialogActions>
-        </Dialog>
-      </form>
+          </form>
+        </DialogContent>
+        <DialogActions
+          sx={{
+            marginTop: "-20px ",
+            paddingBottom: "20px",
+            flexDirection: "column",
+          }}
+        >
+          <Box mt={0.4}>
+            <Typography sx={{ fontSize: "16px" }}>
+              No account?{" "}
+              <StyledTypographyHandler onClick={changeSignHandler}>
+                Sign Up
+              </StyledTypographyHandler>
+            </Typography>
+          </Box>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

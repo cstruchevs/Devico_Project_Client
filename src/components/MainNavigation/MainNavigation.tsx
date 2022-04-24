@@ -6,19 +6,26 @@ import {
   Button,
   Stack,
   styled,
+  Divider,
 } from "@mui/material";
 import { StyledPopover, StyledButton } from "./MainNavigatioStyles";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { RootState } from "../../store";
+import { useDispatch, useSelector } from "react-redux";
 import { uiActions } from "../../store/ui-slice";
 
 interface IMainNavigation {}
 
 const MainNavigation = () => {
-  const [anchorEl, setAnchorEl] = React.useState<SVGSVGElement | null>(null);
   const dispatch = useDispatch();
+
+  const [anchorEl, setAnchorEl] = React.useState<SVGSVGElement | null>(null);
+  const isAuth = useSelector<RootState, boolean>(
+    (state) => state.ui.isUserAuth
+  );
 
   const handleClick = (event: React.MouseEvent<SVGSVGElement>) => {
     setAnchorEl(event.currentTarget);
@@ -39,18 +46,40 @@ const MainNavigation = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ background: "transparent" }}>
-        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+      <AppBar
+        position="static"
+        sx={{ background: "transparent", height: "7vh" }}
+      >
+        <Box
+          sx={{ display: "flex", justifyContent: "flex-end", height: "100%" }}
+        >
           <Box
-            p={1}
-            pr={0}
+            pr={1}
+            pl={1}
             sx={{
+              height: "100%",
               background: "black",
-              flexGrow: 0.02,
               display: "flex",
               justifyContent: "space-evenly",
+              alignItems: "center",
+              gap: 1,
             }}
           >
+            {isAuth && (
+              <Stack direction="row" gap={1}>
+                <NotificationsNoneOutlinedIcon sx={{ height: "7vh" }} />
+                <Divider
+                  orientation="vertical"
+                  sx={{ background: "#fff", height: "7vh" }}
+                />
+                <Stack direction="column" sx={{fontSize:"13px", display:"flex", alignItems: "center", justifyContent:"center"}}>
+                  <Typography sx={{fontSize:"13px"}}>
+                    Welcome!{" "}
+                  </Typography>
+                  <Typography sx={{fontSize:"13px"}}>Semen Struchev</Typography>
+                </Stack>
+              </Stack>
+            )}
             <AccountCircleIcon />
             <KeyboardArrowDownIcon
               aria-describedby={id}

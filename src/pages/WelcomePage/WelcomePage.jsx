@@ -1,10 +1,18 @@
-import React from 'react'
-import Auth from '../../components/Auth/Auth'
+import React from "react";
+import SignUpModal from "../../components/Auth/SignUpModal";
+import SignInModal from "../../components/Auth/SignInModal";
+import CongratModule from "../../components/CongratModule.tsx/CongratModule";
+import RecoverPassModule from "../../components/RecoverPassModule/RecoverPassModule";
 
 const WelcomePage = () => {
   return (
-    <Auth />
-  )
-}
+    <>
+      <CongratModule />
+      <RecoverPassModule />
+      <SignInModal />
+      <SignUpModal />
+    </>
+  );
+};
 
-export default WelcomePage
+export default WelcomePage;
