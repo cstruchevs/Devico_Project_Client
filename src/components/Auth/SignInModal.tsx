@@ -170,7 +170,7 @@ const Auth = () => {
               >
                 <Typography sx={{ fontSize: "14px" }}>Remember me</Typography>{" "}
                 <StyledTypographyHandler
-                  sx={{ fontSize: "14px" }}
+                  sx={{ fontSize: "14px", marginLeft: "60px" }}
                   onClick={showRecoverPasHandler}
                 >
                   Forgot password?
@@ -199,9 +199,9 @@ const Auth = () => {
         >
           <Box mt={0.4}>
             <Typography sx={{ fontSize: "16px" }}>
-              Already a member?{" "}
+              No account?{" "}
               <StyledTypographyHandler onClick={changeSignHandler}>
-                Sign in
+                Sign Up
               </StyledTypographyHandler>
             </Typography>
           </Box>

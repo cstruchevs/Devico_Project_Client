@@ -209,9 +209,9 @@ const Auth = () => {
         >
           <Box mt={0.4}>
             <Typography sx={{ fontSize: "16px" }}>
-              No account?{" "}
+              Already a member?{" "}
               <StyledTypographyHandler onClick={changeSignHandler}>
-                Sign Up
+                Sign in
               </StyledTypographyHandler>
             </Typography>
           </Box>
