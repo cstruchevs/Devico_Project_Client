@@ -2,8 +2,11 @@ import { FC, useState } from "react";
 import Slider, { LazyLoadTypes } from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { MobileStepper, Container } from "@mui/material";
-import { ContainerSlideStyle, ContainerSectionStyle } from "./CarouselStyles";
+import {
+  ContainerSlideStyled,
+  ContainerSectionStyled,
+  MobileStepperStyled,
+} from "./CarouselStyles";
 
 export interface CarouselProps {
   items: JSX.Element[];
@@ -31,7 +34,7 @@ const Carousel: FC<CarouselProps> = (props) => {
     arrows: false,
     centerPadding: "40px",
     dots: false,
-    autoplay: false,
+    autoplay: true,
     autoplaySpeed: 3000,
     pauseOnHover: true,
     lazyLoad: "ondemand" as LazyLoadTypes,
@@ -39,43 +42,23 @@ const Carousel: FC<CarouselProps> = (props) => {
   };
 
   return (
-    <Container
-      classes={ContainerSectionStyle}
-      sx={{ padding: "0px !important", maxWidth: "70% !important" }}
-    >
+    <ContainerSectionStyled maxWidth="lg">
       <Slider {...settings}>
         {carouselItems.map((item) => (
-          <Container
-            key={item.index}
-            classes={ContainerSlideStyle}
-            sx={{ padding: "0px !important" }}
-          >
+          <ContainerSlideStyled key={item.index}>
             {item.jsx}
-          </Container>
+          </ContainerSlideStyled>
         ))}
       </Slider>
-      <MobileStepper
+      <MobileStepperStyled
         variant="progress"
         steps={carouselItems.length + 1}
         position="static"
         activeStep={activeSlide}
-        sx={{
-          padding: "0px",
-          marginTop: "1em",
-          flexGrow: 1,
-          "& .MuiLinearProgress-root": {
-           width: "100%",
-           backgroundColor: "#B9B9B9",
-           height: "3px",
-          },
-          "& .MuiLinearProgress-bar1Determinate": {
-            backgroundColor: "gray",
-           },
-        }}
         backButton={false}
         nextButton={false}
       />
-    </Container>
+    </ContainerSectionStyled>
   );
 };
 
