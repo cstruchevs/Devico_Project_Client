@@ -7,14 +7,12 @@ const standartTheme = createTheme({
       main: "#5940B8",
       light: "#F4F6F0",
       dark: "#485550",
-    },
-    secondary: {
-      main: "#C0EB6A",
+      contrastText: "#fff",
     },
   },
   shape: {
     borderRadius: "0px",
-}
+  },
 });
 
 interface StandartThemeProviderProps {

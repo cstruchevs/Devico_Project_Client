@@ -1,10 +1,8 @@
-import {
-  Button,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import { FC } from "react";
+import BgImage from "../../assets/imgs/Bitmap.png";
 import {
+  ActionStackStyled,
   AdressStyled,
   CardContentStyled,
   DateStyled,
@@ -16,6 +14,7 @@ import {
 } from "./UpcomingEventCardStyles";
 
 interface UpcomingEventCardProps {
+  eventLabel?: string;
   title?: string;
   date?: string;
   address?: string;
@@ -23,10 +22,11 @@ interface UpcomingEventCardProps {
   discipline?: string;
   status?: string;
   series?: string;
-  eventUrl?: string;
+  eventId?: number;
 }
 
 const UpcomingEventCard: FC<UpcomingEventCardProps> = ({
+  eventLabel,
   title,
   date,
   address,
@@ -34,17 +34,28 @@ const UpcomingEventCard: FC<UpcomingEventCardProps> = ({
   discipline,
   status,
   series,
-  eventUrl,
+  eventId,
 }) => {
+  
+  const registerToEventHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+  };
+
   return (
-    <UpcomingEventCardStyled>
+    <UpcomingEventCardStyled
+      sx={{
+        backgroundImage: `url(${backgroundImage ? backgroundImage : BgImage})`,
+      }}
+    >
       <CardContentStyled>
         <Stack direction="column">
           <NextEventPaper elevation={0}>
-            <Typography variant="h6">Next Event</Typography>
+            <Typography variant="h6">{eventLabel}</Typography>
           </NextEventPaper>
           <TitleStyled variant="h4">{title}</TitleStyled>
-          <Stack direction="row" alignItems="baseline">
+          <Stack direction={{ xs: "column", sm: "row" }} alignItems="baseline">
             <DateStyled>{date}</DateStyled>
             <AdressStyled>{address}</AdressStyled>
           </Stack>
@@ -55,19 +66,24 @@ const UpcomingEventCard: FC<UpcomingEventCardProps> = ({
           <InfoStyled variant="body1">Series: {series}</InfoStyled>
         </Stack>
       </CardContentStyled>
-      <Stack direction="row" justifyContent="space-between" sx={{paddingBlock:"20px"}}>
+
+      <ActionStackStyled>
         <LinkStyled
-          href={eventUrl}
+          href={`${eventId}`}
           underline="hover"
           sx={{ paddingBottom: "10px", paddingTop: "10px" }}
           rel="noreferrer"
         >
           View details
         </LinkStyled>
-        <Button sx={{ width: "160px", paddingBlock: "0px" }} variant="contained">
+        <Button
+          sx={{ width: "160px", paddingBlock: "0px" }}
+          variant="contained"
+          onClick={registerToEventHandler}
+        >
           Register
         </Button>
-      </Stack>
+      </ActionStackStyled>
     </UpcomingEventCardStyled>
   );
 };

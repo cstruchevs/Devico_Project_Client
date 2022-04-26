@@ -1,15 +1,22 @@
-import { styled, Paper, Card, Typography, CardContent, Link } from "@mui/material";
-import BgImage from "../../assets/imgs/Bitmap.png";
+import {
+  styled,
+  Paper,
+  Card,
+  Typography,
+  CardContent,
+  Link,
+  Stack,
+} from "@mui/material";
 
 export const UpcomingEventCardStyled = styled(Card)(({ theme }) => ({
-  margin: "auto",
   marginInline: "15px",
   paddingInline: "40px",
   paddingBlock: "20px",
   marginTop: "50px",
   minHeight: "500px",
-  backgroundImage: "url(" + BgImage + ")",
   backgroundSize: "cover",
+  backgroundPosition: "center",
+  backgroundRepeat: "no-repeat",
   display: "flex",
   flexFlow: "column",
 }));
@@ -38,6 +45,9 @@ export const NextEventPaper = styled(Paper)(({ theme }) => ({
 
 export const TitleStyled = styled(Typography)(({ theme }) => ({
   fontWeight: "bold",
+  [theme.breakpoints.down("md")]: {
+    fontSize: "2rem",
+  },
 }));
 
 export const DateStyled = styled(Typography)(({ theme }) => ({
@@ -47,17 +57,39 @@ export const DateStyled = styled(Typography)(({ theme }) => ({
 }));
 
 export const AdressStyled = styled(Typography)(({ theme }) => ({
-  fontSize: "16px",
+  fontSize: "1.1rem",
   marginLeft: "10px",
+  [theme.breakpoints.down("md")]: {
+    fontSize: "1rem",
+  },
+  [theme.breakpoints.down("sm")]: {
+    marginLeft: "0px",
+  },
 }));
 
 export const InfoStyled = styled(Typography)(({ theme }) => ({
-  fontSize: "18px",
+  fontSize: "1.1rem",
+  [theme.breakpoints.down("md")]: {
+    fontSize: "1rem",
+  },
 }));
 
 export const LinkStyled = styled(Link)(({ theme }) => ({
-    color: theme.palette.primary.dark,
-    "&:hover": {
-        cursor: "pointer",
-    }
-  }));
+  color: theme.palette.common.black,
+  "&:hover": {
+    cursor: "pointer",
+  },
+}));
+
+export const ActionStackStyled = styled(Stack)(({ theme }) => ({
+  alignItems: "center",
+  justifyContent: "space-between",
+  [theme.breakpoints.up("sm")]: {
+    flexFlow: "row",
+    paddingBlock: "20px",
+  },
+  [theme.breakpoints.down("sm")]: {
+    flexFlow: "column",
+    paddingBlock: "10px",
+  },
+}));
