@@ -36,7 +36,7 @@ const UpcomingEventCard: FC<UpcomingEventCardProps> = ({
   series,
   eventId,
 }) => {
-  
+
   const registerToEventHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -77,7 +77,7 @@ const UpcomingEventCard: FC<UpcomingEventCardProps> = ({
           View details
         </LinkStyled>
         <Button
-          sx={{ width: "160px", paddingBlock: "0px" }}
+          sx={{ width: "160px", paddingBlock: "5px" }}
           variant="contained"
           onClick={registerToEventHandler}
         >
