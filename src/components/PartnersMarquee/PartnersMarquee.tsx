@@ -8,7 +8,7 @@ export interface PartnersMarqueeProps {}
 
 const PartnersMarquee: FC<PartnersMarqueeProps> = () => {
   return (
-    <Marquee style={{ marginTop: "40px" }} pauseOnHover={true}>
+    <Marquee style={{ marginTop: "40px" }} pauseOnHover={true} speed={60}>
       {partnersInfo.map((item, index) => (
         <PartnerCard
           key={index}
