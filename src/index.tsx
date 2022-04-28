@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
+import store from "./store";
+import { Provider } from "react-redux";
 import StandartThemeProvider from "./theme/StandartTheme";
 
 const root = ReactDOM.createRoot(
@@ -9,8 +11,10 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <StandartThemeProvider>
-      <App />
-    </StandartThemeProvider>
+    <Provider store={store}>
+      <StandartThemeProvider>
+        <App />
+      </StandartThemeProvider>
+    </Provider>
   </React.StrictMode>
 );
