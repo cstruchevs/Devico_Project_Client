@@ -2,7 +2,6 @@ import { Button, Popover, styled } from "@mui/material";
 
 export const StyledPopover = styled(Popover)({
     marginTop: "8.2px",
-    marginLeft:"15px"
 });
 
 export const StyledButton = styled(Button)({

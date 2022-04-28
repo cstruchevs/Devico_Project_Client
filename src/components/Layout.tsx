@@ -1,19 +1,21 @@
-import { Fragment, Suspense } from 'react';
+import { CssBaseline } from '@mui/material'
 
-import classes from './Layout.module.css';
-import MainNavigation from './MainNavigation/MainNavigation';
+import MainNavigation from './MainNavigation/MainNavigation'
+import Sidebar from './Sidebar/Sidebar'
 
-interface ILayout{
-    children: JSX.Element
+interface ILayout {
+  children?: JSX.Element | JSX.Element[]
 }
 
-const Layout: React.FunctionComponent<ILayout> = ({children}) => {
+const Layout: React.FunctionComponent<ILayout> = ({ children }) => {
   return (
-    <Fragment>
+    <>
+      <CssBaseline />
+      <Sidebar />
       <MainNavigation />
       <main>{children}</main>
-    </Fragment>
-  );
-};
+    </>
+  )
+}
 
-export default Layout;
+export default Layout
