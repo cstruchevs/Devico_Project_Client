@@ -1,9 +1,15 @@
-import React from 'react';
+import Carousel from "./components/Carousel/Carousel";
+import UpcomingEventCard from "./components/UpcomingEventCard/UpcomingEventCard";
+import { FakeUpcomingEvents } from "./FakeUpcomingEvents";
 
 function App() {
+  const carouselItems = FakeUpcomingEvents.map((e) => (
+    <UpcomingEventCard {...e} />
+  ));
+
   return (
     <div className="App">
-      <h1>Devico final project</h1>
+      <Carousel items={carouselItems} />
     </div>
   );
 }
