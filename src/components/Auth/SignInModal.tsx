@@ -18,6 +18,7 @@ import { uiActions } from "../../store/ui-slice";
 import { RootState } from "../../store";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { sagaActions } from "../../store/sagaActions";
 import * as yup from "yup";
 import {
   StyledButton,
@@ -28,6 +29,7 @@ import {
   StyledDialogTitle,
   StyledStackDescription,
 } from "./AuthStyles";
+import axios from "axios";
 
 const initialState = {
   email: "",
@@ -57,14 +59,10 @@ const Auth = () => {
     mode: "onChange",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
-
-  const onSubmitHandler = (data: object) => {
+  const onSubmitHandler = async (data: object) => {
     console.log({ data });
-
-    dispatch(uiActions.toggleCongratAuth());
+    dispatch({type: sagaActions.USER_LOGIN_SAGA, payload: data})
+    dispatch(uiActions.toggleCongratAuth())
     reset();
     toggleHandler();
   };

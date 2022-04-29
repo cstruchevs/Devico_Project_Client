@@ -28,6 +28,7 @@ import {
   StyledDialogTitle,
   StyledStackDescription,
 } from "./AuthStyles";
+import { sagaActions } from "../../store/sagaActions";
 
 const initialState = {
   email: "",
@@ -60,13 +61,9 @@ const Auth = () => {
     mode: "onChange",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
-
   const onSubmitHandler = (data: object) => {
     console.log({ data });
-
+    dispatch({type: sagaActions.USER_SETUP_SAGA, payload: data})
     dispatch(uiActions.toggleCongratAuth());
     reset();
     toggleHandler();
@@ -82,12 +79,6 @@ const Auth = () => {
   );
 
   const toggleHandler = () => {
-    if (
-      Boolean(errors.email) ||
-      Boolean(errors.password) ||
-      Boolean(errors.confirmPassword)
-    )
-      return;
     reset();
     if (regCartIsShown) dispatch(uiActions.toggleReg());
   };
@@ -147,7 +138,6 @@ const Auth = () => {
                     name="phone"
                     id="outlined-basic"
                     variant="outlined"
-                    error={Boolean(errors.phone)}
                   />
                   <StyledTypography>CONFIRM PASSWORD*</StyledTypography>
                   <StyledTextField
@@ -190,7 +180,6 @@ const Auth = () => {
                 type="submit"
                 disabled={checked ? false : true}
                 variant="outlined"
-                onClick={toggleHandler}
                 sx={{
                   margin: "auto",
                 }}
