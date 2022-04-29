@@ -31,15 +31,15 @@ const MainNavigation: FC<IMainNavigation> = () => {
 
   return (
     <AppBar position="sticky" sx={{ background: 'transparent', boxShadow: 'none' }}>
-      <Box sx={{ display: 'flex', justifyContent: { xs: 'space-between', sm: 'flex-end' } }}>
+      <Box sx={{ display: 'flex', justifyContent: "flex-end",  }}>
         <Box
           p={1}
           pr={0}
           sx={{
-            background: 'black',
             flexGrow: 0.02,
             display: 'flex',
             justifyContent: 'space-evenly',
+            backgroundColor: "#485550"
           }}
         >
           <AccountCircleIcon />
