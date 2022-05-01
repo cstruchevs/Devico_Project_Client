@@ -1,13 +1,10 @@
 import {
   Box,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
   Divider,
-  TextField,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
@@ -105,11 +102,7 @@ const RecoverPas = () => {
               error={Boolean(errors.email)}
               helperText={errors.email?.message}
             />
-            <Box
-              mt={1}
-              pb={0}
-              sx={{ display: "flex", justifyContent: "center" }}
-            >
+            <Box mt={1} pb={0}>
               <ConfirmStyledButton type="submit" onClick={sendToggle}>
                 Submit
               </ConfirmStyledButton>
