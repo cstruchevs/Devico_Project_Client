@@ -1,45 +1,12 @@
-import {
-  BottomMenuStackStyled,
-  LogoBoxStyled,
-  SidebarBoxStyled,
-  SidebarButtonStyled,
-  SidebarLinkStyled,
-  ToolbarStyled,
-  TopMenuStackStyled,
-} from './DesktopSidebarStyles'
-import { upSidebarLinks, downSidebarLinks } from '../SidebarLinks'
-import { scrollConfig } from '../ScrollConfig'
+import { SidebarBoxStyled } from './DesktopSidebarStyles'
+import { FC, memo } from 'react'
 
-const DesktopSidebar = () => {
-  return (
-    <SidebarBoxStyled>
-      <LogoBoxStyled>
-        <h3>LOGO</h3>
-      </LogoBoxStyled>
-      <ToolbarStyled>
-        <TopMenuStackStyled>
-          {upSidebarLinks.map(item => {
-            return (
-              <SidebarButtonStyled {...scrollConfig} to={item.link}>
-                {item.icon}
-                {item.title}
-              </SidebarButtonStyled>
-            )
-          })}
-        </TopMenuStackStyled>
-        <BottomMenuStackStyled>
-          {downSidebarLinks.map(item => {
-            return (
-              <SidebarLinkStyled to={item.link}>
-                {item.icon}
-                {item.title}
-              </SidebarLinkStyled>
-            )
-          })}
-        </BottomMenuStackStyled>
-      </ToolbarStyled>
-    </SidebarBoxStyled>
-  )
+interface IDesktopSidebar {
+  children: JSX.Element | JSX.Element[]
 }
 
-export default DesktopSidebar
+const DesktopSidebarWrapper: FC<IDesktopSidebar> = ({ children }) => {
+  return <SidebarBoxStyled>{children}</SidebarBoxStyled>
+}
+
+export default memo(DesktopSidebarWrapper)

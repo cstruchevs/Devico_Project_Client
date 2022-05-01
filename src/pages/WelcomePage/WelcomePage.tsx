@@ -1,6 +1,7 @@
 import React from 'react'
 
 const WelcomePage = () => {
+
   return (
     <>
       <section id="welcome">Welcome section</section>

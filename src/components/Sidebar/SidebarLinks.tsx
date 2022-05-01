@@ -10,22 +10,22 @@ import PolicyOutlinedIcon from '@mui/icons-material/PolicyOutlined';
 
 export const upSidebarLinks = [
     {
-        icon: <EventIcon />,
+        icon: EventIcon,
         title: "Upcoming Events",
         link: "upcoming"
     },
     {
-        icon: <CalendarMonthIcon />,
+        icon: CalendarMonthIcon,
         title: "Events Calendar",
         link: "calendar"
     },
     {
-        icon: <NewspaperIcon />,
+        icon: NewspaperIcon,
         title: "News",
         link: "news"
     },
     {
-        icon: <WorkspacesIcon />,
+        icon: WorkspacesIcon,
         title: "Partners",
         link: "partners"
     },
@@ -33,22 +33,22 @@ export const upSidebarLinks = [
 
 export const downSidebarLinks = [
     {
-        icon: <BusinessOutlinedIcon />,
+        icon: BusinessOutlinedIcon,
         title: "About us",
         link: "/about-us"
     },
     {
-        icon: <QuestionAnswerOutlinedIcon />,
+        icon: QuestionAnswerOutlinedIcon,
         title: "Contact us",
         link: "/contact-us"
     },
     {
-        icon: <QuizOutlinedIcon />,
+        icon: QuizOutlinedIcon,
         title: "FAQ",
         link: "/faq"
     },
     {
-        icon: <PolicyOutlinedIcon />,
+        icon: PolicyOutlinedIcon,
         title: "Privacy & Term of use",
         link: "/policy"
     },

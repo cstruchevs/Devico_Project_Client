@@ -4,7 +4,7 @@ import PageRoutes from './routes/Routes'
 function App() {
   return (
     <Layout>
-      <PageRoutes></PageRoutes>
+      <PageRoutes />
     </Layout>
   )
 }
