@@ -1,6 +1,6 @@
-import { Button, Stack, Typography } from "@mui/material";
-import { FC } from "react";
-import BgImage from "../../assets/imgs/Bitmap.png";
+import { Button, Stack, Typography } from '@mui/material'
+import { FC } from 'react'
+import BgImage from '../../assets/imgs/Bitmap.png'
 import {
   ActionStackStyled,
   AdressStyled,
@@ -11,18 +11,18 @@ import {
   NextEventPaper,
   TitleStyled,
   UpcomingEventCardStyled,
-} from "./UpcomingEventCardStyles";
+} from './UpcomingEventCardStyles'
 
 interface UpcomingEventCardProps {
-  eventLabel?: string;
-  title?: string;
-  date?: string;
-  address?: string;
-  backgroundImage?: string;
-  discipline?: string;
-  status?: string;
-  series?: string;
-  eventId?: number;
+  eventLabel?: string
+  title?: string
+  date?: string
+  address?: string
+  backgroundImage?: string
+  discipline?: string
+  status?: string
+  series?: string
+  eventId?: number
 }
 
 const UpcomingEventCard: FC<UpcomingEventCardProps> = ({
@@ -36,12 +36,9 @@ const UpcomingEventCard: FC<UpcomingEventCardProps> = ({
   series,
   eventId,
 }) => {
-
-  const registerToEventHandler = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
-  };
+  const registerToEventHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault()
+  }
 
   return (
     <UpcomingEventCardStyled
@@ -55,7 +52,7 @@ const UpcomingEventCard: FC<UpcomingEventCardProps> = ({
             <Typography variant="h6">{eventLabel}</Typography>
           </NextEventPaper>
           <TitleStyled variant="h4">{title}</TitleStyled>
-          <Stack direction={{ xs: "column", sm: "row" }} alignItems="baseline">
+          <Stack direction={{ xs: 'column', sm: 'row' }} alignItems="baseline">
             <DateStyled>{date}</DateStyled>
             <AdressStyled>{address}</AdressStyled>
           </Stack>
@@ -71,13 +68,13 @@ const UpcomingEventCard: FC<UpcomingEventCardProps> = ({
         <LinkStyled
           href={`${eventId}`}
           underline="hover"
-          sx={{ paddingBottom: "10px", paddingTop: "10px" }}
+          sx={{ paddingBottom: '10px', paddingTop: '10px' }}
           rel="noreferrer"
         >
           View details
         </LinkStyled>
         <Button
-          sx={{ width: "160px", paddingBlock: "5px" }}
+          sx={{ width: '160px', paddingBlock: '5px' }}
           variant="contained"
           onClick={registerToEventHandler}
         >
@@ -85,7 +82,7 @@ const UpcomingEventCard: FC<UpcomingEventCardProps> = ({
         </Button>
       </ActionStackStyled>
     </UpcomingEventCardStyled>
-  );
-};
+  )
+}
 
-export default UpcomingEventCard;
+export default UpcomingEventCard

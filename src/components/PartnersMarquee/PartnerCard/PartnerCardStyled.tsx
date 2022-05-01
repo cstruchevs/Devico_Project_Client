@@ -1,5 +1,5 @@
-import { styled, Card } from "@mui/material";
+import { styled, Card } from '@mui/material'
 
 export const PartnerCardStyled = styled(Card)(({ theme }) => ({
-  marginInline: "10px",
-}));
+  marginInline: '10px',
+}))
