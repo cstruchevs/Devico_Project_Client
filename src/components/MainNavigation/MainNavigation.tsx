@@ -1,16 +1,33 @@
-import { Box, AppBar, Typography, Popover, Button, Stack, styled } from '@mui/material'
-import { StyledPopover, StyledButton } from './MainNavigatioStyles'
+import { Typography } from '@mui/material'
+import { Link } from 'react-router-dom'
+import {
+  StyledPopover,
+  StyledButton,
+  StyledMenuBoxNav,
+  StyledAppBar,
+  StyledInnerWarapperBox,
+  StyledPopoverStack,
+  StyledAuthStack,
+  StyledNotificationDivider,
+  StyledAuthStackWrapper,
+  StyledOuterWarapperBox,
+} from './MainNavigatioStyles'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
-import React, { FC, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined'
+import React from 'react'
+import { RootState } from '../../store'
+import { useDispatch, useSelector } from 'react-redux'
 import { uiActions } from '../../store/ui-slice'
+import { IUserInterface } from '../../store/auth'
 
 interface IMainNavigation {}
 
-const MainNavigation: FC<IMainNavigation> = () => {
-  const [anchorEl, setAnchorEl] = useState<SVGSVGElement | null>(null)
+const MainNavigation = () => {
   const dispatch = useDispatch()
+
+  const [anchorEl, setAnchorEl] = React.useState<SVGSVGElement | null>(null)
+  const user = useSelector<RootState, IUserInterface | null>(state => state.auth.user)
 
   const handleClick = (event: React.MouseEvent<SVGSVGElement>) => {
     setAnchorEl(event.currentTarget)
@@ -22,7 +39,7 @@ const MainNavigation: FC<IMainNavigation> = () => {
   const toggleRegHandler = () => {
     dispatch(uiActions.toggleReg())
   }
-  const toggleLoginHandler = () => {
+  const toggleLogHandler = () => {
     dispatch(uiActions.toggleLog())
   }
 
@@ -30,53 +47,58 @@ const MainNavigation: FC<IMainNavigation> = () => {
   const id = open ? 'simple-popover' : undefined
 
   return (
-    <AppBar position="sticky" sx={{ background: 'transparent', boxShadow: 'none' }}>
-      <Box sx={{ display: 'flex', justifyContent: "flex-end",  }}>
-        <Box
-          p={1}
-          pr={0}
-          sx={{
-            flexGrow: 0.02,
-            display: 'flex',
-            justifyContent: 'space-evenly',
-            backgroundColor: "#485550"
-          }}
-        >
-          <AccountCircleIcon />
-          <KeyboardArrowDownIcon aria-describedby={id} onClick={handleClick} />
-          <StyledPopover
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-          >
-            <Stack
-              sx={{
-                '& button': {
-                  p: 1.4,
-                  pr: 9,
-                  pl: 2,
-                  fontSize: '13px',
-                  borderRadius: '0px',
-                },
+    <StyledOuterWarapperBox>
+      <StyledAppBar>
+        <StyledInnerWarapperBox>
+          <StyledMenuBoxNav pr={1} pl={1}>
+            {user && (
+              <StyledAuthStackWrapper gap={1}>
+                <NotificationsNoneOutlinedIcon sx={{ height: '43px' }} />
+                <StyledNotificationDivider orientation="vertical" />
+                <StyledAuthStack>
+                  <Typography sx={{ fontSize: '13px' }}>Welcome! </Typography>
+                </StyledAuthStack>
+              </StyledAuthStackWrapper>
+            )}
+            <AccountCircleIcon />
+            <KeyboardArrowDownIcon aria-describedby={id} onClick={handleClick} />
+            <StyledPopover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
               }}
-              direction="column"
             >
-              <StyledButton onClick={toggleRegHandler} size="medium">
-                Sign In
-              </StyledButton>
-              <StyledButton onClick={toggleLoginHandler} size="medium">
-                Sign Up
-              </StyledButton>
-            </Stack>
-          </StyledPopover>
-        </Box>
-      </Box>
-    </AppBar>
+              <StyledPopoverStack>
+                {user ? (
+                  <>
+                    <StyledButton size="medium">
+                    <Link to='/profile'>My Events</Link>
+                    </StyledButton>
+                    <StyledButton size="medium">
+                      <Link to='/events'>My Events</Link>
+                    </StyledButton>
+                    <StyledButton size="medium">Sign Out</StyledButton>
+                  </>
+                ) : (
+                  <>
+                    <StyledButton onClick={toggleLogHandler} size="medium">
+                      Sign In
+                    </StyledButton>
+                    <StyledButton onClick={toggleRegHandler} size="medium">
+                      Sign Up
+                    </StyledButton>
+                  </>
+                )}
+              </StyledPopoverStack>
+            </StyledPopover>
+          </StyledMenuBoxNav>
+        </StyledInnerWarapperBox>
+      </StyledAppBar>
+    </StyledOuterWarapperBox>
   )
 }
 
