@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useMemo, useState } from 'react'
+import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
@@ -15,10 +15,13 @@ import {
 } from './SidebarStyles'
 import { upSidebarLinks, downSidebarLinks } from './SidebarLinks'
 import { scrollConfig } from './ScrollConfig'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 interface ISidebar {}
 
 const Sidebar: FC<ISidebar> = () => {
+  const navigate = useNavigate()
+  const location = useLocation()
   const theme = useTheme()
   const matches = useMediaQuery(theme.breakpoints.up('sm'))
 
@@ -28,10 +31,21 @@ const Sidebar: FC<ISidebar> = () => {
     setIsDrawerOpen(prevState => !prevState)
   }, [])
 
+  useEffect(()=> {
+    if (location.hash) {
+        let elem = document.getElementById(location.hash.slice(1))
+        if (elem) {
+            elem.scrollIntoView({behavior: "smooth"})
+        }
+    } else {
+    window.scrollTo({top:0,left:0, behavior: "smooth"})
+    }
+}, [location,])
+
   const sidebar = useMemo(() => {
     return (
       <>
-        <LogoBoxStyled>
+        <LogoBoxStyled onClick={() => navigate("/")}>
           <Typography variant="h6">LOGO</Typography>
         </LogoBoxStyled>
         <ToolbarStyled>

@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from '@mui/material'
+import { Button, Stack, Typography, Link as LinkMui } from '@mui/material'
 import { styled, Box } from '@mui/system'
 import { Link as LinkScroll } from 'react-scroll'
 import { Link as LinkRouter } from 'react-router-dom'
@@ -8,6 +8,9 @@ export const LogoBoxStyled = styled(Box)(({ theme }) => ({
   padding: 5,
   backgroundColor: theme.palette.primary.dark,
   color: theme.palette.common.white,
+  '&:hover': {
+    cursor: 'pointer',
+  },
 }))
 
 export const ToolbarStyled = styled(Box)(({ theme }) => ({
@@ -34,14 +37,14 @@ export const SidebarButtonStyled = styled(Button)(({ theme }) => ({
   marginBottom: 1,
 }))
 
-export const SidebarNavStyled = styled(LinkScroll)(({ theme }) => ({
+export const SidebarNavStyled = styled(LinkRouter)(({ theme }) => ({
   width: '100%',
   display: 'flex',
   flexFlow: 'column',
   justifyContent: 'center',
   alignItems: 'center',
   textAlign: 'center',
-  fontWeight: "normal",
+  fontWeight: 'normal',
   fontSize: 10,
   textDecoration: 'none',
   paddingBlock: 5,
@@ -61,7 +64,7 @@ export const SidebarLinkStyled = styled(LinkRouter)(({ theme }) => ({
   justifyContent: 'center',
   alignItems: 'center',
   textAlign: 'center',
-  fontWeight: "normal",
+  fontWeight: 'normal',
   fontSize: 10,
   paddingBlock: 5,
   color: theme.palette.common.white,
