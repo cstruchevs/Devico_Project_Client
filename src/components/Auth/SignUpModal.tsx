@@ -1,5 +1,5 @@
 import { Checkbox, Dialog, DialogContent, Divider, Stack, Typography, Box } from '@mui/material'
-import React, { useState } from 'react'
+import React, { memo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { uiActions } from '../../store/ui-slice'
 import { RootState } from '../../store'
@@ -28,7 +28,7 @@ const schema = yup.object().shape({
   confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
 })
 
-const Auth = () => {
+const SignUp = () => {
   const dispatch = useDispatch()
   const [checked, setChecked] = useState(true)
 
@@ -54,7 +54,9 @@ const Auth = () => {
 
   const toggleHandler = () => {
     reset()
-    if (regCartIsShown) dispatch(uiActions.toggleReg())
+    if (regCartIsShown) {
+      dispatch(uiActions.toggleReg())
+    }
   }
 
   const changeSignHandler = () => {
@@ -158,4 +160,4 @@ const Auth = () => {
   )
 }
 
-export default Auth
+export default memo(SignUp)

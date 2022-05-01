@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@mui/material'
 import { RootState } from '../../store'
-import React from 'react'
+import React, { memo } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { uiActions } from '../../store/ui-slice'
@@ -54,4 +54,4 @@ const CongratModule = () => {
   )
 }
 
-export default CongratModule
+export default memo(CongratModule)

@@ -1,34 +1,35 @@
 import {
   Box,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogContentText,
   Divider,
   Typography,
-} from "@mui/material";
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store";
-import { uiActions } from "../../store/ui-slice";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+} from '@mui/material'
+import { useCallback, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../../store'
+import { uiActions } from '../../store/ui-slice'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 import {
   ConfirmStyledButton,
+  StyledBoxConfirmButton,
+  StyledDialogActions,
   StyledDialogTitle,
   StyledTextField,
   StyledTypography,
   StyledTypographyHandler,
-} from "../Auth/AuthStyles";
+} from '../Auth/AuthStyles'
 
 const schema = yup.object().shape({
-  email: yup.string().email().required("There is no account with this email"),
-});
+  email: yup.string().email().required('There is no account with this email'),
+})
 
 const RecoverPas = () => {
-  const dispatch = useDispatch();
-  const [isSend, setIsSend] = useState(false);
+  const dispatch = useDispatch()
+  const [isSend, setIsSend] = useState(false)
 
   const {
     register,
@@ -37,39 +38,33 @@ const RecoverPas = () => {
     reset,
   } = useForm({
     resolver: yupResolver(schema),
-    mode: "onChange",
-  });
+    mode: 'onChange',
+  })
 
-  const recoverIsShown = useSelector<RootState, boolean>(
-    (state) => state.ui.showForgetPassword
-  );
+  const recoverIsShown = useSelector<RootState, boolean>(state => state.ui.showForgetPassword)
 
-  const sendToggle = () => {
-    setIsSend(!isSend);
-  };
+  const changeSignHandler = useCallback(() => {
+    dispatch(uiActions.toggleForgetPassword())
+    dispatch(uiActions.toggleLog())
+  }, [dispatch])
 
-  const changeSignHandler = () => {
-    dispatch(uiActions.toggleForgetPassword());
-    dispatch(uiActions.toggleLog());
-  };
-
-  const toggleHandler = () => {
-    reset();
-    sendToggle();
-    dispatch(uiActions.toggleForgetPassword());
-  };
+  const toggleHandler = useCallback(() => {
+    reset()
+    dispatch(uiActions.toggleForgetPassword())
+    setIsSend(false)
+  }, [dispatch, reset])
 
   const toggleHandlerCheck = () => {
-    if (Boolean(errors.email)) return;
+    if (Boolean(errors.email)) return
+    if (recoverIsShown) {
+      setIsSend(!isSend)
+    }
+  }
 
-    if (recoverIsShown) dispatch(uiActions.toggleForgetPassword());
-  };
-
-  const onSubmitHandler = (data: object) => {
-    console.log({ data });
-    toggleHandlerCheck();
-    reset();
-  };
+  const onSubmitHandler = useCallback((data: object) => {
+    toggleHandlerCheck()
+    reset()
+  }, [reset, toggleHandlerCheck])
   return (
     <Dialog open={recoverIsShown} onClose={toggleHandler}>
       <StyledDialogTitle>Password Recover</StyledDialogTitle>
@@ -78,21 +73,18 @@ const RecoverPas = () => {
         {isSend ? (
           <>
             <DialogContentText>
-              A password reset email has been sent to the email address on file
-              for your account, but may take several minutes to show up in your
-              inbox. Link valid 24h
+              A password reset email has been sent to the email address on file for your account,
+              but may take several minutes to show up in your inbox. Link valid 24h
             </DialogContentText>
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <ConfirmStyledButton onClick={toggleHandler}>
-                Ok
-              </ConfirmStyledButton>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <ConfirmStyledButton onClick={toggleHandler}>Ok</ConfirmStyledButton>
             </Box>
           </>
         ) : (
           <form onSubmit={handleSubmit(onSubmitHandler)}>
             <StyledTypography>EMAIL*</StyledTypography>
             <StyledTextField
-              {...register("email")}
+              {...register('email')}
               name="email"
               type="email"
               required
@@ -102,24 +94,20 @@ const RecoverPas = () => {
               error={Boolean(errors.email)}
               helperText={errors.email?.message}
             />
-            <Box mt={1} pb={0}>
-              <ConfirmStyledButton type="submit" onClick={sendToggle}>
-                Submit
-              </ConfirmStyledButton>
-            </Box>
+            <StyledBoxConfirmButton>
+              <ConfirmStyledButton type="submit">Submit</ConfirmStyledButton>
+            </StyledBoxConfirmButton>
           </form>
         )}
       </DialogContent>
-      <DialogActions sx={{ margin: "auto", paddingTop: "0px" }}>
-        <Typography sx={{ fontSize: "16px" }}>
-          Already a member?{" "}
-          <StyledTypographyHandler onClick={changeSignHandler}>
-            Sign in
-          </StyledTypographyHandler>
+      <StyledDialogActions>
+        <Typography sx={{ fontSize: '16px' }}>
+          Already a member?{' '}
+          <StyledTypographyHandler onClick={changeSignHandler}>Sign in</StyledTypographyHandler>
         </Typography>
-      </DialogActions>
+      </StyledDialogActions>
     </Dialog>
-  );
-};
+  )
+}
 
-export default RecoverPas;
+export default RecoverPas

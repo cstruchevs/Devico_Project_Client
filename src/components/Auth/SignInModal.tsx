@@ -1,5 +1,5 @@
 import { Checkbox, Dialog, DialogContent, Divider, Stack, Typography, Box } from '@mui/material'
-import React, { memo, useState } from 'react'
+import React, { memo, useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { uiActions } from '../../store/ui-slice'
 import { RootState } from '../../store'
@@ -19,7 +19,7 @@ import {
   StyledDialogActions,
 } from './AuthStyles'
 
-const phoneRegex: RegExp =
+const PHONE_REGEX: RegExp =
   /^(?:\+38)?(?:\(044\)[ .-]?[0-9]{3}[ .-]?[0-9]{2}[ .-]?[0-9]{2}|044[ .-]?[0-9]{3}[ .-]?[0-9]{2}[ .-]?[0-9]{2}|044[0-9]{7})$/
 
 const schema = yup.object().shape({
@@ -27,7 +27,7 @@ const schema = yup.object().shape({
   password: yup.string().min(8).max(32).required('Write correct password'),
 })
 
-const Auth = () => {
+const SignIn = () => {
   const dispatch = useDispatch()
   const {
     register,
@@ -39,32 +39,38 @@ const Auth = () => {
     mode: 'onChange',
   })
 
-  const onSubmitHandler = async (data: object) => {
-    console.log({ data })
-    dispatch({ type: sagaActions.USER_LOGIN_SAGA, payload: data })
-    dispatch(uiActions.toggleCongratAuth())
-    reset()
-    toggleHandler()
-  }
-
   const [checked, setChecked] = useState(true)
 
   const regCartIsShown = useSelector<RootState, boolean>(state => state.ui.showReg)
   const logCartIsShown = useSelector<RootState, boolean>(state => state.ui.showLog)
 
-  const toggleHandler = () => {
+  const onSubmitHandler = useCallback(async (data: object) => {
+    console.log({ data })
+    dispatch({ type: sagaActions.USER_LOGIN_SAGA, payload: data })
+    dispatch(uiActions.toggleCongratAuth())
     reset()
-    if (logCartIsShown) dispatch(uiActions.toggleLog())
-  }
+    toggleHandler()
+  }, [dispatch, reset])
 
-  const changeSignHandler = () => {
+  const toggleHandler = useCallback(() => {
+    reset()
+    if (logCartIsShown) {
+      dispatch(uiActions.toggleLog())
+    }
+  }, [])
+
+  const changeSignHandler = useCallback(() => {
     dispatch(uiActions.toggleReg())
     dispatch(uiActions.toggleLog())
-  }
+  }, [dispatch])
 
   const showRecoverPasHandler = () => {
-    if (regCartIsShown) dispatch(uiActions.toggleReg())
-    if (logCartIsShown) dispatch(uiActions.toggleLog())
+    if (regCartIsShown) {
+      dispatch(uiActions.toggleReg())
+    }
+    if (logCartIsShown) {
+      dispatch(uiActions.toggleLog())
+    }
     dispatch(uiActions.toggleForgetPassword())
   }
 
@@ -143,4 +149,4 @@ const Auth = () => {
   )
 }
 
-export default memo(Auth)
+export default memo(SignIn)
