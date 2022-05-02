@@ -12,22 +12,22 @@ export const upSidebarLinks = [
     {
         icon: EventIcon,
         title: "Upcoming Events",
-        link: "upcoming"
+        link: "/#upcoming"
     },
     {
         icon: CalendarMonthIcon,
         title: "Events Calendar",
-        link: "calendar"
+        link: "/#calendar"
     },
     {
         icon: NewspaperIcon,
         title: "News",
-        link: "news"
+        link: "/#news"
     },
     {
         icon: WorkspacesIcon,
         title: "Partners",
-        link: "partners"
+        link: "/#partners"
     },
 ]
 
