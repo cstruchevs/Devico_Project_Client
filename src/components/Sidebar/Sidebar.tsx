@@ -31,28 +31,33 @@ const Sidebar: FC<ISidebar> = () => {
     setIsDrawerOpen(prevState => !prevState)
   }, [])
 
-  useEffect(()=> {
+  useEffect(() => {
     if (location.hash) {
-        let elem = document.getElementById(location.hash.slice(1))
-        if (elem) {
-            elem.scrollIntoView({behavior: "smooth"})
-        }
+      let elem = document.getElementById(location.hash.slice(1))
+      if (elem) {
+        elem.scrollIntoView({ behavior: 'smooth' })
+      }
     } else {
-    window.scrollTo({top:0,left:0, behavior: "smooth"})
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
     }
-}, [location,])
+  }, [location])
 
   const sidebar = useMemo(() => {
     return (
       <>
-        <LogoBoxStyled onClick={() => navigate("/")}>
+        <LogoBoxStyled onClick={() => navigate('/')}>
           <Typography variant="h6">LOGO</Typography>
         </LogoBoxStyled>
         <ToolbarStyled>
           <TopMenuStackStyled>
             {upSidebarLinks.map(item => (
               <SidebarButtonStyled key={item.title}>
-                <SidebarNavStyled {...scrollConfig} to={item.link} onClick={toggleDrawerHandler}>
+                <SidebarNavStyled
+                  {...scrollConfig}
+                  to={item.link}
+                  onClick={toggleDrawerHandler}
+                  className={location.pathname+location.hash === item.link ? 'ActiveLink' : undefined}
+                >
                   <item.icon />
                   {item.title}
                 </SidebarNavStyled>
@@ -72,7 +77,7 @@ const Sidebar: FC<ISidebar> = () => {
         </ToolbarStyled>
       </>
     )
-  }, [toggleDrawerHandler])
+  }, [navigate, location, toggleDrawerHandler])
 
   return (
     <>
