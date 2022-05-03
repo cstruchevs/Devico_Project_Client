@@ -7,7 +7,7 @@ export const FakeUpcomingEvents = [
     discipline: "Digital motorsport.",
     status: "National Seria",
     series: "National Digital Time Attack Series (NS-CTA) 2021",
-    backgroundImage: "https://wallpapercave.com/wp/wp6279032.jpg",
+    // backgroundImage: "https://wallpapercave.com/wp/wp6279032.jpg",
   },
   {
     eventLabel: "Next Event",
@@ -17,8 +17,8 @@ export const FakeUpcomingEvents = [
     discipline: "Digital motorsport.",
     status: "National Seria",
     series: "National Digital Time Attack Series (NS-CTA) 2021",
-    backgroundImage:
-      "https://wallpaperscart.com/wp-content/uploads/2021/11/Car-Backgrounds-Wallpapers-HD-4K_14-1024x640.jpg",
+    // backgroundImage:
+    //   "https://wallpaperscart.com/wp-content/uploads/2021/11/Car-Backgrounds-Wallpapers-HD-4K_14-1024x640.jpg",
   },
   {
     eventLabel: "Next Event",
@@ -28,7 +28,7 @@ export const FakeUpcomingEvents = [
     discipline: "Digital motorsport.",
     status: "National Seria",
     series: "National Digital Time Attack Series (NS-CTA) 2021",
-    backgroundImage: "https://wallpaper.dog/large/5495964.jpg",
+    // backgroundImage: "https://wallpaper.dog/large/5495964.jpg",
   },
   {
     eventLabel: "Next Event",
@@ -38,8 +38,8 @@ export const FakeUpcomingEvents = [
     discipline: "Digital motorsport.",
     status: "National Seria",
     series: "National Digital Time Attack Series (NS-CTA) 2021",
-    backgroundImage:
-      "https://airwallpaper.com/wp-content/uploads/2016/10/Auto-Backgrounds-For-Desktop.jpg",
+    // backgroundImage:
+    //   "https://airwallpaper.com/wp-content/uploads/2016/10/Auto-Backgrounds-For-Desktop.jpg",
   },
   {
     eventLabel: "Next Event",
@@ -49,7 +49,7 @@ export const FakeUpcomingEvents = [
     discipline: "Digital motorsport.",
     status: "National Seria",
     series: "National Digital Time Attack Series (NS-CTA) 2021",
-    backgroundImage: "https://img.wallpapersafari.com/desktop/1024/576/2/37/4s1kh9.jpg",
+    // backgroundImage: "https://img.wallpapersafari.com/desktop/1024/576/2/37/4s1kh9.jpg",
   },
   {
     eventLabel: "Next Event",
@@ -59,6 +59,6 @@ export const FakeUpcomingEvents = [
     discipline: "Digital motorsport.",
     status: "National Seria",
     series: "National Digital Time Attack Series (NS-CTA) 2021",
-    backgroundImage: "https://cdn.statically.io/img/wallpaperaccess.com/full/229228.jpg",
+    // backgroundImage: "https://cdn.statically.io/img/wallpaperaccess.com/full/229228.jpg",
   },
 ];

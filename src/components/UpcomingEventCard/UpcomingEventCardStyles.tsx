@@ -5,7 +5,7 @@ export const UpcomingEventCardStyled = styled(Card)(({ theme }) => ({
   paddingInline: '40px',
   paddingBlock: '20px',
   marginTop: '50px',
-  minHeight: '500px',
+  minHeight: '550px',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',

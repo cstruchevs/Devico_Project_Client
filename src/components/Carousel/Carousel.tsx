@@ -30,7 +30,7 @@ const Carousel: FC<CarouselProps> = ({ items }) => {
   }, [])
 
   return (
-    <ContainerSectionStyled maxWidth="lg">
+    <ContainerSectionStyled>
       <Slider {...carouselConfig} afterChange={changeStepperHandler}>
         {carouselItems.map(item => (
           <ContainerSlideStyled key={item.index}>{item.jsx}</ContainerSlideStyled>

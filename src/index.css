@@ -3,35 +3,48 @@
   padding: 0;
   margin: 0;
   scroll-behavior: smooth;
-  overflow-x: hidden;
+}
+
+html,
+body {
+  height: 100%;
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 main {
-  min-width: 100vw;
+  min-width: 100%;
   min-height: 100vh;
   overflow-x: hidden;
 }
 section {
-  min-height: 100vh;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-left: 120px;
+  padding-right: 50px;
+  padding-top: 43px;
+}
+@media all and (max-width: 600px) {
+  section {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+a:hover {
+  cursor: pointer;
 }
 .ActiveLink {
-  background-color: #5940B8 !important;
+  background-color: #5940b8 !important;
 }

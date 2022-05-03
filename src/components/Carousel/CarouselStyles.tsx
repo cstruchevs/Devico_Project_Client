@@ -1,8 +1,8 @@
 import { styled, Container, MobileStepper } from '@mui/material'
 
 export const ContainerSectionStyled = styled(Container)(({ theme }) => ({
-  margin: 'auto',
-  padding: '0px',
+  padding: '0px !important',
+  width: '100% !important',
 }))
 
 export const ContainerSlideStyled = styled(Container)(({ theme }) => ({
