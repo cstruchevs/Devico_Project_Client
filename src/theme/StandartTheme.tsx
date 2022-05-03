@@ -13,6 +13,11 @@ const standartTheme = createTheme({
   shape: {
     borderRadius: "0px",
   },
+  typography: {
+    button: {
+      textTransform: 'none'
+    }
+  }
 });
 
 interface StandartThemeProviderProps {

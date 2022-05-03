@@ -14,6 +14,7 @@ export function* userSetupSaga(action) {
     const data = yield call(() => {
       return axios.post('http://localhost:5000/register', { ...action.payload })
     })
+    console.log(data)
     const { user, token } = data.data
     yield put(setUser({ user, token }))
     addUserToLocalStorage({ user, token })

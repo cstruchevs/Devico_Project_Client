@@ -55,8 +55,15 @@ export const StyledStackDescription = styled(Stack)({
   marginTop: '15px',
   paddingLeft: '10px',
   alignItems: 'center',
+  minWidth: '300px',
+  justifyContent: 'space-between',
   paddingBottom: '4px',
   flexDirection: 'row',
+  dislpay: 'baseline',
+})
+
+export const StyledStackDescriptionElement = styled(Stack)({
+  alignItems: 'center',
   dislpay: 'baseline',
 })
 
@@ -74,6 +81,7 @@ export const StyledDialogTitle = styled(DialogTitle)({
 })
 
 export const StyledTextField = styled(TextField)({
+  width: '100%',
   padding: '4px 10px 10px 10px',
   borderRadius: '0px',
   ' fieldSet': {
@@ -85,8 +93,7 @@ export const StyledTextField = styled(TextField)({
 })
 
 export const StyledTypographyHandler = styled(Typography)({
-  fontSize: '14px',
-  marginLeft: '60px',
+  fontSize: '16px',
   display: 'inline',
   textDecoration: 'underline',
   '&:hover': {

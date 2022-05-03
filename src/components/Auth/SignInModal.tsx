@@ -17,6 +17,7 @@ import {
   StyledStackDescription,
   StyledBoxConfirmButton,
   StyledDialogActions,
+  StyledStackDescriptionElement,
 } from './AuthStyles'
 
 const PHONE_REGEX: RegExp =
@@ -51,13 +52,16 @@ const SignIn = () => {
     }
   }, [dispatch, reset, logCartIsShown])
 
-  const onSubmitHandler = useCallback(async (data: object) => {
-    console.log({ data })
-    dispatch({ type: sagaActions.USER_LOGIN_SAGA, payload: data })
-    dispatch(uiActions.toggleCongratAuth())
-    reset()
-    toggleHandler()
-  }, [dispatch, reset, toggleHandler])
+  const onSubmitHandler = useCallback(
+    async (data: object) => {
+      console.log({ data })
+      dispatch({ type: sagaActions.USER_LOGIN_SAGA, payload: data })
+      dispatch(uiActions.toggleCongratAuth())
+      reset()
+      toggleHandler()
+    },
+    [dispatch, reset, toggleHandler],
+  )
 
   const changeSignHandler = useCallback(() => {
     dispatch(uiActions.toggleReg())
@@ -117,14 +121,16 @@ const SignIn = () => {
                 />
               </Stack>
             </Stack>
-            <StyledStackDescription direction="row" sx={{}}>
-              <Checkbox
-                checked={checked}
-                onChange={handleChangeCheckBox}
-                inputProps={{ 'aria-label': 'controlled' }}
-                sx={{ padding: '0' }}
-              />
-              <Typography sx={{ fontSize: '14px' }}>Remember me</Typography>{' '}
+            <StyledStackDescription direction="row">
+              <StyledStackDescriptionElement direction="row">
+                <Checkbox
+                  checked={checked}
+                  onChange={handleChangeCheckBox}
+                  inputProps={{ 'aria-label': 'controlled' }}
+                  sx={{ padding: '0' }}
+                />
+                <Typography sx={{ fontSize: '14px' }}>Remember me</Typography>{' '}
+              </StyledStackDescriptionElement>
               <StyledTypographyHandler onClick={showRecoverPasHandler}>
                 Forgot password?
               </StyledTypographyHandler>

@@ -1,4 +1,5 @@
 import { AppBar, Box, Button, Divider, Popover, Stack, styled } from '@mui/material'
+import { Link } from 'react-router-dom'
 
 export const StyledButton = styled(Button)({
   color: 'rgba(0, 0, 0, 0.56)',
@@ -21,6 +22,11 @@ export const StyledInnerWarapperBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'flex-end',
   height: '100%',
+}))
+
+export const StyledLink = styled(Link)(({ theme }) => ({
+  textDecoration: "none",
+  color: theme.palette.primary.dark
 }))
 
 export const StyledOuterWarapperBox = styled(Box)(({ theme }) => ({
@@ -51,7 +57,6 @@ export const StyledAuthStack = styled(Stack)({
 
 export const StyledPopover = styled(Popover)({
   marginTop: '10.1px',
-  marginLeft: '15px',
 })
 
 export const StyledPopoverStack = styled(Stack)({

@@ -1,5 +1,4 @@
 import { Typography } from '@mui/material'
-import { Link } from 'react-router-dom'
 import {
   StyledPopover,
   StyledButton,
@@ -11,11 +10,12 @@ import {
   StyledNotificationDivider,
   StyledAuthStackWrapper,
   StyledOuterWarapperBox,
+  StyledLink,
 } from './MainNavigatioStyles'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined'
-import React from 'react'
+import React, { FC, memo, useCallback } from 'react'
 import { RootState } from '../../store'
 import { useDispatch, useSelector } from 'react-redux'
 import { uiActions } from '../../store/ui-slice'
@@ -23,7 +23,7 @@ import { IUserInterface } from '../../store/auth'
 
 interface IMainNavigation {}
 
-const MainNavigation = () => {
+const MainNavigation: FC<IMainNavigation> = () => {
   const dispatch = useDispatch()
 
   const [anchorEl, setAnchorEl] = React.useState<SVGSVGElement | null>(null)
@@ -36,12 +36,13 @@ const MainNavigation = () => {
     setAnchorEl(null)
   }
 
-  const toggleRegHandler = () => {
+  const toggleRegHandler = useCallback(() => {
     dispatch(uiActions.toggleReg())
-  }
-  const toggleLogHandler = () => {
+  }, [dispatch])
+
+  const toggleLogHandler = useCallback(() => {
     dispatch(uiActions.toggleLog())
-  }
+  }, [dispatch])
 
   const open = Boolean(anchorEl)
   const id = open ? 'simple-popover' : undefined
@@ -75,11 +76,11 @@ const MainNavigation = () => {
               <StyledPopoverStack>
                 {user ? (
                   <>
-                    <StyledButton size="medium">
-                    <Link to='/profile'>My Events</Link>
+                    <StyledButton size="medium" href="/profile">
+                      <StyledLink to="/profile">My Profile</StyledLink>{' '}
                     </StyledButton>
-                    <StyledButton size="medium">
-                      <Link to='/events'>My Events</Link>
+                    <StyledButton size="medium" href="/events">
+                      <StyledLink to="/events"> My Events</StyledLink>
                     </StyledButton>
                     <StyledButton size="medium">Sign Out</StyledButton>
                   </>
@@ -102,4 +103,4 @@ const MainNavigation = () => {
   )
 }
 
-export default MainNavigation
+export default memo(MainNavigation)
