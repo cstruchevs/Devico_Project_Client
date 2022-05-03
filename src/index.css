@@ -48,3 +48,11 @@ a:hover {
 .ActiveLink {
   background-color: #5940b8 !important;
 }
+.MuiDataGrid-footerContainer {
+  justify-content: center !important;
+  background: #ececec;
+}
+.MuiDataGrid-columnHeaders {
+  text-align: center;
+  background: #ececec;
+}

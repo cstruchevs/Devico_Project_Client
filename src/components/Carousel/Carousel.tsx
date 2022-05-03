@@ -5,6 +5,7 @@ import { carouselConfig } from './CarouselConfig'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import { ContainerSlideStyled, ContainerSectionStyled, MobileStepperStyled } from './CarouselStyles'
+import { Box } from '@mui/system'
 
 export interface CarouselProps {
   items: JSX.Element[]
@@ -31,19 +32,19 @@ const Carousel: FC<CarouselProps> = ({ items }) => {
 
   return (
     <ContainerSectionStyled>
-      <Slider {...carouselConfig} afterChange={changeStepperHandler}>
-        {carouselItems.map(item => (
-          <ContainerSlideStyled key={item.index}>{item.jsx}</ContainerSlideStyled>
-        ))}
-      </Slider>
-      <MobileStepperStyled
-        variant="progress"
-        steps={carouselItems.length + 1}
-        position="static"
-        activeStep={activeSlide}
-        backButton={false}
-        nextButton={false}
-      />
+        <Slider {...carouselConfig} afterChange={changeStepperHandler}>
+          {carouselItems.map(item => (
+            <ContainerSlideStyled key={item.index}>{item.jsx}</ContainerSlideStyled>
+          ))}
+        </Slider>
+        <MobileStepperStyled
+          variant="progress"
+          steps={carouselItems.length + 1}
+          position="static"
+          activeStep={activeSlide}
+          backButton={false}
+          nextButton={false}
+        />
     </ContainerSectionStyled>
   )
 }

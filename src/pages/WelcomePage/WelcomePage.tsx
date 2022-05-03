@@ -1,8 +1,10 @@
 import React from 'react'
-import PatrnersSection from '../../components/PartnersSection/PatrnersSection'
-import UpcomingEventsSection from '../../components/UpcomingEventsSection/UpcomingEventsSection'
-import WelcomeSection from '../../components/WelcomeSection/WelcomeSection'
-import YearEventsSection from '../../components/YearEventsSection/YearEventsSection'
+import AllEventsSection from '../../components/WelcomePageComponents/AllEventsSection/AllEventsSection'
+import NewsSection from '../../components/WelcomePageComponents/NewsSection/NewsSection'
+import PatrnersSection from '../../components/WelcomePageComponents/PartnersSection/PatrnersSection'
+import UpcomingEventsSection from '../../components/WelcomePageComponents/UpcomingEventsSection/UpcomingEventsSection'
+import WelcomeSection from '../../components/WelcomePageComponents/WelcomeSection/WelcomeSection'
+import YearEventsSection from '../../components/WelcomePageComponents/YearEventsSection/YearEventsSection'
 
 const WelcomePage = () => {
 
@@ -11,7 +13,8 @@ const WelcomePage = () => {
       <WelcomeSection />
       <UpcomingEventsSection />
       <section id="calendar">Events calendar</section>
-      <section id="news">News</section>
+      <AllEventsSection />
+      <NewsSection />
       <PatrnersSection />
       <YearEventsSection />
     </>

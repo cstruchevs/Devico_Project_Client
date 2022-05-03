@@ -1,13 +1,12 @@
-import { styled, Container, MobileStepper } from '@mui/material'
+import { styled, Container, MobileStepper, Box } from '@mui/material'
 
-export const ContainerSectionStyled = styled(Container)(({ theme }) => ({
+export const ContainerSectionStyled = styled(Box)(({ theme }) => ({
   padding: '0px !important',
-  width: '100% !important',
+  width: '100%',
 }))
 
-export const ContainerSlideStyled = styled(Container)(({ theme }) => ({
+export const ContainerSlideStyled = styled(Box)(({ theme }) => ({
   backgroundColor: 'transparent',
-  width: '100%',
   padding: '0px !important',
 }))
 

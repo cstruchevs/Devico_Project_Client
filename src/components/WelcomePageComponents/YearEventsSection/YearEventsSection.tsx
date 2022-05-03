@@ -1,9 +1,9 @@
 import { SectionWrappperStyled } from './YearEventsSectionStyles'
 import { Link, Stack, Typography } from '@mui/material'
 import { FC, useMemo } from 'react'
-import Carousel from '../Carousel/Carousel'
-import { FakeUpcomingEvents } from '../../FakeUpcomingEvents'
-import UpcomingEventCard from '../UpcomingEventCard/UpcomingEventCard'
+import Carousel from '../../Carousel/Carousel'
+import { FakeUpcomingEvents } from '../../../FakeUpcomingEvents'
+import UpcomingEventCard from '../../UpcomingEventCard/UpcomingEventCard'
 
 interface IYearEventsSection {}
 

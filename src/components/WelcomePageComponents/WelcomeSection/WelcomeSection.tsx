@@ -1,9 +1,9 @@
 import { Link } from '@mui/material'
 import { Box } from '@mui/system'
-import BgImage from '../../assets/imgs/Bitmap.png'
-import { RootState } from '../../store'
+import BgImage from '../../../assets/imgs/Bitmap.png'
+import { RootState } from '../../../store'
 import { useDispatch, useSelector } from 'react-redux'
-import { uiActions } from '../../store/ui-slice'
+import { uiActions } from '../../../store/ui-slice'
 import {
   ButtonsStack,
   ButtonStyled,
@@ -45,17 +45,21 @@ const WelcomeSection: FC<IWelcomeSection> = () => {
           <WelcomTextStyled>Welcome</WelcomTextStyled>
           <WelcomTextStyled>to Kharkiv Racing</WelcomTextStyled>
           <WelcomSubTextStyled>We hare exited to see you here. Let's rock.</WelcomSubTextStyled>
-          <ButtonsStack>
-            <ButtonStyled variant="contained" onClick={toggleLogHandler} size="medium">
-              Sign In
-            </ButtonStyled>
-            <ButtonStyled variant="outlined" onClick={toggleRegHandler} size="medium">
-              Sign Up
-            </ButtonStyled>
-          </ButtonsStack>
-          <LinkStyled>
-            <Link>Forgot password?</Link>
-          </LinkStyled>
+          {!user && (
+            <ButtonsStack>
+              <ButtonStyled variant="contained" onClick={toggleLogHandler} size="medium">
+                Sign In
+              </ButtonStyled>
+              <ButtonStyled variant="outlined" onClick={toggleRegHandler} size="medium">
+                Sign Up
+              </ButtonStyled>
+            </ButtonsStack>
+          )}
+          {!user && (
+            <LinkStyled>
+              <Link>Forgot password?</Link>
+            </LinkStyled>
+          )}
         </Box>
       </InfoStackStyled>
       <ImageStackStyled>
