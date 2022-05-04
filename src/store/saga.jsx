@@ -7,7 +7,7 @@ const addUserToLocalStorage = ({ user, token }) => {
   localStorage.setItem('user', JSON.stringify(user))
   localStorage.setItem('token', token)
 }
-const { setUser } = authActions
+const { setUser, setCar } = authActions
 
 export function* userSetupSaga(action) {
   try {
@@ -25,7 +25,6 @@ export function* userSetupSaga(action) {
 export function* userLoginSaga(action) {
   try {
     console.log({ ...action.payload })
-    console.log('hello')
     const data = yield call(() => {
       return axios.post('http://localhost:5000/login', { ...action.payload })
     })
@@ -34,6 +33,31 @@ export function* userLoginSaga(action) {
     console.log({ user, token })
     yield put(setUser({ user, token }))
     addUserToLocalStorage({ user, token })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export function* addCarSaga(action) {
+  try {
+    console.log({ ...action.payload })
+    const data = yield call(() => {
+      return axios.post('http://localhost:5000/cars/post', { ...action.payload })
+    })
+    yield put(setCar(data.data))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export function* updateUserSaga(action) {
+  try {
+    console.log({ ...action.payload })
+    const data = yield call(() => {
+      return axios.patch('http://localhost:5000/update', { ...action.payload })
+    })
+    const { user, token } = data.data
+    yield put(setUser({ user, token }))
   } catch (error) {
     console.log(error)
   }

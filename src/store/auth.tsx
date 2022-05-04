@@ -5,14 +5,27 @@ export interface IUserInterface {
   password?: string
 }
 
+interface ICar {
+  model: string
+  year: string
+  capaciteEngine: string
+  regVihicleNumber: string
+  technicalPassNumber: string
+  viaNumber: string
+  driveTrain: string
+  fullNameOwner: string
+}
+
 interface IAuthSlice {
   user: null | IUserInterface
   token: string
+  cars: [] | ICar[]
 }
 
 const initialState: IAuthSlice = {
   user: null,
   token: '',
+  cars: [],
 }
 
 const authSlice = createSlice({
@@ -25,6 +38,9 @@ const authSlice = createSlice({
     },
     logOutUser(state) {
       state.user = null
+    },
+    setCar(state, action:any) {
+      return {...state, cars: [...action.payload]}
     }
   },
 })

@@ -1,7 +1,11 @@
 import { Badge, styled, Button, Stack, Typography, Select, Box } from '@mui/material'
 import { Link } from 'react-router-dom'
 
-export const StyledBadgeAvatar = styled(Badge)(({ theme }) => ({}))
+export const StyledBadgeAvatar = styled(Badge)(({ theme }) => ({
+  [theme.breakpoints.down("md")]: {
+    margin:"auto"
+  }
+}))
 
 export const StyledButtonPersonal = styled(Button)(({ theme }) => ({
   marginLeft: '10px',
@@ -61,3 +65,42 @@ export const StyledLinkProfile = styled(Link)(({ theme }) => ({
   color: theme.palette.primary.dark,
   fontWeight: "600"
 }))
+
+export const StackProfileWrapper = styled(Stack)(({ theme }) => ({
+  flexDirection: 'row',
+  [theme.breakpoints.down("md")]: {
+    flexDirection: 'column',
+    alignContet: "center",
+    justifyContet: "center"
+  }
+}))
+
+export const BoxAvatar = styled(Box)(({ theme }) => ({
+  [theme.breakpoints.down("md")]: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignContet: "center",
+    justifyContet: "center"
+  }
+}))
+
+export const BoxPersonalDataForm = styled(Box)(({ theme }) => ({
+  [theme.breakpoints.down("md")]: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignContet: "center",
+    justifyContet: "center"
+  }
+}))
+
+export const StackPersonalDataForm = styled(Box)(({ theme }) => ({
+  width: "350px",
+  [theme.breakpoints.down("md")]: {
+    width: "100%",
+    display: 'flex',
+    flexDirection: 'column',
+    alignContet: "center",
+    justifyContet: "center"
+  }
+}))
+

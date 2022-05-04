@@ -16,6 +16,7 @@ import { FC, memo, useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { uiActions } from '../../store/ui-slice'
 import { StyledLink } from '../MainNavigation/MainNavigatioStyles'
+import { StackProfileFormWrapper, StackProfileWrapper } from './StylesProfileData'
 
 const schema = yup.object().shape({
   fullName: yup.string().min(8).required('Write min 8 characters'),
@@ -68,8 +69,8 @@ const ProfileData: FC<IProfileData> = () => {
           <StyledTypographyProfile mb={1} variant="h5">
             Drivers Data
           </StyledTypographyProfile>
-          <Stack direction="column" sx={{ width: '60%' }}>
-            <Stack direction="row">
+          <StackProfileWrapper>
+            <StackProfileFormWrapper>
               <Stack direction="column" flex={1}>
                 <StyledTypography>FULL NAME(NICKNAME)*</StyledTypography>
                 <StyledTextField
@@ -177,14 +178,14 @@ const ProfileData: FC<IProfileData> = () => {
                   error={Boolean(errors.DriverLicenseNum)}
                 />
               </Stack>
-            </Stack>
+            </StackProfileFormWrapper>
             <ProfileConfirmBox>
               <ProfileConfirmButton type="submit">Save</ProfileConfirmButton>
               <Typography>
                 No License Number? Click <StyledLinkProfile to="/profile/license">here</StyledLinkProfile>
               </Typography>
             </ProfileConfirmBox>
-          </Stack>
+          </StackProfileWrapper>
         </Box>
       </form>
     </>

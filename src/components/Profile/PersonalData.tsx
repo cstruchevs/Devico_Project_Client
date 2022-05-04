@@ -1,6 +1,6 @@
 import { Avatar, Stack, IconButton, InputAdornment } from '@mui/material'
 import ModeEditIcon from '@mui/icons-material/ModeEdit'
-import { InputFile, StyledBadgeAvatar, StyledButtonPersonal } from './StylesPersonalData'
+import { BoxAvatar, BoxPersonalDataForm, InputFile, StackPersonalDataForm, StackProfileWrapper, StyledBadgeAvatar, StyledButtonPersonal } from './StylesPersonalData'
 import { Box } from '@mui/system'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -65,8 +65,8 @@ const PersonalData: FC<IPersonalData> = () => {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmitHandler)}>
-        <Stack direction="row">
-          <Box flex={1} m={2}>
+        <StackProfileWrapper direction="row">
+          <BoxAvatar flex={1} m={2}>
             <StyledBadgeAvatar
               anchorOrigin={{
                 vertical: 'bottom',
@@ -87,9 +87,9 @@ const PersonalData: FC<IPersonalData> = () => {
                 </IconButton>
               </label>
             </StyledBadgeAvatar>
-          </Box>
-          <Box flex={3}>
-            <Stack direction="column" sx={{ width: '350px' }}>
+          </BoxAvatar>
+          <BoxPersonalDataForm flex={3}>
+            <StackPersonalDataForm >
               <StyledTypography>FULL NAME</StyledTypography>
               <StyledTextField
                 {...register('fullName')}
@@ -157,9 +157,9 @@ const PersonalData: FC<IPersonalData> = () => {
               <StyledBoxConfirmButton>
                 <StyledButtonPersonal type="submit">Save</StyledButtonPersonal>
               </StyledBoxConfirmButton>
-            </Stack>
-          </Box>
-        </Stack>
+            </StackPersonalDataForm>
+          </BoxPersonalDataForm>
+        </StackProfileWrapper>
       </form>
     </>
   )
