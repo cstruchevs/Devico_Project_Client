@@ -1,4 +1,5 @@
 import { Badge, styled, Button, Stack, Typography, Select, Box } from '@mui/material'
+import { Link } from 'react-router-dom'
 
 export const StyledBadgeAvatar = styled(Badge)(({ theme }) => ({}))
 
@@ -37,6 +38,12 @@ export const StyledTypographyProfile = styled(Typography)({
   paddingLeft: '10px',
 })
 
+export const TypographyLinkProfile = styled(Typography)(({ theme }) => ({
+  color: 'black',
+  fontSize: '13px',
+  fontWeight: '600',
+}))
+
 export const StyledSelectField = styled(Select)({
   margin: '4px 10px 10px 10px',
   borderRadius: '0px',
@@ -49,3 +56,8 @@ export const StyledSelectField = styled(Select)({
     height: '36px',
   },
 })
+
+export const StyledLinkProfile = styled(Link)(({ theme }) => ({
+  color: theme.palette.primary.dark,
+  fontWeight: "600"
+}))

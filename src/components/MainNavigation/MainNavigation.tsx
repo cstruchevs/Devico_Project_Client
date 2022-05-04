@@ -19,6 +19,7 @@ import React, { FC, memo, useCallback } from 'react'
 import { RootState } from '../../store'
 import { useDispatch, useSelector } from 'react-redux'
 import { uiActions } from '../../store/ui-slice'
+import { authActions} from '../../store/auth'
 import { IUserInterface } from '../../store/auth'
 
 interface IMainNavigation {}
@@ -35,6 +36,10 @@ const MainNavigation: FC<IMainNavigation> = () => {
   const handleClose = () => {
     setAnchorEl(null)
   }
+
+  const logOutUser = useCallback(() => {
+    dispatch(authActions.logOutUser())
+  }, [dispatch])
 
   const toggleRegHandler = useCallback(() => {
     dispatch(uiActions.toggleReg())
@@ -82,7 +87,7 @@ const MainNavigation: FC<IMainNavigation> = () => {
                     <StyledButton size="medium" href="/events">
                       <StyledLink to="/events"> My Events</StyledLink>
                     </StyledButton>
-                    <StyledButton size="medium">Sign Out</StyledButton>
+                    <StyledButton onClick={logOutUser} size="medium">Sign Out</StyledButton>
                   </>
                 ) : (
                   <>

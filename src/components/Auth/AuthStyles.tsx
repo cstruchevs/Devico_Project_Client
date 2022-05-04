@@ -69,7 +69,9 @@ export const StyledStackDescriptionElement = styled(Stack)({
 
 export const StyledTypography = styled(Typography)({
   paddingLeft: '10px',
+  marginBottom: '4px',
   letterSpacing: '2px',
+  lineHeight: '15px',
   fontSize: '13px',
 })
 

@@ -3,6 +3,7 @@ import {
   ProfileConfirmBox,
   ProfileConfirmButton,
   StyledButtonPersonal,
+  StyledLinkProfile,
   StyledSelectField,
   StyledTypographyProfile,
 } from './StylesPersonalData'
@@ -14,6 +15,7 @@ import { StyledTextField, StyledTypography, StyledTypographyHandler } from '../A
 import { FC, memo, useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { uiActions } from '../../store/ui-slice'
+import { StyledLink } from '../MainNavigation/MainNavigatioStyles'
 
 const schema = yup.object().shape({
   fullName: yup.string().min(8).required('Write min 8 characters'),
@@ -179,7 +181,7 @@ const ProfileData: FC<IProfileData> = () => {
             <ProfileConfirmBox>
               <ProfileConfirmButton type="submit">Save</ProfileConfirmButton>
               <Typography>
-                No License Number? Click <StyledTypographyHandler>here</StyledTypographyHandler>{' '}
+                No License Number? Click <StyledLinkProfile to="/profile/license">here</StyledLinkProfile>
               </Typography>
             </ProfileConfirmBox>
           </Stack>

@@ -1,6 +1,7 @@
 import React, { FC, Suspense } from 'react'
 import { useSelector } from 'react-redux'
 import { Routes, Route, Navigate } from 'react-router-dom'
+import LicensePage from '../pages/LicensePage/LicensePage'
 import { RootState } from '../store'
 import { IUserInterface } from '../store/auth'
 
@@ -18,6 +19,7 @@ const PageRoutes: FC<IPageRoutes> = () => {
       <Routes>
         <Route path="/" element={<WelcomePage />} />
         <Route path="/profile" element={user ? <ProfilePage/> : <Navigate to="/" />}/> 
+        <Route path="/profile/license" element={user ? <LicensePage/> : <Navigate to="/" />}/>
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Suspense>

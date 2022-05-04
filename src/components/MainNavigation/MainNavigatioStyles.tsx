@@ -1,12 +1,12 @@
 import { AppBar, Box, Button, Divider, Popover, Stack, styled } from '@mui/material'
 import { Link } from 'react-router-dom'
 
-export const StyledButton = styled(Button)({
-  color: 'rgba(0, 0, 0, 0.56)',
+export const StyledButton = styled(Button)(({ theme }) => ({
+  color: theme.palette.primary.dark,
   '&hover': {
     backgroundColor: 'rgba(0, 0, 0, 0.08)',
   },
-})
+}))
 
 export const StyledMenuBoxNav = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.primary.dark,

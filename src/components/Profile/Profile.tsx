@@ -5,10 +5,12 @@ import Box from '@mui/material/Box'
 import ProfilePanel from './ProfilePanel'
 import PersonalData from './PersonalData'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
-import { Stack, Typography } from '@mui/material'
+import { Stack } from '@mui/material'
 import ProfileData from './ProfileData'
 import AddCarModal from './AddCarModal/AddCarModal'
 import { StyledLink } from '../MainNavigation/MainNavigatioStyles'
+import { TypographyLinkProfile } from './StylesPersonalData'
+import { TypographyInfo } from '../../pages/LicensePage/LicensePageStyles'
 
 const a11yProps = (index: number) => {
   return {
@@ -19,7 +21,7 @@ const a11yProps = (index: number) => {
 
 interface IProfie {}
 
-const Profile:React.FC<IProfie> = () => {
+const Profile: React.FC<IProfie> = () => {
   const [value, setValue] = React.useState(0)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -31,17 +33,12 @@ const Profile:React.FC<IProfie> = () => {
       <AddCarModal />
       <Box sx={{ paddingLeft: '10px' }}>
         <Stack direction="row">
-          <StyledLink
-            to="/"
-            sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}
-          >
+          <StyledLink to="/" sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
             <ArrowBackIosIcon sx={{ height: '15px' }} />
-            <Typography> Back</Typography>
+            <TypographyLinkProfile> Back</TypographyLinkProfile>
           </StyledLink>
         </Stack>
-        <Typography variant="h5" component="div">
-          My Profile
-        </Typography>
+        <TypographyInfo variant="h4">My Profile</TypographyInfo>
       </Box>
       <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '95%' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
