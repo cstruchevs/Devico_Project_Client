@@ -34,7 +34,7 @@ section {
   align-items: center;
   padding-left: 120px;
   padding-right: 50px;
-  padding-top: 43px;
+  padding-top: 50px;
 }
 @media all and (max-width: 600px) {
   section {
