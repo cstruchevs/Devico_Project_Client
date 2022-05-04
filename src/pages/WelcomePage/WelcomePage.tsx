@@ -1,5 +1,6 @@
 import React from 'react'
 import AllEventsSection from '../../components/WelcomePageComponents/AllEventsSection/AllEventsSection'
+import CalendarSection from '../../components/WelcomePageComponents/CalendarSection/CalendarSection'
 import NewsSection from '../../components/WelcomePageComponents/NewsSection/NewsSection'
 import PatrnersSection from '../../components/WelcomePageComponents/PartnersSection/PatrnersSection'
 import UpcomingEventsSection from '../../components/WelcomePageComponents/UpcomingEventsSection/UpcomingEventsSection'
@@ -12,7 +13,7 @@ const WelcomePage = () => {
     <>
       <WelcomeSection />
       <UpcomingEventsSection />
-      <section id="calendar">Events calendar</section>
+      <CalendarSection />
       <AllEventsSection />
       <NewsSection />
       <PatrnersSection />

@@ -12,5 +12,5 @@ export const SidebarBoxStyled = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   paddingBlock: 0,
   paddingInline: 0,
-  zIndex: 2000,
+  zIndex: 1101,
 }))

@@ -1,5 +1,5 @@
 import { Typography } from '@mui/material';
-import React from 'react';
+import React, { memo } from 'react';
 import PartnersMarquee from '../../PartnersMarquee/PartnersMarquee';
 import { SectionWrappperStyled } from './PartnersSectionStyles';
 
@@ -12,4 +12,4 @@ const PatrnersSection = () => {
     );
 };
 
-export default PatrnersSection;
+export default memo(PatrnersSection);

@@ -22,7 +22,7 @@ import {
   WelcomSubTextStyled,
   WelcomTextStyled,
 } from './WelcomeSectionStyles'
-import { FC, useCallback } from 'react'
+import { FC, memo, useCallback } from 'react'
 
 interface IWelcomeSection {}
 
@@ -37,6 +37,12 @@ const WelcomeSection: FC<IWelcomeSection> = () => {
   const toggleLogHandler = useCallback(() => {
     dispatch(uiActions.toggleLog())
   }, [dispatch])
+
+  const toggleRecoverHandler = useCallback(() => {
+    dispatch(uiActions.toggleForgetPassword())
+  }, [dispatch])
+
+  
 
   return (
     <SectionWrappperStyled component={'section'} id="welcome">
@@ -56,7 +62,7 @@ const WelcomeSection: FC<IWelcomeSection> = () => {
             </ButtonsStack>
           )}
           {!user && (
-            <LinkStyled>
+            <LinkStyled onClick={toggleRecoverHandler}>
               <Link>Forgot password?</Link>
             </LinkStyled>
           )}
@@ -90,4 +96,4 @@ const WelcomeSection: FC<IWelcomeSection> = () => {
   )
 }
 
-export default WelcomeSection
+export default memo(WelcomeSection)

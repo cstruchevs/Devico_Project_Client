@@ -1,0 +1,17 @@
+
+
+.fc {
+    width: 100%;
+    outline: none;
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+    background-color: transparent;
+}
+.fc .fc-daygrid-day.fc-day-today  a{
+    background-color: #5940B8;
+    border-radius: 50%;
+    width: 30px;
+    text-align: center;
+    color: white;
+}

@@ -28,7 +28,7 @@ export const StyledOuterWarapperBox = styled(Box)(({ theme }) => ({
   flexGrow: 1,
   position: 'fixed',
   right: 0,
-  zIndex: 1999,
+  zIndex: 1100,
 }))
 
 export const StyledAppBar = styled(AppBar)(({ theme }) => ({

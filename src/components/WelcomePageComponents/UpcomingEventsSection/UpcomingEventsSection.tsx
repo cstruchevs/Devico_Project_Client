@@ -1,5 +1,5 @@
 import { Link, Stack, Typography } from '@mui/material'
-import { FC, useMemo } from 'react'
+import { FC, memo, useMemo } from 'react'
 import Carousel from '../../Carousel/Carousel'
 import { SectionWrappperStyled } from './UpcomingEventsSectionStyles'
 import { FakeUpcomingEvents } from '../../../FakeUpcomingEvents'
@@ -28,4 +28,4 @@ const UpcomingEventsSection: FC<IUpcomingEventsSection> = () => {
   )
 }
 
-export default UpcomingEventsSection
+export default memo(UpcomingEventsSection)

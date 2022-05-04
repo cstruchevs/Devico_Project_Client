@@ -1,13 +1,13 @@
 import { SectionWrappperStyled } from './YearEventsSectionStyles'
 import { Link, Stack, Typography } from '@mui/material'
-import { FC, useMemo } from 'react'
+import { FC, memo, useMemo } from 'react'
 import Carousel from '../../Carousel/Carousel'
 import { FakeUpcomingEvents } from '../../../FakeUpcomingEvents'
 import UpcomingEventCard from '../../UpcomingEventCard/UpcomingEventCard'
 
 interface IYearEventsSection {}
 
-const YearEventsSection = () => {
+const YearEventsSection: FC<IYearEventsSection> = () => {
   const upcomingCard = useMemo(
     () => FakeUpcomingEvents.map(item => <UpcomingEventCard {...item} />),
     [],
@@ -29,4 +29,4 @@ const YearEventsSection = () => {
   )
 }
 
-export default YearEventsSection
+export default memo(YearEventsSection)

@@ -10,9 +10,9 @@ const NoPage = () => {
   return (
     <MainBoxStyled>
       <BoxInnerStyled>
-        <Box component={'img'} style={{ width: 'clamp(200px, 70%, 700px)' }} src={Gif404} />
+        <Box component={'img'} sx={{ width: 'clamp(200px, 70%, 700px)' }} src={Gif404} />
         <Typography variant="h4" mt={1}>
-          Page {location.pathname} was not found!{' '}
+          Page {location.pathname + location.hash} was not found!{' '}
         </Typography>
         <Link mt={1} href="/">
           Back to home

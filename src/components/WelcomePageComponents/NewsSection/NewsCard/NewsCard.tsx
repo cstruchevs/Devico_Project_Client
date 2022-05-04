@@ -1,5 +1,5 @@
-import { CardActionArea, CardActions, CardContent, CardMedia, Link, Typography } from '@mui/material'
-import React, { FC } from 'react'
+import { CardActions, CardContent, CardMedia, Link, Typography } from '@mui/material'
+import { FC, memo } from 'react'
 import { CardWrappperStyled } from './NewsCardStyles'
 
 interface INewsCard {
@@ -34,4 +34,4 @@ const NewsCard: FC<INewsCard> = ({ image, title, date, description, link }) => {
   )
 }
 
-export default NewsCard
+export default memo(NewsCard)

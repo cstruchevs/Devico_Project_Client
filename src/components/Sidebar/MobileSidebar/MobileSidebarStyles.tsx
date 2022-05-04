@@ -5,7 +5,7 @@ export const WrapperStyled = styled(Box)(({ theme }) => ({
   position: 'fixed',
   top: 0,
   left: 0,
-  zIndex: 2000,
+  zIndex: 1101,
 }))
 
 export const MenuButtonStyled = styled(IconButton)(({ theme }) => ({
@@ -14,7 +14,7 @@ export const MenuButtonStyled = styled(IconButton)(({ theme }) => ({
 
 export const DrawerStyled = styled(Drawer)(({ theme }) => ({
   backgroundColor: theme.palette.primary.light,
-  zIndex: 2001,
+  zIndex: 1102,
 }))
 
 export const MenuCloseButtonStyled = styled(IconButton)(({ theme }) => ({

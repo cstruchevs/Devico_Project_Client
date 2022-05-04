@@ -1,5 +1,4 @@
-import { styled, Stack, Card } from '@mui/material'
-import { Box } from '@mui/system'
+import { styled, Card } from '@mui/material'
 
 export const CardWrappperStyled = styled(Card)(({ theme }) => ({
   wdisplay: 'flex',
