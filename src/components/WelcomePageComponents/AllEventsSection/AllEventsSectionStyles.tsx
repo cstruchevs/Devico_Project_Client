@@ -1,4 +1,4 @@
-import { styled, Typography } from '@mui/material'
+import { Paper, styled, TableCell, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 
 export const SectionWrappperStyled = styled(Box)(({ theme }) => ({
@@ -14,8 +14,21 @@ export const SectionHeaderStyled= styled(Typography)(({ theme }) => ({
   fontSize: 'clamp(1.8rem, 2.5vw, 2.75rem)',
 }))
 
-export const TableBoxStyled = styled(Box)(({ theme }) => ({
+export const TableContainerStyled = styled(Paper)(({ theme }) => ({
   width: "100%",
-  minHeight: "400px",
   marginTop: "20px",
+  minHeight: "375px",
+}))
+
+export const HeaderCellStyled = styled(TableCell)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.dark,
+  color: theme.palette.common.white,
+}))
+
+export const PaginationPaperStyled = styled(Paper)(({ theme }) => ({
+  width: "100%",
+  paddingBlock: "15px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 }))
