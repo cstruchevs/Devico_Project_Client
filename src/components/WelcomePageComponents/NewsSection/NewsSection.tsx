@@ -13,15 +13,17 @@ const NewsSection: FC<INewsSection> = () => {
   const matchMd = useMediaQuery('(max-width:900px)')
   const matchSm = useMediaQuery('(max-width:600px)')
 
-  let slidesNumbers = 1
+  const slidesNumbers = useMemo(() => {
+    if (matchSm) {
+      return 1
+    } else if (matchMd) {
+      return 2
+    } else {
+      return 3
+    }
+  }, [matchSm, matchMd])
 
-  if (matchSm) {
-    slidesNumbers = 1
-  } else if (matchMd) {
-    slidesNumbers = 2
-  } else {
-    slidesNumbers = 3
-  }
+
 
   const settings = useMemo(
     () => ({
