@@ -15,8 +15,8 @@ import { StyledTextField, StyledTypography, StyledTypographyHandler } from '../A
 import { FC, memo, useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { uiActions } from '../../store/ui-slice'
-import { StyledLink } from '../MainNavigation/MainNavigatioStyles'
 import { StackProfileFormWrapper, StackProfileWrapper } from './StylesProfileData'
+import CarList from './DragAndDropCars/CarList'
 
 const schema = yup.object().shape({
   fullName: yup.string().min(8).required('Write min 8 characters'),
@@ -63,6 +63,7 @@ const ProfileData: FC<IProfileData> = () => {
       <form onSubmit={handleSubmit(onSubmitHandler)}>
         <Box>
           <StyledTypographyProfile variant="h5">My Cars</StyledTypographyProfile>
+          <CarList />
           <StyledButtonPersonal onClick={toggleAddCar}>Add Cars</StyledButtonPersonal>
         </Box>
         <Box mt={2.5}>

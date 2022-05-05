@@ -12,6 +12,7 @@ import { FC, memo, useCallback } from 'react'
 import { TypographyInfoSub } from '../../pages/LicensePage/LicensePageStyles'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { v4 as uuidv4 } from 'uuid'
 import * as yup from 'yup'
 import { StyledTextField, StyledTypography } from '../Auth/AuthStyles'
 import {
@@ -157,28 +158,30 @@ const LicenseForm: FC<ILicenseForm> = () => {
             name="radio-buttons-group"
           >
             <StackLicenseForm gap={4}>
-              {DUMMY_DATA_LICENSES.map((el: any, index) => (
-                <FormControlLabelStyled
-                  {...register('license')}
-                  value={el.value}
-                  name="license"
-                  control={<Radio />}
-                  label={
-                    <Stack direction="row">
-                      <Card sx={{ minWidth: 275 }}>
-                        <CardContent>
-                          <StackCard>
-                            <Typography>{el.name}</Typography>
-                            <Typography>{el.price}</Typography>
-                          </StackCard>
-                          <DividerCard />
-                          <Typography>{el.description}</Typography>
-                        </CardContent>
-                      </Card>
-                    </Stack>
-                  }
-                />
-              ))}
+              {DUMMY_DATA_LICENSES &&
+                DUMMY_DATA_LICENSES.map((el: any, index) => (
+                  <FormControlLabelStyled
+                    {...register('license')}
+                    key={uuidv4()}
+                    value={el.value}
+                    name="license"
+                    control={<Radio />}
+                    label={
+                      <Stack direction="row">
+                        <Card sx={{ minWidth: 275 }}>
+                          <CardContent>
+                            <StackCard>
+                              <Typography>{el.name}</Typography>
+                              <Typography>{el.price}</Typography>
+                            </StackCard>
+                            <DividerCard />
+                            <Typography>{el.description}</Typography>
+                          </CardContent>
+                        </Card>
+                      </Stack>
+                    }
+                  />
+                ))}
             </StackLicenseForm>
             <FormControlLabelStyled
               {...register('license')}
