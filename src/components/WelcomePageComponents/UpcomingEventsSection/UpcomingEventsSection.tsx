@@ -1,15 +1,28 @@
-import { Link, Stack, Typography } from '@mui/material'
+import { Link, Stack, Button } from '@mui/material'
 import { FC, memo, useMemo } from 'react'
 import Carousel from '../../Carousel/Carousel'
-import { SectionWrappperStyled } from './UpcomingEventsSectionStyles'
+import { SectionHeaderStyled, SectionWrappperStyled } from './UpcomingEventsSectionStyles'
 import { FakeUpcomingEvents } from '../../../FakeUpcomingEvents'
 import UpcomingEventCard from '../../UpcomingEventCard/UpcomingEventCard'
 
 interface IUpcomingEventsSection {}
 const UpcomingEventsSection: FC<IUpcomingEventsSection> = () => {
-  const upcomingCard = useMemo(
-    () => FakeUpcomingEvents.map(item => <UpcomingEventCard {...item} />),
+
+  const ButtonReg = useMemo(
+    () => (
+      <Button
+        sx={{ width: '130px', paddingBlock: '5px' }}
+        variant="contained"
+      >
+        Register
+      </Button>
+    ),
     [],
+  )
+
+  const upcomingCard = useMemo(
+    () => FakeUpcomingEvents.map(item => <UpcomingEventCard {...item} button={ButtonReg}/>),
+    [ButtonReg],
   )
 
   return (
@@ -20,7 +33,7 @@ const UpcomingEventsSection: FC<IUpcomingEventsSection> = () => {
         width={'100%'}
         alignItems={'baseline'}
       >
-        <Typography variant="h4">Upcoming events</Typography>
+        <SectionHeaderStyled variant="h4">Upcoming events</SectionHeaderStyled>
         <Link href={'#'}>View all</Link>
       </Stack>
       <Carousel items={upcomingCard} />

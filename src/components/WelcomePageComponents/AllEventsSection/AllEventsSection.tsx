@@ -1,4 +1,4 @@
-import { Pagination, Typography } from '@mui/material'
+import { Pagination } from '@mui/material'
 import {
   DataGrid,
   gridPageCountSelector,
@@ -6,12 +6,12 @@ import {
   useGridApiContext,
   useGridSelector,
 } from '@mui/x-data-grid'
-import React from 'react'
+import  { memo } from 'react'
 import { useDemoData } from '@mui/x-data-grid-generator'
-import { SectionWrappperStyled } from './AllEventsSectionStyles'
-import { Box } from '@mui/system'
+import { SectionHeaderStyled, SectionWrappperStyled, TableBoxStyled } from './AllEventsSectionStyles'
 
-function CustomPagination() {
+
+const CustomPagination = () => {
   const apiRef = useGridApiContext()
   const page = useGridSelector(apiRef, gridPageSelector)
   const pageCount = useGridSelector(apiRef, gridPageCountSelector)
@@ -34,12 +34,10 @@ const AllEventsSection = () => {
     maxColumns: 11,
   })
 
-  console.log(data)
-
   return (
     <SectionWrappperStyled component={'section'}>
-      <Typography variant="h4">All events</Typography>
-      <Box sx={{ minHeight: 400, width: '100%' }}>
+      <SectionHeaderStyled variant="h4">All events</SectionHeaderStyled>
+      <TableBoxStyled>
         <DataGrid
           pagination
           pageSize={6}
@@ -50,9 +48,9 @@ const AllEventsSection = () => {
           autoHeight={true}
           {...data}
         />
-      </Box>
+      </TableBoxStyled>
     </SectionWrappperStyled>
   )
 }
 
-export default AllEventsSection
+export default memo(AllEventsSection)

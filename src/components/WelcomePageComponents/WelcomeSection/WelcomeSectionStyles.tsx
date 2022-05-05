@@ -14,12 +14,13 @@ export const InfoStackStyled = styled(Stack)(({ theme }) => ({
 }))
 
 export const WelcomTextStyled = styled(Typography)(({ theme }) => ({
-  fontSize: 'clamp(1.5rem, 4vw, 4rem)',
+  fontSize: 'clamp(1.8rem, 4vw, 4rem)',
 }))
 
 export const WelcomSubTextStyled = styled(Typography)(({ theme }) => ({
-  fontSize: 'clamp(0.75rem, 2vw,1.5rem)',
+  fontSize: 'clamp(1rem, 2vw, 1.5rem)',
   color: theme.palette.primary.dark,
+  marginTop: "10px",
 }))
 
 export const ButtonsStack = styled(Stack)(({ theme }) => ({
@@ -35,9 +36,8 @@ export const ButtonStyled = styled(Button)(({ theme }) => ({
   },
 }))
 
-export const LinkStyled = styled(Box)(({ theme }) => ({
-  marginTop: 20,
-  textDecoration: 'underline',
+export const LinkStyled = styled(Link)(({ theme }) => ({
+  color: theme.palette.primary.dark,
 }))
 
 export const ImageStackStyled = styled(Stack)(({ theme }) => ({
@@ -51,7 +51,7 @@ export const ImageBox = styled(Box)(({ theme }) => ({
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
-  height: '70vh',
+  height: '65vh',
 }))
 
 export const NextEventBoxStyled = styled(Box)(({ theme }) => ({
@@ -93,10 +93,10 @@ export const DateStyled = styled(Typography)(({ theme }) => ({
 }))
 
 export const PositionStyled = styled(Typography)(({ theme }) => ({
-  fontSize: 'clamp(0.5rem, 1vw, 1rem)',
+  fontSize: 'clamp(0.6rem, 1vw, 1rem)',
 }))
 
 export const EventLinkStyled = styled(Link)(({ theme }) => ({
-  fontSize: 'clamp(0.5rem, 1vw, 1rem)',
+  fontSize: 'clamp(0.6rem, 1vw, 1rem)',
   color: theme.palette.common.white,
 }))

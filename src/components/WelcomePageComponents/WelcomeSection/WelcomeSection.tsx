@@ -1,4 +1,3 @@
-import { Link } from '@mui/material'
 import { Box } from '@mui/system'
 import BgImage from '../../../assets/imgs/Bitmap.png'
 import { RootState } from '../../../store'
@@ -42,8 +41,6 @@ const WelcomeSection: FC<IWelcomeSection> = () => {
     dispatch(uiActions.toggleForgetPassword())
   }, [dispatch])
 
-  
-
   return (
     <SectionWrappperStyled component={'section'} id="welcome">
       <InfoStackStyled>
@@ -62,9 +59,9 @@ const WelcomeSection: FC<IWelcomeSection> = () => {
             </ButtonsStack>
           )}
           {!user && (
-            <LinkStyled onClick={toggleRecoverHandler}>
-              <Link>Forgot password?</Link>
-            </LinkStyled>
+            <Box mt={3} onClick={toggleRecoverHandler}>
+              <LinkStyled underline='always'>Forgot password?</LinkStyled>
+            </Box>
           )}
         </Box>
       </InfoStackStyled>
@@ -81,11 +78,7 @@ const WelcomeSection: FC<IWelcomeSection> = () => {
             <DateStyled>12.12.2021</DateStyled>
             <PositionStyled>Kharkiv. Maidan constitution</PositionStyled>
           </DatePositionStackStyled>
-          <Box
-            sx={{
-              marginTop: '30px',
-            }}
-          >
+          <Box mt={3}>
             <EventLinkStyled underline="always" href="/">
               View details
             </EventLinkStyled>

@@ -1,12 +1,11 @@
-import { Typography } from '@mui/material';
-import React, { memo } from 'react';
+import { memo } from 'react';
 import PartnersMarquee from '../../PartnersMarquee/PartnersMarquee';
-import { SectionWrappperStyled } from './PartnersSectionStyles';
+import { SectionHeaderStyled, SectionWrappperStyled } from './PartnersSectionStyles';
 
 const PatrnersSection = () => {
     return (
         <SectionWrappperStyled  component={'section'} id="partners">
-            <Typography variant='h4'>Partners</Typography>
+            <SectionHeaderStyled variant='h4'>Partners</SectionHeaderStyled>
             <PartnersMarquee />
         </SectionWrappperStyled>
     );

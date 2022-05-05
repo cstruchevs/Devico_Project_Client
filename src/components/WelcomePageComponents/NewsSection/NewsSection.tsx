@@ -1,5 +1,5 @@
-import { Box, Typography, useMediaQuery } from '@mui/material'
-import { OuterBoxStyled, SectionWrappperStyled } from './NewsSectionStyles'
+import { Box, useMediaQuery } from '@mui/material'
+import { OuterBoxStyled, SectionHeaderStyled, SectionWrappperStyled } from './NewsSectionStyles'
 import Slider from 'react-slick'
 import { FC, memo, useMemo } from 'react'
 import NewsCard from './NewsCard/NewsCard'
@@ -38,8 +38,8 @@ const NewsSection: FC<INewsSection> = () => {
 
   return (
     <SectionWrappperStyled component="section" id="news">
-      <Typography variant="h4">News</Typography>
-      <Box width="100%" marginTop="20px">
+      <SectionHeaderStyled variant="h4">News</SectionHeaderStyled>
+      <Box width="100%" mt="20px">
         <Slider {...settings}>
           {DUMMY_NEWS.map((item) => (
             <OuterBoxStyled key={uuidv4()}>
