@@ -1,0 +1,63 @@
+
+
+.fc {
+    width: 100%;
+    outline: none;
+}
+.fc .fc-daygrid-day.fc-day-today {
+    background-color: transparent;
+}
+.fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-top a{
+    background-color: #5940B8;
+    border-radius: 50%;
+    width: 30px;
+    text-align: center;
+    color: white;
+}
+.fc-daygrid-event-dot {
+    display: none;
+}
+.fc-daygrid-event {
+    white-space:normal;
+}
+.fc-event-title-container {
+    padding: 3px;
+    background-color: #485550;
+    color: white;
+    border-radius: 3px;
+    border: none;
+    outline: 1.5px solid #485550;
+}
+.fc-daygrid-day-events {
+    padding-top: 10px;
+}
+
+.fc-daygrid-day-bg {
+    display: none;
+}
+.fc-daygrid-day-frame {
+    display: flex;
+    flex-flow: column;
+}
+.fc-popover {
+    border-radius: 3px;
+}
+.fc-popover-body {
+    background-color: #F4F6F0;
+    border-radius: 3px;
+}
+.fc-popover-header  {
+    background: #485550 !important;
+    color: white;
+    border-radius: 3px;
+}
+.fc-button {
+    background: #485550 !important;
+}
+.fc-toolbar-title {
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-weight: 400;
+    line-height: 1.235;
+    letter-spacing: 0.00735em;
+    font-size: clamp(1.8rem, 2.5vw, 2.75rem);
+}

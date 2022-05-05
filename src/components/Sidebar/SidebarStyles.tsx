@@ -51,7 +51,7 @@ export const SidebarNavStyled = styled(LinkRouter)(({ theme }) => ({
   color: theme.palette.common.white,
   backgroundColor: '#828c88',
   cursor: 'pointer',
-  transition: 'background-color 0.4s ease-in-out',
+  transition: 'background-color 0.3s ease-in-out',
   '&:hover': {
     backgroundColor: theme.palette.primary.dark,
   },

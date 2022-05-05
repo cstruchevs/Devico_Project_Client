@@ -1,14 +1,23 @@
 import React from 'react'
+import AllEventsSection from '../../components/WelcomePageComponents/AllEventsSection/AllEventsSection'
+import CalendarSection from '../../components/WelcomePageComponents/CalendarSection/CalendarSection'
+import NewsSection from '../../components/WelcomePageComponents/NewsSection/NewsSection'
+import PatrnersSection from '../../components/WelcomePageComponents/PartnersSection/PatrnersSection'
+import UpcomingEventsSection from '../../components/WelcomePageComponents/UpcomingEventsSection/UpcomingEventsSection'
+import WelcomeSection from '../../components/WelcomePageComponents/WelcomeSection/WelcomeSection'
+import YearEventsSection from '../../components/WelcomePageComponents/YearEventsSection/YearEventsSection'
 
 const WelcomePage = () => {
 
   return (
     <>
-      <section id="welcome">Welcome section</section>
-      <section id="upcoming">Upcoming events</section>
-      <section id="calendar">Events calendar</section>
-      <section id="news">News</section>
-      <section id="partners">Partners</section>
+      <WelcomeSection />
+      <UpcomingEventsSection />
+      <CalendarSection />
+      <AllEventsSection />
+      <NewsSection />
+      <PatrnersSection />
+      <YearEventsSection />
     </>
   )
 }

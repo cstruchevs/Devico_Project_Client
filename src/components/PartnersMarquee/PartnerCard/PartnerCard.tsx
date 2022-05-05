@@ -10,9 +10,7 @@ export interface PartnerCardProps {
 const PartnerCard: FC<PartnerCardProps> = ({ partnerImg, partnerName }) => {
   return (
     <Tooltip title={`${partnerName}`} TransitionComponent={Zoom} arrow>
-      <PartnerCardStyled>
-        <img src={partnerImg} width="200px" height="110px" alt="Partner Logo" />
-      </PartnerCardStyled>
+      <PartnerCardStyled sx={{backgroundImage: `url(${partnerImg})`}}/>
     </Tooltip>
   )
 }

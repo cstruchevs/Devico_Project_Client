@@ -35,7 +35,7 @@ const Sidebar: FC<ISidebar> = () => {
     if (location.hash) {
       let elem = document.getElementById(location.hash.slice(1))
       if (elem) {
-        elem.scrollIntoView({ behavior: 'smooth' })
+        elem.scrollIntoView({ behavior: 'smooth'})
       }
     } else {
       window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
@@ -53,10 +53,11 @@ const Sidebar: FC<ISidebar> = () => {
             {upSidebarLinks.map(item => (
               <SidebarButtonStyled key={item.title}>
                 <SidebarNavStyled
-                  {...scrollConfig}
                   to={item.link}
                   onClick={toggleDrawerHandler}
-                  className={location.pathname+location.hash === item.link ? 'ActiveLink' : undefined}
+                  className={
+                    location.pathname + location.hash === item.link ? 'ActiveLink' : undefined
+                  }
                 >
                   <item.icon />
                   {item.title}
@@ -67,10 +68,15 @@ const Sidebar: FC<ISidebar> = () => {
           <BottomMenuStackStyled>
             {downSidebarLinks.map(item => (
               <SidebarButtonStyled key={item.title}>
-                <SidebarLinkStyled to={item.link}>
+                <SidebarNavStyled
+                  to={item.link}
+                  className={
+                    location.pathname === item.link ? 'ActiveLink' : undefined
+                  }
+                >
                   <item.icon />
                   {item.title}
-                </SidebarLinkStyled>
+                </SidebarNavStyled>
               </SidebarButtonStyled>
             ))}
           </BottomMenuStackStyled>

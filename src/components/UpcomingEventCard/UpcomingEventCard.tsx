@@ -1,28 +1,34 @@
-import { Button, Stack, Typography } from '@mui/material'
-import { FC } from 'react'
+import { Stack } from '@mui/material'
+import { FC, memo } from 'react'
 import BgImage from '../../assets/imgs/Bitmap.png'
 import {
   ActionStackStyled,
   AdressStyled,
   CardContentStyled,
+  DateAdreesStackStyled,
   DateStyled,
+  EventLabelStyled,
   InfoStyled,
   LinkStyled,
-  NextEventPaper,
+  NextEventPaperStyled,
+  PendingStatusStyled,
   TitleStyled,
   UpcomingEventCardStyled,
 } from './UpcomingEventCardStyles'
 
 interface UpcomingEventCardProps {
-  eventLabel?: string
-  title?: string
-  date?: string
-  address?: string
+  eventLabel: string
+  title: string
+  date: string
+  address: string
   backgroundImage?: string
-  discipline?: string
-  status?: string
-  series?: string
+  discipline: string
+  status: string
+  series: string
   eventId?: number
+  button?: JSX.Element
+  mark?: string
+  markColor?: string
 }
 
 const UpcomingEventCard: FC<UpcomingEventCardProps> = ({
@@ -35,11 +41,10 @@ const UpcomingEventCard: FC<UpcomingEventCardProps> = ({
   status,
   series,
   eventId,
+  button,
+  markColor,
+  mark,
 }) => {
-  const registerToEventHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault()
-  }
-
   return (
     <UpcomingEventCardStyled
       sx={{
@@ -48,16 +53,16 @@ const UpcomingEventCard: FC<UpcomingEventCardProps> = ({
     >
       <CardContentStyled>
         <Stack direction="column">
-          <NextEventPaper elevation={0}>
-            <Typography variant="h6">{eventLabel}</Typography>
-          </NextEventPaper>
+          <NextEventPaperStyled elevation={0}>
+            <EventLabelStyled variant="h6">{eventLabel}</EventLabelStyled>
+          </NextEventPaperStyled>
           <TitleStyled variant="h4">{title}</TitleStyled>
-          <Stack direction={{ xs: 'column', sm: 'row' }} alignItems="baseline">
+          <DateAdreesStackStyled>
             <DateStyled>{date}</DateStyled>
             <AdressStyled>{address}</AdressStyled>
-          </Stack>
+          </DateAdreesStackStyled>
         </Stack>
-        <Stack direction="column">
+        <Stack mt={{ xs: 10, lg: 15 }} direction="column">
           <InfoStyled variant="body1">Dicscipline: {discipline}</InfoStyled>
           <InfoStyled variant="body1">Status: {status}</InfoStyled>
           <InfoStyled variant="body1">Series: {series}</InfoStyled>
@@ -65,24 +70,16 @@ const UpcomingEventCard: FC<UpcomingEventCardProps> = ({
       </CardContentStyled>
 
       <ActionStackStyled>
-        <LinkStyled
-          href={`${eventId}`}
-          underline="hover"
-          sx={{ paddingBottom: '10px', paddingTop: '10px' }}
-          rel="noreferrer"
-        >
+        <LinkStyled href={`${eventId}`} underline="hover" rel="noreferrer">
           View details
         </LinkStyled>
-        <Button
-          sx={{ width: '160px', paddingBlock: '5px' }}
-          variant="contained"
-          onClick={registerToEventHandler}
-        >
-          Register
-        </Button>
+        {button}
       </ActionStackStyled>
+      {mark && (
+        <PendingStatusStyled sx={{ backgroundColor: markColor }}>{mark}</PendingStatusStyled>
+      )}
     </UpcomingEventCardStyled>
   )
 }
 
-export default UpcomingEventCard
+export default memo(UpcomingEventCard)
