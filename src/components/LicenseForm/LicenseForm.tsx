@@ -8,7 +8,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
-import { FC, memo, useCallback } from 'react'
+import React, { FC, memo, useCallback, useMemo, useRef, useState } from 'react'
 import { TypographyInfoSub } from '../../pages/LicensePage/LicensePageStyles'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -22,9 +22,13 @@ import {
   MainStackForm,
   StackCard,
   StackLicenseForm,
+  UploadFileIconStyled,
+  UploadTextStyled,
 } from './LicenseFormStyles'
 import { DUMMY_DATA_LICENSES } from './LicensesDummyData'
 import { StyledButtonPersonal } from '../Profile/StylesPersonalData'
+import './FileUploaderOverrides.css'
+import { useDropzone } from 'react-dropzone'
 
 interface ILicenseForm {}
 
@@ -64,11 +68,33 @@ const LicenseForm: FC<ILicenseForm> = () => {
     console.log(data)
   }, [])
 
+  const { acceptedFiles, getRootProps, getInputProps } = useDropzone()
+  const [selectedFile, setSelecetedFile] = useState<File>()
+
+  useMemo(() => {
+    if (acceptedFiles[0]) {
+      setSelecetedFile(acceptedFiles.at(-1))
+    }
+  }, [acceptedFiles])
+
+
   return (
     <Box pt={4}>
       <form onSubmit={handleSubmit(onSubmitHandler)}>
         <MainStackForm direction="row" gap={3}>
-          <Stack direction="column" flex={1}></Stack>
+          <Stack direction="column" flex={1}>
+            {/* <FileUploader handleChange={handleChange} name="file" types={fileTypes} /> */}
+            <div {...getRootProps({ className: 'dropzone' })}>
+              <input {...getInputProps()} />
+              <UploadFileIconStyled />
+              <Box>
+                <UploadTextStyled variant="subtitle1">
+                  Upload or drag files <span>here</span>
+                </UploadTextStyled>
+                <Typography variant="body2">Format only jpeg or png</Typography>
+              </Box>
+            </div>
+          </Stack>
           <Stack direction="column" flex={2}>
             <StyledTypography>FULL NAME* (Ukranian)</StyledTypography>
             <StyledTextField
