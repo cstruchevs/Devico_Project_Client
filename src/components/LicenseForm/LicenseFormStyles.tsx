@@ -1,5 +1,4 @@
 import { Divider, FormControlLabel, Stack, styled } from '@mui/material'
-import { FileUploader } from 'react-drag-drop-files'
 
 export const MainStackForm = styled(Stack)({
   width: '100%',
@@ -11,11 +10,6 @@ export const StackLicenseForm = styled(Stack)({
     flexWrap: "wrap",
     alignContent: "start"
   })
-
-export const FileUploaderStyled = styled(FileUploader)({
-  width: '100%',
-  height: '300px',
-})
 
 export const FormControlLabelStyled = styled(FormControlLabel)({
 })

@@ -9,7 +9,7 @@ interface IPageRoutes {}
 
 const WelcomePage = React.lazy(() => import('../pages/WelcomePage/WelcomePage'))
 const ProfilePage = React.lazy(() => import('../pages/ProfilePage/ProfilePage'))
-
+const NoPage = React.lazy(() => import('../pages/NoPage/NoPage'))
 
 const PageRoutes: FC<IPageRoutes> = () => {
   const user = useSelector<RootState, IUserInterface | null>(state => state.auth.user)
@@ -20,7 +20,7 @@ const PageRoutes: FC<IPageRoutes> = () => {
         <Route path="/" element={<WelcomePage />} />
         <Route path="/profile" element={user ? <ProfilePage/> : <Navigate to="/" />}/> 
         <Route path="/profile/license" element={user ? <LicensePage/> : <Navigate to="/" />}/>
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="*" element={<NoPage />} />
       </Routes>
     </Suspense>
   )

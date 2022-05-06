@@ -6,7 +6,7 @@ export const carouselConfig = {
   slidesToShow: 1,
   speed: 600,
   arrows: false,
-  centerPadding: '40px',
+  // centerPadding: '40px',
   dots: false,
   autoplay: false,
   autoplaySpeed: 5000,

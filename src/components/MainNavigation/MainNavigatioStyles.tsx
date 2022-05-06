@@ -15,7 +15,8 @@ export const StyledMenuBoxNav = styled(Box)(({ theme }) => ({
   justifyContent: 'space-evenly',
   alignItems: 'center',
   gap: 1,
-  marginLeft: "auth",
+  marginLeft: 'auth',
+  minWidth: '100px',
 }))
 
 export const StyledInnerWarapperBox = styled(Box)(({ theme }) => ({
@@ -33,14 +34,16 @@ export const StyledOuterWarapperBox = styled(Box)(({ theme }) => ({
   flexGrow: 1,
   position: 'fixed',
   right: 0,
+  zIndex: 1100,
 }))
 
-export const StyledAppBar = styled(AppBar)({
+export const StyledAppBar = styled(AppBar)(({ theme }) => ({
   background: 'transparent',
   height: '43px',
   left: 0,
-  boxShadow: 'none',
-})
+  boxShadow: 'None',
+  backdropFilter: 'blur( 2.5px )',
+}))
 
 export const StyledAuthStackWrapper = styled(Stack)({
   flexDirection: 'row',

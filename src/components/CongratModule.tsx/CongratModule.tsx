@@ -1,7 +1,5 @@
 import {
   Box,
-  Button,
-  CardMedia,
   Dialog,
   DialogActions,
   DialogContent,
