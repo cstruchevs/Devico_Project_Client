@@ -18,6 +18,7 @@ export const TableContainerStyled = styled(Paper)(({ theme }) => ({
   width: "100%",
   marginTop: "20px",
   minHeight: "375px",
+  overflowX: "auto",
 }))
 
 export const HeaderCellStyled = styled(TableCell)(({ theme }) => ({

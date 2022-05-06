@@ -39,9 +39,9 @@ export const StyledOuterWarapperBox = styled(Box)(({ theme }) => ({
 
 export const StyledAppBar = styled(AppBar)(({ theme }) => ({
   background: 'transparent',
-  height: '43px',
+  height: '50px',
   left: 0,
-  boxShadow: 'None',
+  boxShadow: 'none',
   backdropFilter: 'blur( 2.5px )',
 }))
 
