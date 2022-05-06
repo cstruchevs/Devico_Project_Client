@@ -30,9 +30,14 @@ const schema = yup.object().shape({
 const AddCarModal: FC<IAddCarModal> = () => {
   const dispatch = useDispatch()
   const addCarIsShown = useSelector<RootState, boolean>(state => state.ui.showAddCar)
+  const editCar = useSelector<RootState, boolean>(state => state.ui.editCar)
 
   const toggleAddCar = useCallback(() => {
     dispatch(uiActions.toggleShowAddCar())
+  }, [dispatch])
+
+  const toggleAddCarCongrat = useCallback(() => {
+    dispatch(uiActions.toggleCongratAddCar())
   }, [dispatch])
 
   const {
@@ -45,11 +50,15 @@ const AddCarModal: FC<IAddCarModal> = () => {
     mode: 'onChange',
   })
 
-  const onSubmitHandler = useCallback((data: any) => {
-    reset()
-    toggleAddCar()
-    console.log(data)
-  }, [reset, toggleAddCar])
+  const onSubmitHandler = useCallback(
+    (data: any) => {
+      reset()
+      toggleAddCarCongrat()
+      toggleAddCar()
+      console.log(data)
+    },
+    [reset, toggleAddCar, toggleAddCarCongrat],
+  )
 
   return (
     <Dialog open={addCarIsShown} onClose={toggleAddCar}>
@@ -152,7 +161,7 @@ const AddCarModal: FC<IAddCarModal> = () => {
             </Stack>
           </Stack>
         </DialogContent>
-        <DialogActionsStyled >
+        <DialogActionsStyled>
           <AddCarCancelButton onClick={toggleAddCar}>Cancel</AddCarCancelButton>
           <AddCarConfirmButton type="submit">Subscribe</AddCarConfirmButton>
         </DialogActionsStyled>

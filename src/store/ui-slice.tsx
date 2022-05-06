@@ -7,6 +7,8 @@ type SliceState = {
   congratAuth: boolean
   isUserAuth: boolean
   showAddCar: boolean
+  showCongratAddCar: boolean
+  editCar: boolean
 }
 
 const initialState: SliceState = {
@@ -15,7 +17,9 @@ const initialState: SliceState = {
   showForgetPassword: false,
   isUserAuth: false,
   congratAuth: false,
-  showAddCar: false
+  showAddCar: false,
+  showCongratAddCar: false,
+  editCar: false
 }
 
 const uiSlice = createSlice({
@@ -39,6 +43,12 @@ const uiSlice = createSlice({
     },
     toggleShowAddCar(state) {
       state.showAddCar = !state.showAddCar
+    },
+    toggleCongratAddCar(state) {
+      state.showCongratAddCar = !state.showCongratAddCar
+    },
+    toggleEditCar(state) {
+      state.editCar = !state.editCar
     }
   },
 })

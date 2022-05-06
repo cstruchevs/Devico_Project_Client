@@ -1,4 +1,4 @@
-import { FC, memo, useRef, useState } from 'react'
+import { FC, memo, useCallback, useRef, useState } from 'react'
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator'
 import DeleteIcon from '@mui/icons-material/Delete'
 import ModeEditIcon from '@mui/icons-material/ModeEdit'
@@ -18,9 +18,16 @@ import {
   SortableItemProps,
   ItemRenderProps,
 } from '@thaddeusjiang/react-sortable-list'
+import { useDispatch } from 'react-redux'
+import { uiActions } from '../../../store/ui-slice'
 
 const CarList = () => {
+  const dispatch = useDispatch()
   const [lolka, setLolka] = useState<SortableItemProps[]>([...DUMMY_DATA_CARS])
+  const toggleEditCar = useCallback(() => {
+    dispatch(uiActions.toggleShowAddCar())
+    dispatch(uiActions.toggleEditCar())
+  }, [dispatch])
 
   return (
     <SortableList
@@ -45,7 +52,7 @@ const CarList = () => {
               <SubElText>Vin number: {item.vinNum}</SubElText>
             </StackElText>
             <StackElIcons>
-              <IconButton aria-label="delete" size="small">
+              <IconButton aria-label="delete" size="small" onClick={toggleEditCar}>
                 <ModeEditIcon />
               </IconButton>
               <IconButton aria-label="delete" size="small">

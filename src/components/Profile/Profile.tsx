@@ -11,6 +11,7 @@ import AddCarModal from './AddCarModal/AddCarModal'
 import { StyledLink } from '../MainNavigation/MainNavigatioStyles'
 import { TypographyLinkProfile } from './StylesPersonalData'
 import { TypographyInfo } from '../../pages/LicensePage/LicensePageStyles'
+import CongratModalCar from './AddCarModal/CongratAddCar'
 
 const a11yProps = (index: number) => {
   return {
@@ -31,6 +32,7 @@ const Profile: React.FC<IProfie> = () => {
   return (
     <Box sx={{ width: '100%' }}>
       <AddCarModal />
+      <CongratModalCar />
       <Box sx={{ paddingLeft: '10px' }}>
         <Stack direction="row">
           <StyledLink to="/" sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
