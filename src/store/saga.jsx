@@ -2,6 +2,7 @@ import { call, takeEvery, put } from 'redux-saga/effects'
 import { authActions } from './auth'
 import { sagaActions } from './sagaActions'
 import axios from 'axios'
+import { useSelector } from 'react-redux'
 
 const addUserToLocalStorage = ({ user, token }) => {
   localStorage.setItem('user', JSON.stringify(user))
@@ -50,6 +51,33 @@ export function* addCarSaga(action) {
   }
 }
 
+export function* updateCarSaga(action) {
+  try {
+    console.log({ ...action.payload })
+    const data = yield call(() => {
+      return axios.post('http://localhost:5000/cars/update', { ...action.payload })
+    })
+    console.log(data)
+    yield put(setCar(data.data))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export function* deleteCarSaga(action) {
+  try {
+    console.log({ ...action.payload })
+    const data = yield call(() => {
+      return axios.post('http://localhost:5000/cars/update', { ...action.payload }, {params: {
+        id: action.id
+      }})
+    })
+    yield put(setCar(data.data))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export function* updateUserSaga(action) {
   try {
     console.log({ ...action.payload })
@@ -66,4 +94,8 @@ export function* updateUserSaga(action) {
 export default function* rootSaga() {
   yield takeEvery(sagaActions.USER_SETUP_SAGA, userSetupSaga)
   yield takeEvery(sagaActions.USER_LOGIN_SAGA, userLoginSaga)
+  yield takeEvery(sagaActions.UPDATE_USER_SAGA, updateUserSaga)
+  yield takeEvery(sagaActions.ADD_CAR_SAGA, addCarSaga)
+  yield takeEvery(sagaActions.UPDATE_CAR_SAGA, updateCarSaga)
+  yield takeEvery(sagaActions.DELETE_CAR_SAGA, deleteCarSaga)
 }

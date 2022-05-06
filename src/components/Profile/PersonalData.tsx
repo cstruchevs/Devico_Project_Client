@@ -1,17 +1,26 @@
 import { Avatar, Stack, IconButton, InputAdornment } from '@mui/material'
 import ModeEditIcon from '@mui/icons-material/ModeEdit'
-import { BoxAvatar, BoxPersonalDataForm, InputFile, StackPersonalDataForm, StackProfileWrapper, StyledBadgeAvatar, StyledButtonPersonal } from './StylesPersonalData'
+import {
+  BoxAvatar,
+  BoxPersonalDataForm,
+  InputFile,
+  StackPersonalDataForm,
+  StackProfileWrapper,
+  StyledBadgeAvatar,
+  StyledButtonPersonal,
+} from './StylesPersonalData'
 import { Box } from '@mui/system'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import {
-  StyledBoxConfirmButton,
-  StyledTextField,
-  StyledTypography,
-} from '../Auth/AuthStyles'
-import { FC, memo, useCallback, useState } from 'react'
+import { StyledBoxConfirmButton, StyledTextField, StyledTypography } from '../Auth/AuthStyles'
+import React, { FC, memo, useCallback, useState } from 'react'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../store'
+import { IUserInterface } from '../../store/auth'
+import { sagaActions } from '../../store/sagaActions'
+import { useDispatch } from 'react-redux'
 
 const schema = yup.object().shape({
   picture: yup
@@ -34,6 +43,15 @@ const schema = yup.object().shape({
 interface IPersonalData {}
 
 const PersonalData: FC<IPersonalData> = () => {
+  const dispatch = useDispatch()
+  const userData = useSelector((state: RootState) => state.auth.user)
+  const [formData, setFormData] = useState(userData)
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value
+    let name = e.target.name
+  }
+
   const [passValue, setValues] = useState({
     showPassword: false,
   })
@@ -56,11 +74,16 @@ const PersonalData: FC<IPersonalData> = () => {
     mode: 'onChange',
   })
 
-  const onSubmitHandler = useCallback((data: any) => {
-    resetField('password')
-    resetField('confirmPassword')
-    console.log(data)
-  }, [resetField])
+  const onSubmitHandler = useCallback(
+    (data: any) => {
+      const id = userData?.id
+      dispatch({ type: sagaActions.UPDATE_USER_SAGA, payload: { ...data, id } })
+      resetField('password')
+      resetField('confirmPassword')
+      console.log(data)
+    },
+    [resetField, dispatch],
+  )
 
   return (
     <>
@@ -89,7 +112,7 @@ const PersonalData: FC<IPersonalData> = () => {
             </StyledBadgeAvatar>
           </BoxAvatar>
           <BoxPersonalDataForm flex={3}>
-            <StackPersonalDataForm >
+            <StackPersonalDataForm>
               <StyledTypography>FULL NAME</StyledTypography>
               <StyledTextField
                 {...register('fullName')}
@@ -104,6 +127,7 @@ const PersonalData: FC<IPersonalData> = () => {
                 {...register('email')}
                 name="email"
                 type="email"
+                value={userData?.email}
                 required
                 fullWidth
                 id="outlined-basic"
