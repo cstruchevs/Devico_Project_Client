@@ -17,7 +17,7 @@ const PageRoutes: FC<IPageRoutes> = () => {
     <Suspense fallback={<span>Loading...</span>}>
       <Routes>
         <Route path="/" element={<WelcomePage />} />
-        <Route path="/profile" element={<ProfilePage/>}/> 
+        <Route path="/profile" element={user ? <ProfilePage/> : <Navigate to="/" />}/> 
         <Route path="/profile/license" element={user ? <LicensePage/> : <Navigate to="/" />}/>
         <Route path="*" element={<NoPage />} />
       </Routes>
