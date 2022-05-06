@@ -7,5 +7,5 @@ export const SectionWrappperStyled = styled(Box)(({ theme }) => ({
   alignItems: "flex-start",
   width: "100%",
   color: theme.palette.common.black,
-  marginBottom: "50px",
+  paddingBottom: "50px",
 }))
