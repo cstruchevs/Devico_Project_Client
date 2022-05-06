@@ -38,25 +38,31 @@ section {
   padding-right: 50px;
   padding-top: 50px;
 }
+
 @media all and (max-width: 600px) {
   section {
     padding-left: 0px;
     padding-right: 15px;
   }
+
   main {
     padding-left: 15px;
   }
 }
+
 a:hover {
   cursor: pointer;
 }
+
 .ActiveLink {
   background-color: #5940b8 !important;
 }
+
 .MuiDataGrid-footerContainer {
   justify-content: center !important;
   background: #ececec;
 }
+
 .MuiDataGrid-columnHeaders {
   text-align: center;
   background: #ececec;

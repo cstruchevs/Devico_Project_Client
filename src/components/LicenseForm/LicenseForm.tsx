@@ -67,7 +67,7 @@ const LicenseForm: FC<ILicenseForm> = () => {
   return (
     <Box pt={4}>
       <form onSubmit={handleSubmit(onSubmitHandler)}>
-        <MainStackForm direction="row" gap={3}>
+        <MainStackForm >
           <Stack direction="column" flex={1}></Stack>
           <Stack direction="column" flex={2}>
             <StyledTypography>FULL NAME* (Ukranian)</StyledTypography>

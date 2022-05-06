@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { Navigate } from 'react-router-dom'
 
 export interface IUserInterface {
   id?: string

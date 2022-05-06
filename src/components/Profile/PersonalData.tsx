@@ -1,9 +1,9 @@
 import { Avatar, IconButton, InputAdornment } from '@mui/material'
-import ModeEditIcon from '@mui/icons-material/ModeEdit'
 import {
   BoxAvatar,
   BoxPersonalDataForm,
   InputFile,
+  ModeEditIconStyled,
   StackPersonalDataForm,
   StackProfileWrapper,
   StyledBadgeAvatar,
@@ -17,7 +17,6 @@ import React, { FC, memo, useCallback, useState } from 'react'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store'
-import { IUserInterface } from '../../store/auth'
 import { sagaActions } from '../../store/sagaActions'
 import { useDispatch } from 'react-redux'
 
@@ -93,7 +92,7 @@ const PersonalData: FC<IPersonalData> = () => {
       resetField('password')
       resetField('confirmPassword')
     },
-    [resetField, dispatch, userData?.id],
+    [resetField, dispatch, userData],
   )
 
   return (
@@ -102,11 +101,12 @@ const PersonalData: FC<IPersonalData> = () => {
         <StackProfileWrapper direction="row">
           <BoxAvatar flex={1} m={2}>
             <StyledBadgeAvatar
+              overlap="circular"
               anchorOrigin={{
                 vertical: 'bottom',
                 horizontal: 'right',
               }}
-              badgeContent={<ModeEditIcon sx={{ height: '30px', width: '30px' }} />}
+              badgeContent={<ModeEditIconStyled fontSize="large" />}
             >
               <label htmlFor="icon-button-file">
                 <InputFile
