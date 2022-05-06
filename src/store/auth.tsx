@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { Navigate } from 'react-router-dom'
 
 export interface IUserInterface {
-  id: string
-  email: string
-  password: string
+  id?: string
+  email?: string
+  password?: string
   phone?: string
   fullName? :string
 }
@@ -20,7 +21,7 @@ interface ICar {
 }
 
 interface IAuthSlice {
-  user: null | IUserInterface
+  user: IUserInterface | null
   token: string
   cars: [] | ICar[]
 }
@@ -40,6 +41,7 @@ const authSlice = createSlice({
       state.token = action.payload.token
     },
     logOutUser(state) {
+      localStorage.removeItem('user')
       state.user = null
     },
     setCar(state, action:any) {

@@ -86,6 +86,7 @@ export function* updateUserSaga(action) {
     })
     const { user, token } = data.data
     yield put(setUser({ user, token }))
+    addUserToLocalStorage({ user, token })
   } catch (error) {
     console.log(error)
   }
