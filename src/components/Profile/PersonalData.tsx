@@ -4,6 +4,7 @@ import {
   BoxAvatar,
   BoxPersonalDataForm,
   InputFile,
+  ModeEditIconStyled,
   StackPersonalDataForm,
   StackProfileWrapper,
   StyledBadgeAvatar,
@@ -91,11 +92,12 @@ const PersonalData: FC<IPersonalData> = () => {
         <StackProfileWrapper direction="row">
           <BoxAvatar flex={1} m={2}>
             <StyledBadgeAvatar
+              overlap="circular"
               anchorOrigin={{
                 vertical: 'bottom',
                 horizontal: 'right',
               }}
-              badgeContent={<ModeEditIcon sx={{ height: '30px', width: '30px' }} />}
+              badgeContent={<ModeEditIconStyled fontSize="large" />}
             >
               <label htmlFor="icon-button-file">
                 <InputFile
