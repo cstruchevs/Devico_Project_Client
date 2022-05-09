@@ -1,6 +1,7 @@
 import React, { FC, Suspense } from 'react'
 import { useSelector } from 'react-redux'
 import { Routes, Route, Navigate } from 'react-router-dom'
+import AllEventsPage from '../pages/AllEventsPage/AllEventsPage'
 import LicensePage from '../pages/LicensePage/LicensePage'
 import { RootState } from '../store'
 import { IUserInterface } from '../store/auth'
@@ -20,6 +21,7 @@ const PageRoutes: FC<IPageRoutes> = () => {
         <Route path="/" element={<WelcomePage />} />
         <Route path="/profile" element={<ProfilePage/>}/> 
         <Route path="/profile/license" element={<LicensePage/>}/>
+        <Route path="/events" element={<AllEventsPage/>}/> 
         <Route path="*" element={<NoPage />} />
       </Routes>
     </Suspense>

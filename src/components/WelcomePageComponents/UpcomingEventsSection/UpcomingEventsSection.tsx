@@ -34,7 +34,7 @@ const UpcomingEventsSection: FC<IUpcomingEventsSection> = () => {
         alignItems={'baseline'}
       >
         <SectionHeaderStyled variant="h4">Upcoming events</SectionHeaderStyled>
-        <Link href={'#'}>View all</Link>
+        <Link href={'/events'}>View all</Link>
       </Stack>
       <Carousel items={upcomingCard} />
     </SectionWrappperStyled>
