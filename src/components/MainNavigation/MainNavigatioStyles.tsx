@@ -39,7 +39,7 @@ export const StyledOuterWarapperBox = styled(Box)(({ theme }) => ({
 
 export const StyledAppBar = styled(AppBar)(({ theme }) => ({
   background: 'transparent',
-  height: '50px',
+  height: '48px',
   left: 0,
   boxShadow: 'none',
   backdropFilter: 'blur( 2.5px )',
@@ -73,5 +73,5 @@ export const StyledPopoverStack = styled(Stack)({
 
 export const StyledNotificationDivider = styled(Divider)({
   background: '#fff',
-  height: '43px',
+  height: '48px',
 })

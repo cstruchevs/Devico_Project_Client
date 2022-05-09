@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import AllEventsPage from '../pages/AllEventsPage/AllEventsPage'
 import LicensePage from '../pages/LicensePage/LicensePage'
+import checkLocalStorage from '../services/checkLocalStorage'
 import { RootState } from '../store'
 import { IUserInterface } from '../store/auth'
 
@@ -15,13 +16,14 @@ const NoPage = React.lazy(() => import('../pages/NoPage/NoPage'))
 const PageRoutes: FC<IPageRoutes> = () => {
   const user = useSelector<RootState, IUserInterface | null>(state => state.auth.user)
   
+  const userLocalStorage = checkLocalStorage()
   return (
     <Suspense fallback={<span>Loading...</span>}>
       <Routes>
         <Route path="/" element={<WelcomePage />} />
-        <Route path="/profile" element={<ProfilePage/>}/> 
-        <Route path="/profile/license" element={<LicensePage/>}/>
         <Route path="/events" element={<AllEventsPage/>}/> 
+        <Route path="/profile" element={(user || userLocalStorage) ? <ProfilePage/> : <Navigate to="/" />}/> 
+        <Route path="/profile/license" element={(user || userLocalStorage) ? <LicensePage/> : <Navigate to="/" />}/>
         <Route path="*" element={<NoPage />} />
       </Routes>
     </Suspense>

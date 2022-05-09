@@ -42,8 +42,8 @@ const Profile: React.FC<IProfie> = () => {
       </Box>
       <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '95%' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="Profile Data" {...a11yProps(0)} />
-          <Tab label="Personal data" {...a11yProps(1)} />
+          <Tab label="Personal Data" {...a11yProps(0)} />
+          <Tab label="Profile Data" {...a11yProps(1)} />
         </Tabs>
       </Box>
       <ProfilePanel value={value} index={0}>

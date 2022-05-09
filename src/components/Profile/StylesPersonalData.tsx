@@ -21,6 +21,8 @@ export const StyledButtonPersonal = styled(Button)(({ theme }) => ({
   width: '200px',
   background: theme.palette.primary.dark,
   color: theme.palette.primary.contrastText,
+  
+  
 }))
 
 export const InputFile = styled('input')({
