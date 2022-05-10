@@ -25,7 +25,7 @@ interface ISmallEventCard {
   discipline: string
   status: string
   series: string
-  eventId?: number
+  eventId?: string
   button?: JSX.Element
   mark?: string
   markColor?: string
@@ -70,7 +70,7 @@ const SmallEventCard: FC<ISmallEventCard> = ({
       </CardContentStyled>
 
       <ActionStackStyled>
-        <LinkStyled href={`${eventId}`} underline="hover" rel="noreferrer">
+        <LinkStyled to={`/event/${eventId}`} rel="noreferrer">
           View details
         </LinkStyled>
         {button}

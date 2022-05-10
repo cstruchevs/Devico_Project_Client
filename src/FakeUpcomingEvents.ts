@@ -1,5 +1,6 @@
 export const FakeUpcomingEvents = [
   {
+    eventId: "1",
     eventLabel: "Next Event",
     title: "AUTO.RIA Race",
     date: "12.12.2021",
@@ -8,8 +9,10 @@ export const FakeUpcomingEvents = [
     status: "National Seria",
     series: "National Digital Time Attack Series (NS-CTA) 2021",
     // backgroundImage: "https://wallpapercave.com/wp/wp6279032.jpg",
+    linkShow: true,
   },
   {
+    eventId: "2",
     eventLabel: "Next Event",
     title: "AUTO.RIA Race",
     date: "12.12.2021",
@@ -21,6 +24,7 @@ export const FakeUpcomingEvents = [
     //   "https://wallpaperscart.com/wp-content/uploads/2021/11/Car-Backgrounds-Wallpapers-HD-4K_14-1024x640.jpg",
   },
   {
+    eventId: "3",
     eventLabel: "Next Event",
     title: "AUTO.RIA Race",
     date: "12.12.2021",
@@ -29,8 +33,10 @@ export const FakeUpcomingEvents = [
     status: "National Seria",
     series: "National Digital Time Attack Series (NS-CTA) 2021",
     // backgroundImage: "https://wallpaper.dog/large/5495964.jpg",
+    linkShow: true,
   },
   {
+    eventId: "4",
     eventLabel: "Next Event",
     title: "AUTO.RIA Race",
     date: "12.12.2021",
@@ -38,10 +44,12 @@ export const FakeUpcomingEvents = [
     discipline: "Digital motorsport.",
     status: "National Seria",
     series: "National Digital Time Attack Series (NS-CTA) 2021",
+    linkShow: true,
     // backgroundImage:
     //   "https://airwallpaper.com/wp-content/uploads/2016/10/Auto-Backgrounds-For-Desktop.jpg",
   },
   {
+    eventId: "5",
     eventLabel: "Next Event",
     title: "AUTO.RIA Race",
     date: "12.12.2021",
@@ -49,9 +57,11 @@ export const FakeUpcomingEvents = [
     discipline: "Digital motorsport.",
     status: "National Seria",
     series: "National Digital Time Attack Series (NS-CTA) 2021",
+    linkShow: true,
     // backgroundImage: "https://img.wallpapersafari.com/desktop/1024/576/2/37/4s1kh9.jpg",
   },
   {
+    eventId: "6",
     eventLabel: "Next Event",
     title: "AUTO.RIA Race",
     date: "12.12.2021",
@@ -59,9 +69,11 @@ export const FakeUpcomingEvents = [
     discipline: "Digital motorsport.",
     status: "National Seria",
     series: "National Digital Time Attack Series (NS-CTA) 2021",
+    linkShow: true,
     // backgroundImage: "https://cdn.statically.io/img/wallpaperaccess.com/full/229228.jpg",
   },
   {
+    eventId: "7",
     eventLabel: "Next Event",
     title: "AUTO.RIA Race",
     date: "12.12.2021",
@@ -69,9 +81,11 @@ export const FakeUpcomingEvents = [
     discipline: "Digital motorsport.",
     status: "National Seria",
     series: "National Digital Time Attack Series (NS-CTA) 2021",
+    linkShow: true,
     // backgroundImage: "https://img.wallpapersafari.com/desktop/1024/576/2/37/4s1kh9.jpg",
   },
   {
+    eventId: "8",
     eventLabel: "Next Event",
     title: "AUTO.RIA Race",
     date: "12.12.2021",
@@ -79,6 +93,7 @@ export const FakeUpcomingEvents = [
     discipline: "Digital motorsport.",
     status: "National Seria",
     series: "National Digital Time Attack Series (NS-CTA) 2021",
+    linkShow: true,
     // backgroundImage: "https://cdn.statically.io/img/wallpaperaccess.com/full/229228.jpg",
   },
 ];

@@ -1,10 +1,8 @@
 import { Button, Fade, Popper, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { memo, useCallback, useMemo, useState } from 'react'
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import {
-    AllEventsStack,
-  BackLinkStyled,
+  AllEventsStack,
   BowOuterStyled,
   HeaderStackStyled,
   SortPaperStyled,
@@ -15,8 +13,8 @@ import SortIcon from '@mui/icons-material/Sort'
 import FilterAltIcon from '@mui/icons-material/FilterAlt'
 import { FakeUpcomingEvents } from '../../FakeUpcomingEvents'
 import SmallEventCard from '../SmallEventCard/SmallEventCard'
-import { v4 as uuidv4 } from 'uuid';
-
+import { v4 as uuidv4 } from 'uuid'
+import BackButton from '../BackButton/BackButton'
 
 const AllEvents = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
@@ -56,10 +54,7 @@ const AllEvents = () => {
 
   const ButtonReg = useMemo(
     () => (
-      <Button
-        sx={{ width: '130px', paddingBlock: '5px' }}
-        variant="contained"
-      >
+      <Button sx={{ width: '130px', paddingBlock: '5px' }} variant="contained">
         Register
       </Button>
     ),
@@ -67,12 +62,9 @@ const AllEvents = () => {
   )
 
   return (
-    <Box width="100%" sx={{paddingBottom: "50px"}}>
+    <Box width="100%" sx={{ paddingBottom: '50px' }}>
       {sortPoper}
-      <BackLinkStyled to="/">
-        <ArrowBackIosNewIcon sx={{ fontSize: '15px' }} />
-        <Typography>Back</Typography>
-      </BackLinkStyled>
+      <BackButton />
       <HeaderStackStyled>
         <Typography variant="h4">All Events</Typography>
         <ToolStackStyled>
@@ -88,11 +80,11 @@ const AllEvents = () => {
       </HeaderStackStyled>
 
       <AllEventsStack>
-            {FakeUpcomingEvents.map(event => (
-                <BowOuterStyled key={uuidv4()}>
-                    <SmallEventCard {...event} button={ButtonReg}/>
-                </BowOuterStyled>
-            ))}
+        {FakeUpcomingEvents.map(event => (
+          <BowOuterStyled key={uuidv4()}>
+            <SmallEventCard {...event} button={ButtonReg} />
+          </BowOuterStyled>
+        ))}
       </AllEventsStack>
     </Box>
   )
