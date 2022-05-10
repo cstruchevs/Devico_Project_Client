@@ -9,26 +9,27 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { AddCarCancelButton, AddCarConfirmButton, DialogActionsStyled } from './AddCarModalStyles'
+import { sagaActions } from '../../../store/sagaActions'
 
 interface IAddCarModal {}
 
 const schema = yup.object().shape({
-  fullName: yup.string().min(3),
+  fullNameOwner: yup.string().min(3),
   model: yup.string().min(4).required('Write model, min 4 characters'),
   year: yup
-    .number()
-    .min(1960)
-    .positive()
+    .string()
+    .min(4)
     .required('Write year of the car, it must me greater than 1960'),
-  capacityEngine: yup.string().min(2).required('Write capicicty engine'),
-  regVehNumber: yup.string().min(4).required('Vehicle humber must contain at least 4 number'),
-  techPassNumber: yup.number().min(1000).required('Tech pass must contain at least 4 number'),
-  vinNumber: yup.number().min(1000).required('Vin number must contain at least 4 number'),
+  capaciteEngine: yup.string().min(2).required('Write capicicty engine'),
+  regVihicleNumber: yup.string().min(4).required('Vehicle humber must contain at least 4 number'),
+  technicalPassNumber: yup.string().min(4).required('Tech pass must contain at least 4 number'),
+  viaNumber: yup.string().min(5).required('Vin number must contain at least 4 number'),
   driveTrain: yup.string().min(4).required('Drive train must contain at least 4 number'),
 })
 
 const AddCarModal: FC<IAddCarModal> = () => {
   const dispatch = useDispatch()
+  const id: any = useSelector((state: RootState) => state.auth.user?.id)
   const addCarIsShown = useSelector<RootState, boolean>(state => state.ui.showAddCar)
   const editCar = useSelector<RootState, boolean>(state => state.ui.editCar)
 
@@ -52,12 +53,13 @@ const AddCarModal: FC<IAddCarModal> = () => {
 
   const onSubmitHandler = useCallback(
     (data: any) => {
+      dispatch({ type: sagaActions.ADD_CAR_SAGA, payload: { ...data, id: id } })
       reset()
       toggleAddCarCongrat()
       toggleAddCar()
       console.log(data)
     },
-    [reset, toggleAddCar, toggleAddCarCongrat],
+    [reset, toggleAddCar, toggleAddCarCongrat, dispatch],
   )
 
   return (
@@ -92,9 +94,9 @@ const AddCarModal: FC<IAddCarModal> = () => {
               />
               <StyledTypography>CAPACITY ENGINE*</StyledTypography>
               <StyledTextField
-                {...register('capacityEngine')}
-                error={Boolean(errors.capacityEngine)}
-                name="capacityEngine"
+                {...register('capaciteEngine')}
+                error={Boolean(errors.capaciteEngine)}
+                name="capaciteEngine"
                 type="text"
                 required
                 fullWidth
@@ -103,9 +105,9 @@ const AddCarModal: FC<IAddCarModal> = () => {
               />
               <StyledTypography>REG. VEHICLE NUMBER*</StyledTypography>
               <StyledTextField
-                {...register('regVehNumber')}
-                error={Boolean(errors.regVehNumber)}
-                name="regVehNumber"
+                {...register('regVihicleNumber')}
+                error={Boolean(errors.regVihicleNumber)}
+                name="regVihicleNumber"
                 type="text"
                 required
                 fullWidth
@@ -116,9 +118,9 @@ const AddCarModal: FC<IAddCarModal> = () => {
             <Stack direction="column">
               <StyledTypography>TECHNICAL PASSPORT NUMBER*</StyledTypography>
               <StyledTextField
-                {...register('techPassNumber')}
-                error={Boolean(errors.techPassNumber)}
-                name="techPassNumber"
+                {...register('technicalPassNumber')}
+                error={Boolean(errors.technicalPassNumber)}
+                name="technicalPassNumber"
                 type="text"
                 required
                 fullWidth
@@ -127,9 +129,9 @@ const AddCarModal: FC<IAddCarModal> = () => {
               />
               <StyledTypography>VIN NUMBER*</StyledTypography>
               <StyledTextField
-                {...register('vinNumber')}
-                error={Boolean(errors.vinNumber)}
-                name="vinNumber"
+                {...register('viaNumber')}
+                error={Boolean(errors.viaNumber)}
+                name="viaNumber"
                 type="text"
                 required
                 fullWidth
@@ -149,9 +151,9 @@ const AddCarModal: FC<IAddCarModal> = () => {
               />
               <StyledTypography>FULL NAME VEHICLE OWNER*</StyledTypography>
               <StyledTextField
-                {...register('fullName')}
-                error={Boolean(errors.fullName)}
-                name="fullName"
+                {...register('fullNameOwner')}
+                error={Boolean(errors.fullNameOwner)}
+                name="fullNameOwner"
                 type="text"
                 required
                 fullWidth

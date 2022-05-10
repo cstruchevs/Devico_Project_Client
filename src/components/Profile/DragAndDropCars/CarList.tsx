@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useRef, useState } from 'react'
+import { FC, memo, useCallback, useEffect, useRef, useState } from 'react'
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator'
 import DeleteIcon from '@mui/icons-material/Delete'
 import ModeEditIcon from '@mui/icons-material/ModeEdit'
@@ -12,7 +12,6 @@ import {
   StackElText,
   SubElText,
 } from './CarListStyle'
-import { DUMMY_DATA_CARS } from './CarListDummyData'
 import {
   SortableList,
   SortableItemProps,
@@ -20,14 +19,22 @@ import {
 } from '@thaddeusjiang/react-sortable-list'
 import { useDispatch } from 'react-redux'
 import { uiActions } from '../../../store/ui-slice'
+import { RootState } from '../../../store'
+import { useSelector } from 'react-redux'
 
 const CarList = () => {
   const dispatch = useDispatch()
-  const [lolka, setLolka] = useState<SortableItemProps[]>([...DUMMY_DATA_CARS])
+  const cars:any = useSelector((state: RootState) => state.auth.cars)
+  const [lolka, setLolka] = useState<SortableItemProps[]>([...cars])
   const toggleEditCar = useCallback(() => {
     dispatch(uiActions.toggleShowAddCar())
     dispatch(uiActions.toggleEditCar())
   }, [dispatch])
+
+  useEffect(()=> {
+    setLolka([...cars])
+    console.log(lolka)
+  }, [cars]) 
 
   return (
     <SortableList
@@ -39,20 +46,20 @@ const CarList = () => {
             <StackElIcon>
               <DragIndicatorIcon />
               <StackElText>
-                <MainElText>{item.name}</MainElText>
+                <MainElText>{item.model}</MainElText>
                 <MainElText>{item.year}</MainElText>
               </StackElText>
             </StackElIcon>
             <StackElText>
-              <SubElText>{item.name}</SubElText>
-              <SubElText>Reg. Venchle Number: {item.reg}</SubElText>
+              <SubElText>{item.model}</SubElText>
+              <SubElText>Reg. Venchle Number: {item.regVihicleNumber}</SubElText>
             </StackElText>
             <StackElText>
-              <SubElText>Technical passport number: {item.techPass}</SubElText>
-              <SubElText>Vin number: {item.vinNum}</SubElText>
+              <SubElText>Technical passport number: {item.technicalPassNumber}</SubElText>
+              <SubElText>Vin number: {item.viaNumber}</SubElText>
             </StackElText>
             <StackElIcons>
-              <IconButton aria-label="delete" size="small" onClick={toggleEditCar}>
+              <IconButton aria-label="delete" size="small" onClick={() => {console.log('asda')}}>
                 <ModeEditIcon />
               </IconButton>
               <IconButton aria-label="delete" size="small">

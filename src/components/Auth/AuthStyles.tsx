@@ -24,7 +24,7 @@ export const StyledAuthBoxRecPass = styled(Button)({
 export const ConfirmStyledButton = styled(Button)({
   margin: 'auto',
   width: '80%',
-  color: '#fff',
+  color: 'black',
   height: '33px',
   borderRadius: '0px',
   border: '1px solid black',

@@ -1,8 +1,6 @@
 import {
-  Box,
   Dialog,
   DialogActions,
-  DialogContent,
   DialogContentText,
   DialogTitle,
   Typography,

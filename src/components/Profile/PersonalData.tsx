@@ -85,7 +85,6 @@ const PersonalData: FC<IPersonalData> = () => {
   const onSubmitHandler = useCallback(
     (data: any) => {
       console.log(userData)
-
       const id = userData?.id
       console.log(id)
       dispatch({ type: sagaActions.UPDATE_USER_SAGA, payload: { ...data, id } })

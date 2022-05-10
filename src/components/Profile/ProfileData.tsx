@@ -17,24 +17,34 @@ import { useDispatch } from 'react-redux'
 import { uiActions } from '../../store/ui-slice'
 import { StackProfileFormWrapper, StackProfileWrapper } from './StylesProfileData'
 import CarList from './DragAndDropCars/CarList'
+import { sagaActions } from '../../store/sagaActions'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../store'
+import { IDriversData } from '../../store/auth'
 
 const schema = yup.object().shape({
-  fullName: yup.string().min(8).required('Write min 8 characters'),
+  representiveFullName: yup.string().min(8).required('Write min 8 characters'),
   nickname: yup.string().min(5).required('Write min 6 characters'),
-  representiveLicenseNum: yup.number().min(5).required('Write min 5 numbers'),
+  representiveLicense: yup.number().min(5).required('Write min 5 numbers'),
   city: yup.string().nullable(true),
-  DriverLicenseNum: yup.number().min(5).required('Write min 5 numbers'),
+  sportDriverLicense: yup.number().min(5).required('Write min 5 numbers'),
   regAdress: yup.string().min(5).nullable(true),
   driverLicense: yup.number().min(8).required('Write min 8 numbers'),
   idNumber: yup.number().min(8).required('Write min 8 numbers'),
   phone: yup.string().min(10).nullable(true),
-  birthdayDate: yup.date().required('Date is required'),
+  dob: yup.date().required('Date is required'),
 })
 
 interface IProfileData {}
 
 const ProfileData: FC<IProfileData> = () => {
   const dispatch = useDispatch()
+  const driversData = useSelector((state: RootState) => state.auth.driversData)
+  const [driversDataInputs, setDriversDataInputs] = useState<IDriversData>(driversData)
+  const userId: any = useSelector((state: RootState) => state.auth.user?.id)
+  const [city, setCity] = useState('')
+  console.log(driversDataInputs.nickname)
+  console.log(driversData)
   const {
     register,
     handleSubmit,
@@ -44,7 +54,13 @@ const ProfileData: FC<IProfileData> = () => {
     mode: 'onChange',
   })
 
-  const [city, setCity] = useState('')
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setDriversDataInputs({
+      ...driversDataInputs,
+      [e.target.name]: value
+    });
+  }
 
   const toggleAddCar = useCallback(() => {
     dispatch(uiActions.toggleShowAddCar())
@@ -55,7 +71,9 @@ const ProfileData: FC<IProfileData> = () => {
   }
 
   const onSubmitHandler = useCallback((data: any) => {
-    console.log(data)
+    const updatedData:any = data;
+    updatedData.dob = updatedData.dob.toISOString().slice(0, 10)
+    dispatch({ type: sagaActions.POST_DRIVERS_DATA_SAGA, payload: { ...data, id: userId } })
   }, [])
 
   return (
@@ -78,25 +96,31 @@ const ProfileData: FC<IProfileData> = () => {
                   {...register('nickname')}
                   name="nickname"
                   type="text"
+                  value={driversDataInputs.nickname}
+                  onChange={handleChangeInput}
                   fullWidth
                   id="outlined-basic"
                   error={Boolean(errors.nickname)}
                 />
                 <StyledTypography>DOB*</StyledTypography>
                 <StyledTextField
-                  {...register('birthdayDate')}
-                  name="birthdayDate"
+                  {...register('dob')}
+                  name="dob"
                   type="date"
+                  value={driversDataInputs.dob}
+                  onChange={handleChangeInput}
                   fullWidth
                   id="outlined-basic"
                   variant="outlined"
-                  error={Boolean(errors.birthdayDate)}
+                  error={Boolean(errors.dob)}
                 />
                 <StyledTypography noWrap={true}>DRIVER LICENSE NUMBER*</StyledTypography>
                 <StyledTextField
                   {...register('driverLicense')}
                   name="driverLicense"
                   type="text"
+                  value={driversDataInputs.driverLicense}
+                  onChange={handleChangeInput}
                   fullWidth
                   id="outlined-basic"
                   variant="outlined"
@@ -107,6 +131,8 @@ const ProfileData: FC<IProfileData> = () => {
                   {...register('phone')}
                   name="phone"
                   type="text"
+                  value={driversDataInputs.phone}
+                  onChange={handleChangeInput}
                   fullWidth
                   id="outlined-basic"
                   variant="outlined"
@@ -117,6 +143,8 @@ const ProfileData: FC<IProfileData> = () => {
                   {...register('idNumber')}
                   name="idNumber"
                   type="text"
+                  value={driversDataInputs.idNumber}
+                  onChange={handleChangeInput}
                   fullWidth
                   id="outlined-basic"
                   variant="outlined"
@@ -143,6 +171,8 @@ const ProfileData: FC<IProfileData> = () => {
                   {...register('regAdress')}
                   name="regAdress"
                   type="text"
+                  value={driversDataInputs.regAdress}
+                  onChange={handleChangeInput}
                   fullWidth
                   id="outlined-basic"
                   variant="outlined"
@@ -150,33 +180,39 @@ const ProfileData: FC<IProfileData> = () => {
                 />
                 <StyledTypography noWrap={true}>FULL NAME OF YOUR REPRESENTATIVE</StyledTypography>
                 <StyledTextField
-                  {...register('fullName')}
-                  name="fullName"
+                  {...register('representiveFullName')}
+                  name="representiveFullName"
                   type="text"
+                  value={driversDataInputs.representiveFullName}
+                  onChange={handleChangeInput}
                   fullWidth
                   id="outlined-basic"
                   variant="outlined"
-                  error={Boolean(errors.fullName)}
+                  error={Boolean(errors.representiveFullName)}
                 />
                 <StyledTypography>REPRESENTAIVE LICENSE NUMBER</StyledTypography>
                 <StyledTextField
-                  {...register('representiveLicenseNum')}
-                  name="representiveLicenseNum"
+                  {...register('representiveLicense')}
+                  name="representiveLicense"
                   type="text"
+                  value={driversDataInputs.representiveLicense}
+                  onChange={handleChangeInput}
                   fullWidth
                   id="outlined-basic"
                   variant="outlined"
-                  error={Boolean(errors.representiveLicenseNum)}
+                  error={Boolean(errors.representiveLicense)}
                 />
                 <StyledTypography>SPORT DRIVER LICENSE NUMBER</StyledTypography>
                 <StyledTextField
-                  {...register('DriverLicenseNum')}
-                  name="DriverLicenseNum"
+                  {...register('sportDriverLicense')}
+                  name="sportDriverLicense"
                   type="text"
+                  value={driversDataInputs.sportDriverLicense}
+                  onChange={handleChangeInput}
                   fullWidth
                   id="outlined-basic"
                   variant="outlined"
-                  error={Boolean(errors.DriverLicenseNum)}
+                  error={Boolean(errors.sportDriverLicense)}
                 />
               </Stack>
             </StackProfileFormWrapper>

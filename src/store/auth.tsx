@@ -5,10 +5,10 @@ export interface IUserInterface {
   email?: string
   password?: string
   phone?: string
-  fullName? :string
+  fullName?: string
 }
 
-interface ICar {
+export interface ICar {
   model: string
   year: string
   capaciteEngine: string
@@ -19,16 +19,31 @@ interface ICar {
   fullNameOwner: string
 }
 
+export interface IDriversData {
+  representiveFullName?: string
+  nickname?: string
+  representiveLicense?: string
+  city?: string
+  sportDriverLicense?: string
+  regAdress?: string
+  driverLicense?: string
+  idNumber?: string
+  phone?: string
+  dob?: Date
+}
+
 interface IAuthSlice {
   user: IUserInterface | null
   token: string
   cars: [] | ICar[]
+  driversData: {} | IDriversData
 }
 
 const initialState: IAuthSlice = {
   user: null,
   token: '',
   cars: [],
+  driversData: {},
 }
 
 const authSlice = createSlice({
@@ -43,9 +58,15 @@ const authSlice = createSlice({
       localStorage.removeItem('user')
       state.user = null
     },
-    setCar(state, action:any) {
-      return {...state, cars: [...action.payload]}
-    }
+    setCar(state, action: any) {
+      return { ...state, cars: [...action.payload] }
+    },
+    addCar(state, action: any) {
+      return { ...state, cars: state.cars.concat(action.payload) }
+    },
+    setDriversData(state, action: any) {
+      return { ...state, driversData: { ...action.payload } }
+    },
   },
 })
 
