@@ -1,5 +1,4 @@
-import { Avatar, Stack, IconButton, InputAdornment } from '@mui/material'
-import ModeEditIcon from '@mui/icons-material/ModeEdit'
+import { Avatar, IconButton, InputAdornment } from '@mui/material'
 import {
   BoxAvatar,
   BoxPersonalDataForm,
@@ -10,7 +9,6 @@ import {
   StyledBadgeAvatar,
   StyledButtonPersonal,
 } from './StylesPersonalData'
-import { Box } from '@mui/system'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -19,7 +17,6 @@ import React, { FC, memo, useCallback, useState } from 'react'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store'
-import { IUserInterface } from '../../store/auth'
 import { sagaActions } from '../../store/sagaActions'
 import { useDispatch } from 'react-redux'
 
@@ -46,11 +43,21 @@ interface IPersonalData {}
 const PersonalData: FC<IPersonalData> = () => {
   const dispatch = useDispatch()
   const userData = useSelector((state: RootState) => state.auth.user)
-  const [formData, setFormData] = useState(userData)
+  const [formDataName, setFormDataName] = useState(userData?.fullName)
+  const [formDataPhone, setFormDataPhone] = useState(userData?.phone)
+  const [formDataEmail, setFormDataEmail] = useState(userData?.email)
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeName = (e: any) => {
     let value = e.target.value
-    let name = e.target.name
+    setFormDataName(value)
+  }
+  const handleChangePhone = (e: any) => {
+    let value = e.target.value
+    setFormDataPhone(value)
+  }
+  const handleChangeEmail = (e: any) => {
+    let value = e.target.value
+    setFormDataEmail(value)
   }
 
   const [passValue, setValues] = useState({
@@ -77,13 +84,15 @@ const PersonalData: FC<IPersonalData> = () => {
 
   const onSubmitHandler = useCallback(
     (data: any) => {
+      console.log(userData)
+
       const id = userData?.id
+      console.log(id)
       dispatch({ type: sagaActions.UPDATE_USER_SAGA, payload: { ...data, id } })
       resetField('password')
       resetField('confirmPassword')
-      console.log(data)
     },
-    [resetField, dispatch],
+    [resetField, dispatch, userData],
   )
 
   return (
@@ -120,6 +129,8 @@ const PersonalData: FC<IPersonalData> = () => {
                 {...register('fullName')}
                 name="fullName"
                 type="text"
+                value={formDataName}
+                onChange={e => handleChangeName(e)}
                 fullWidth
                 id="outlined-basic"
                 variant="outlined"
@@ -129,7 +140,8 @@ const PersonalData: FC<IPersonalData> = () => {
                 {...register('email')}
                 name="email"
                 type="email"
-                value={userData?.email}
+                value={formDataEmail}
+                onChange={e => handleChangeEmail(e)}
                 required
                 fullWidth
                 id="outlined-basic"
@@ -141,6 +153,8 @@ const PersonalData: FC<IPersonalData> = () => {
                 {...register('phone')}
                 name="phone"
                 type="text"
+                value={formDataPhone}
+                onChange={e => handleChangePhone(e)}
                 fullWidth
                 id="outlined-basic"
                 variant="outlined"

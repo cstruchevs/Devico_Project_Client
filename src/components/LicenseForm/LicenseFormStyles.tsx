@@ -1,9 +1,16 @@
 import { Divider, FormControlLabel, Stack, styled, Typography } from '@mui/material'
 import UploadFileIcon from '@mui/icons-material/UploadFile'
 
-export const MainStackForm = styled(Stack)({
+export const MainStackForm = styled(Stack)(({ theme }) => ({
   width: '100%',
-})
+  display: 'flex',
+  flexDirection: 'row',
+  gap: '20px',
+  [theme.breakpoints.down('md')]: {
+    flexDirectyon: 'column',
+    gap: '0px'
+  },
+}))
 
 export const StackLicenseForm = styled(Stack)({
   height: '500px',

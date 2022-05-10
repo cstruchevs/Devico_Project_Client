@@ -2,7 +2,6 @@ import { call, takeEvery, put } from 'redux-saga/effects'
 import { authActions } from './auth'
 import { sagaActions } from './sagaActions'
 import axios from 'axios'
-import { useSelector } from 'react-redux'
 
 const addUserToLocalStorage = ({ user, token }) => {
   localStorage.setItem('user', JSON.stringify(user))
@@ -86,6 +85,7 @@ export function* updateUserSaga(action) {
     })
     const { user, token } = data.data
     yield put(setUser({ user, token }))
+    addUserToLocalStorage({ user, token })
   } catch (error) {
     console.log(error)
   }

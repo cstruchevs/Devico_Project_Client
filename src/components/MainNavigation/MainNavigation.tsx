@@ -19,17 +19,17 @@ import React, { FC, memo, useCallback } from 'react'
 import { RootState } from '../../store'
 import { useDispatch, useSelector } from 'react-redux'
 import { uiActions } from '../../store/ui-slice'
-import { authActions} from '../../store/auth'
+import { authActions } from '../../store/auth'
 import { IUserInterface } from '../../store/auth'
+import checkLocalStorage from '../../services/checkLocalStorage'
 
 interface IMainNavigation {}
 
 const MainNavigation: FC<IMainNavigation> = () => {
   const dispatch = useDispatch()
-
-  const [anchorEl, setAnchorEl] = React.useState<SVGSVGElement | null>(null)
   const user = useSelector<RootState, IUserInterface | null>(state => state.auth.user)
-
+  const userLocalStorage = checkLocalStorage()
+  const [anchorEl, setAnchorEl] = React.useState<SVGSVGElement | null>(null)
   const handleClick = (event: React.MouseEvent<SVGSVGElement>) => {
     setAnchorEl(event.currentTarget)
   }
@@ -57,7 +57,7 @@ const MainNavigation: FC<IMainNavigation> = () => {
       <StyledAppBar>
         <StyledInnerWarapperBox>
           <StyledMenuBoxNav pr={1} pl={1}>
-            {user && (
+            {(user || userLocalStorage) && (
               <StyledAuthStackWrapper gap={1}>
                 <NotificationsNoneOutlinedIcon sx={{ height: '43px' }} />
                 <StyledNotificationDivider orientation="vertical" />
@@ -79,7 +79,7 @@ const MainNavigation: FC<IMainNavigation> = () => {
               }}
             >
               <StyledPopoverStack>
-                {user ? (
+                {(user || userLocalStorage) ? (
                   <>
                     <StyledButton size="medium" href="/profile">
                       <StyledLink to="/profile">My Profile</StyledLink>{' '}
@@ -87,7 +87,9 @@ const MainNavigation: FC<IMainNavigation> = () => {
                     <StyledButton size="medium" href="/events">
                       <StyledLink to="/events"> My Events</StyledLink>
                     </StyledButton>
-                    <StyledButton onClick={logOutUser} size="medium">Sign Out</StyledButton>
+                    <StyledButton onClick={logOutUser} size="medium">
+                      Sign Out
+                    </StyledButton>
                   </>
                 ) : (
                   <>

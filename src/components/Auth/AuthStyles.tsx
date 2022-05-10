@@ -24,14 +24,12 @@ export const StyledAuthBoxRecPass = styled(Button)({
 export const ConfirmStyledButton = styled(Button)({
   margin: 'auto',
   width: '80%',
-  backgroundColor: '#6A6968',
   color: '#fff',
   height: '33px',
   borderRadius: '0px',
   border: '1px solid black',
   fontSize: '13px',
   '&:hover': {
-    backgroundColor: '#6A6968',
     color: 'black',
     border: '1px solid black',
   },
