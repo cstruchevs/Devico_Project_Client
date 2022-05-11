@@ -21,6 +21,7 @@ const PageRoutes: FC<IPageRoutes> = () => {
         <Route path="/" element={<WelcomePage />} />
         <Route path="/profile" element={(user || userLocalStorage) ? <ProfilePage/> : <Navigate to="/" />}/> 
         <Route path="/profile/license" element={(user || userLocalStorage) ? <LicensePage/> : <Navigate to="/" />}/>
+        {/* <Route path="/recover-password/:id/:token" element={}/>  */}
         <Route path="*" element={<NoPage />} />
       </Routes>
     </Suspense>

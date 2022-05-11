@@ -3,6 +3,7 @@ import { authActions } from './auth'
 import { newsActions } from './news'
 import { sagaActions } from './sagaActions'
 import axios from 'axios'
+import callApi from '../services/callApi'
 
 const addUserToLocalStorage = ({ user, token }) => {
   localStorage.setItem('user', JSON.stringify(user))
@@ -14,7 +15,7 @@ const { setNews } = newsActions
 export function* userSetupSaga(action) {
   try {
     const data = yield call(() => {
-      return axios.post('http://localhost:5000/register', { ...action.payload })
+      return callApi.post('/register', { ...action.payload })
     })
     console.log(data)
     const { user, token } = data.data
@@ -28,7 +29,7 @@ export function* userLoginSaga(action) {
   try {
     console.log({ ...action.payload })
     const data = yield call(() => {
-      return axios.post('http://localhost:5000/login', { ...action.payload })
+      return callApi.post('/login', { ...action.payload })
     })
     console.log(data)
     const { user, token } = data.data
@@ -43,7 +44,7 @@ export function* userLoginSaga(action) {
 export function* addCarSaga(action) {
   try {
     const data = yield call(() => {
-      return axios.post('http://localhost:5000/cars/post', { ...action.payload })
+      return callApi.post('/cars/post', { ...action.payload })
     })
     console.log(`Data`, data.data)
     const fetchedData = data.data
@@ -56,7 +57,7 @@ export function* addCarSaga(action) {
 export function* updateCarSaga(action) {
   try {
     const data = yield call(() => {
-      return axios.patch('http://localhost:5000/cars/update', { ...action.payload })
+      return callApi.patch('/cars/update', { ...action.payload })
     })
     yield put(setCar(data.data))
   } catch (error) {
@@ -69,8 +70,8 @@ export function* getCarSaga(action) {
     console.log(action.payload.id)
     const userId = action.payload.id
     const data = yield call(() => {
-      return axios.get(
-        `http://localhost:5000/cars/${userId}`,
+      return callApi.get(
+        `/cars/${userId}`,
         { id: userId },
         {
           params: {
@@ -109,7 +110,7 @@ export function* updateUserSaga(action) {
   try {
     console.log({ ...action.payload })
     const data = yield call(() => {
-      return axios.patch('http://localhost:5000/update', { ...action.payload })
+      return callApi.patch('/update', { ...action.payload })
     })
     const { user, token } = data.data
     yield put(setUser({ user, token }))
@@ -122,7 +123,7 @@ export function* updateUserSaga(action) {
 export function* getNewsSaga(action) {
   try {
     const data = yield call(() => {
-      return axios.get(`http://localhost:5000/news`)
+      return callApi.get(`/news`)
     })
     yield put(setNews(data.data))
   } catch (error) {
@@ -135,8 +136,8 @@ export function* getDriversDataSaga(action) {
     console.log({ ...action.payload })
     const data = yield call(() => {
       const id = action.payload.id
-      return axios.get(
-        `http://localhost:5000/driversData/${id}`,
+      return callApi.get(
+        `/driversData/${id}`,
         {
           params: {
             id: id,
@@ -155,7 +156,7 @@ export function* postDriversDataSaga(action) {
   try {
     console.log({ ...action.payload })
     const data = yield call(() => {
-      return axios.post('http://localhost:5000/driversData', { ...action.payload })
+      return callApi.post('/driversData', { ...action.payload })
     })
     yield put(setDriversData(data.data))
   } catch (error) {
