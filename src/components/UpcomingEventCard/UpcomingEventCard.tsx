@@ -25,10 +25,11 @@ interface UpcomingEventCardProps {
   discipline: string
   status: string
   series: string
-  eventId?: number
+  eventId?: string
   button?: JSX.Element
   mark?: string
   markColor?: string
+  linkShow?: boolean
 }
 
 const UpcomingEventCard: FC<UpcomingEventCardProps> = ({
@@ -44,6 +45,7 @@ const UpcomingEventCard: FC<UpcomingEventCardProps> = ({
   button,
   markColor,
   mark,
+  linkShow,
 }) => {
   return (
     <UpcomingEventCardStyled
@@ -70,8 +72,8 @@ const UpcomingEventCard: FC<UpcomingEventCardProps> = ({
       </CardContentStyled>
 
       <ActionStackStyled>
-        <LinkStyled href={`${eventId}`} underline="hover" rel="noreferrer">
-          View details
+        <LinkStyled to={`/event/${eventId}`} rel="noreferrer">
+          {linkShow && 'View details'}
         </LinkStyled>
         {button}
       </ActionStackStyled>

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import AllEventsPage from '../pages/AllEventsPage/AllEventsPage'
 import LicensePage from '../pages/LicensePage/LicensePage'
+import SingleEventPage from '../pages/SingleEventPage/SingleEventPage'
 import checkLocalStorage from '../services/checkLocalStorage'
 import { RootState } from '../store'
 import { IUserInterface } from '../store/auth'
@@ -22,6 +23,7 @@ const PageRoutes: FC<IPageRoutes> = () => {
       <Routes>
         <Route path="/" element={<WelcomePage />} />
         <Route path="/events" element={<AllEventsPage/>}/> 
+        <Route path="/event/:id" element={<SingleEventPage/>}/> 
         <Route path="/profile" element={(user || userLocalStorage) ? <ProfilePage/> : <Navigate to="/" />}/> 
         <Route path="/profile/license" element={(user || userLocalStorage) ? <LicensePage/> : <Navigate to="/" />}/>
         <Route path="*" element={<NoPage />} />

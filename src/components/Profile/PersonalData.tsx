@@ -46,6 +46,7 @@ const PersonalData: FC<IPersonalData> = () => {
   const [formDataName, setFormDataName] = useState(userData?.fullName)
   const [formDataPhone, setFormDataPhone] = useState(userData?.phone)
   const [formDataEmail, setFormDataEmail] = useState(userData?.email)
+  const [formDataPicture, setFormDataPicture] = useState('')
 
   const handleChangeName = (e: any) => {
     let value = e.target.value
@@ -58,6 +59,10 @@ const PersonalData: FC<IPersonalData> = () => {
   const handleChangeEmail = (e: any) => {
     let value = e.target.value
     setFormDataEmail(value)
+  }
+  const handleChangeAvatar = (e: any) => {
+    let value = e.target.value
+    setFormDataPicture(value)
   }
 
   const [passValue, setValues] = useState({
@@ -84,10 +89,9 @@ const PersonalData: FC<IPersonalData> = () => {
 
   const onSubmitHandler = useCallback(
     (data: any) => {
-      console.log(userData)
+      console.log(data)
 
       const id = userData?.id
-      console.log(id)
       dispatch({ type: sagaActions.UPDATE_USER_SAGA, payload: { ...data, id } })
       resetField('password')
       resetField('confirmPassword')
@@ -115,9 +119,10 @@ const PersonalData: FC<IPersonalData> = () => {
                   id="icon-button-file"
                   type="file"
                   name="picture"
+                  onChange={handleChangeAvatar}
                 />
                 <IconButton color="primary" aria-label="upload picture" component="span">
-                  <Avatar alt="Remy Sharp" sx={{ height: '180px', width: '180px' }} />
+                  <Avatar src={formDataPicture} sx={{ height: '180px', width: '180px' }} />
                 </IconButton>
               </label>
             </StyledBadgeAvatar>

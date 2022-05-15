@@ -1,4 +1,5 @@
-import { styled, Paper, Card, Typography, CardContent, Link, Stack, Box } from '@mui/material'
+import { styled, Paper, Card, Typography, CardContent, Stack, Box } from '@mui/material'
+import { Link } from 'react-router-dom'
 
 export const UpcomingEventCardStyled = styled(Card)(({ theme }) => ({
   paddingInline: '15px',
@@ -65,9 +66,11 @@ export const InfoStyled = styled(Typography)(({ theme }) => ({
 export const LinkStyled = styled(Link)(({ theme }) => ({
   color: theme.palette.common.black,
   paddingBlock: '10px',
+  textDecoration: 'none',
   fontSize: '16px',
   '&:hover': {
     cursor: 'pointer',
+    textDecoration: 'underline',
   },
 }))
 
