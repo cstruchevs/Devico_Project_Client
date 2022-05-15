@@ -61,8 +61,8 @@ const PersonalData: FC<IPersonalData> = () => {
     setFormDataEmail(value)
   }
   const handleChangeAvatar = (e: any) => {
-    let value = e.target.value
-    setFormDataPicture(value)
+    let value = e.target.files[0]
+    setFormDataPicture(URL.createObjectURL(value))
   }
 
   const [passValue, setValues] = useState({
