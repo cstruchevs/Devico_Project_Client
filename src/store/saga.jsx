@@ -67,9 +67,15 @@ export function* deleteCarSaga(action) {
   try {
     console.log({ ...action.payload })
     const data = yield call(() => {
-      return axios.post('http://localhost:5000/cars/update', { ...action.payload }, {params: {
-        id: action.id
-      }})
+      return axios.post(
+        'http://localhost:5000/cars/update',
+        { ...action.payload },
+        {
+          params: {
+            id: action.id,
+          },
+        },
+      )
     })
     yield put(setCar(data.data))
   } catch (error) {
@@ -79,9 +85,21 @@ export function* deleteCarSaga(action) {
 
 export function* updateUserSaga(action) {
   try {
-    console.log({ ...action.payload })
+    const reqData = {
+      ...action.payload,
+    }
+    reqData.picture = action.payload.picture[0]
+
     const data = yield call(() => {
-      return axios.patch('http://localhost:5000/update', { ...action.payload })
+      return axios.patch(
+        'http://localhost:5000/update',
+        {
+          ...reqData
+        },
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        },
+      )
     })
     const { user, token } = data.data
     yield put(setUser({ user, token }))

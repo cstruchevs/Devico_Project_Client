@@ -7,7 +7,7 @@ import uiSlice from './ui-slice'
 export type RootState = ReturnType<typeof store.getState>
 
 let sagaMiddleware = createSagaMiddleware()
-const middleware = [...getDefaultMiddleware({ thunk: false }), sagaMiddleware]
+const middleware = [...getDefaultMiddleware({ thunk: false, serializableCheck: false }), sagaMiddleware]
 
 const store = configureStore({
   reducer: { ui: uiSlice.reducer, auth: authSlice.reducer },

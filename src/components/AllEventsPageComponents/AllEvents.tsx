@@ -72,7 +72,7 @@ const AllEvents = () => {
             <SortIcon />
             <Typography>Sort</Typography>
           </ToolButtonStyled>
-          <ToolButtonStyled>
+          <ToolButtonStyled >
             <FilterAltIcon />
             <Typography>Filter</Typography>
           </ToolButtonStyled>
