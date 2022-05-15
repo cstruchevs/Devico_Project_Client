@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Card,
   CardContent,
@@ -68,22 +69,26 @@ const LicenseForm: FC<ILicenseForm> = () => {
     console.log(data)
   }, [])
 
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone()
-  const [selectedFile, setSelecetedFile] = useState<File>()
+  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
+    accept: {
+      'image/jpeg': [],
+      'image/png': []
+    }
+  })
+  const [selectedFile, setSelecetedFile] = useState<string>()
 
   useMemo(() => {
     if (acceptedFiles[0]) {
-      setSelecetedFile(acceptedFiles.at(-1))
+      const previewImg: File = acceptedFiles.at(-1) as File
+      setSelecetedFile(URL.createObjectURL(previewImg))
     }
   }, [acceptedFiles])
-
 
   return (
     <Box pt={4}>
       <form onSubmit={handleSubmit(onSubmitHandler)}>
         <MainStackForm direction="row" gap={3}>
-          <Stack direction="column" flex={1}>
-            {/* <FileUploader handleChange={handleChange} name="file" types={fileTypes} /> */}
+          <Stack direction="column" flex={1} alignItems={"center"}>
             <div {...getRootProps({ className: 'dropzone' })}>
               <input {...getInputProps()} />
               <UploadFileIconStyled />
@@ -93,6 +98,11 @@ const LicenseForm: FC<ILicenseForm> = () => {
                 </UploadTextStyled>
                 <Typography variant="body2">Format only jpeg or png</Typography>
               </Box>
+              <img
+                className={selectedFile ? 'imagePreview' : 'imageHidden'}
+                src={selectedFile}
+                alt="preview"
+              />
             </div>
           </Stack>
           <Stack direction="column" flex={2}>
