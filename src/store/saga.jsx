@@ -88,13 +88,14 @@ export function* updateUserSaga(action) {
     const reqData = {
       ...action.payload,
     }
-    reqData.picture = action.payload.picture[0]
+    reqData.picture = action.payload.avatar[0]
 
+    console.log(reqData)
     const data = yield call(() => {
       return axios.patch(
         'http://localhost:5000/update',
         {
-          ...reqData
+          ...reqData,
         },
         {
           headers: { 'Content-Type': 'multipart/form-data' },

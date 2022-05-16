@@ -13,24 +13,15 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { StyledBoxConfirmButton, StyledTextField, StyledTypography } from '../Auth/AuthStyles'
-import React, { FC, memo, useCallback, useState } from 'react'
+import React, { FC, memo, useCallback, useEffect, useState } from 'react'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store'
 import { sagaActions } from '../../store/sagaActions'
 import { useDispatch } from 'react-redux'
+import axios from 'axios'
 
 const schema = yup.object().shape({
-  picture: yup
-    .mixed()
-    .required('You need to provide a file')
-    .test('fileSize', 'The file is too large', value => {
-      return value && value[0].size <= 2000000
-    })
-    .test('type', 'We only support jpeg', value => {
-      return value && value[0].type === 'image/jpeg'
-    })
-    .nullable(true),
   fullName: yup.string().min(3).nullable(true),
   email: yup.string().email().required('Write correct email'),
   password: yup.string().min(8).max(32).nullable(true),
@@ -47,6 +38,7 @@ const PersonalData: FC<IPersonalData> = () => {
   const [formDataPhone, setFormDataPhone] = useState(userData?.phone)
   const [formDataEmail, setFormDataEmail] = useState(userData?.email)
   const [formDataPicture, setFormDataPicture] = useState('')
+  const [previewPicture, setPreviewPicture] = useState('')
 
   const handleChangeName = (e: any) => {
     let value = e.target.value
@@ -61,8 +53,10 @@ const PersonalData: FC<IPersonalData> = () => {
     setFormDataEmail(value)
   }
   const handleChangeAvatar = (e: any) => {
-    let value = e.target.files[0]
-    setFormDataPicture(URL.createObjectURL(value))
+    // let value = e.target.value
+    // console.log(e.target.files)
+    setPreviewPicture(URL.createObjectURL(e.target.files[0]))
+    setFormDataPicture(e.target.files)
   }
 
   const [passValue, setValues] = useState({
@@ -89,15 +83,28 @@ const PersonalData: FC<IPersonalData> = () => {
 
   const onSubmitHandler = useCallback(
     (data: any) => {
-      console.log(data)
+      console.log('profile', data)
 
       const id = userData?.id
-      dispatch({ type: sagaActions.UPDATE_USER_SAGA, payload: { ...data, id } })
+      dispatch({
+        type: sagaActions.UPDATE_USER_SAGA,
+        payload: { ...data, id, avatar: formDataPicture },
+      })
       resetField('password')
       resetField('confirmPassword')
     },
-    [resetField, dispatch, userData],
+    [resetField, dispatch, userData, formDataPicture],
   )
+
+  const getUserInfoHandler = async () => {
+    const req: any = await (axios.get('http://localhost:5000/user') as any)
+
+    setPreviewPicture(`http://localhost:5000/images/${req.data.data.avatar}`)
+  }
+
+  useEffect(() => {
+    getUserInfoHandler()
+  }, [])
 
   return (
     <>
@@ -114,7 +121,6 @@ const PersonalData: FC<IPersonalData> = () => {
             >
               <label htmlFor="icon-button-file">
                 <InputFile
-                  {...register('picture')}
                   accept="image/*"
                   id="icon-button-file"
                   type="file"
@@ -122,7 +128,7 @@ const PersonalData: FC<IPersonalData> = () => {
                   onChange={handleChangeAvatar}
                 />
                 <IconButton color="primary" aria-label="upload picture" component="span">
-                  <Avatar src={formDataPicture} sx={{ height: '180px', width: '180px' }} />
+                  <Avatar src={previewPicture} sx={{ height: '180px', width: '180px' }} />
                 </IconButton>
               </label>
             </StyledBadgeAvatar>
