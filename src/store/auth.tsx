@@ -32,11 +32,18 @@ export interface IDriversData {
   dob?: Date
 }
 
+export interface ILicenseType {
+  name?: string
+  cost?: string
+  description?: string
+}
+
 interface IAuthSlice {
   user: IUserInterface | null
   token: string
   cars: [] | ICar[]
   driversData: {} | IDriversData
+  licenseTypes: ILicenseType[]
 }
 
 const initialState: IAuthSlice = {
@@ -44,6 +51,7 @@ const initialState: IAuthSlice = {
   token: '',
   cars: [],
   driversData: {},
+  licenseTypes: []
 }
 
 const authSlice = createSlice({
@@ -56,6 +64,7 @@ const authSlice = createSlice({
     },
     logOutUser(state) {
       localStorage.removeItem('user')
+      localStorage.removeItem('token')
       state.user = null
     },
     setCar(state, action: any) {
@@ -66,6 +75,9 @@ const authSlice = createSlice({
     },
     setDriversData(state, action: any) {
       return { ...state, driversData: { ...action.payload } }
+    },
+    setLicenseTypeData(state, action: any) {
+      return { ...state, licenseTypes: [ ...action.payload ] }
     },
   },
 })

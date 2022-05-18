@@ -1,5 +1,12 @@
-import { AppBar, Box, Button, Divider, Popover, Stack, styled } from '@mui/material'
+import { AppBar, Box, Button, Divider, Popover, Stack, styled, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
+
+export const StyledPageTitle = styled(Typography)(({ theme }) => ({
+  color: 'black',
+  fontSize: '21px',
+  fontWeight: '500',
+  paddingLeft: '15px',
+}))
 
 export const StyledButton = styled(Button)(({ theme }) => ({
   color: theme.palette.primary.dark,
@@ -21,13 +28,84 @@ export const StyledMenuBoxNav = styled(Box)(({ theme }) => ({
 
 export const StyledInnerWarapperBox = styled(Box)(({ theme }) => ({
   display: 'flex',
-  justifyContent: 'flex-end',
+  justifyContent: 'space-between',
+  alignItems: 'center',
   height: '100%',
 }))
 
+export const StyledNotificationBox = styled(Stack)(({ theme }) => ({
+  position: 'relative',
+  mt: '10px',
+}))
+
+export const StyledNotificationsBox = styled(Box)(({ theme }) => ({
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: 15,
+}))
+
+export const StyledNotificationsTypography = styled(Typography)(({ theme }) => ({
+  fontSize: '14px',
+  marginTop: '8px',
+  textAlign: 'center'
+}))
+
+export const StyledNotificationsMainTypography = styled(Typography)(({ theme }) => ({
+  fontSize: '19px',
+  fontWeight: '300',
+}))
+
+export const StyledNotificationsMarkTypography = styled(Typography)(({ theme }) => ({
+  fontSize: '14px',
+  textDecoration: "underline",
+  color: "blue",
+  '&:hover': {
+    cursor: 'pointer',
+  },
+}))
+
+export const StyledNotificaionIconBox = styled(Box)(({ theme }) => ({
+  width: '70px',
+  height: '70px',
+  background: 'grey',
+  borderRadius: '10px',
+  transform: 'translate(5%, -55%)',
+  display: 'flex',
+  justifyContent: 'space-evenly',
+  alignItems: 'center',
+  boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px !important',
+  marginBottom: '-25px',
+}))
+
+export const StyledNotificaionDivider = styled(Divider)(({ theme }) => ({
+  height: '2px',
+}))
+
+export const StyledNotificationInnerBox = styled(Box)(({ theme }) => ({
+  width: '370px',
+  height: '350px',
+}))
+
+export const StyledNotificationInnerHeaderStack = styled(Stack)(({ theme }) => ({
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: "center",
+  padding: 9,
+  paddingLeft: 15,
+  paddingRight: 15,
+}))
+
+export const StyledNotificationPopover = styled(Popover)(({ theme }) => ({
+  backgroundColor: 'transparent',
+}))
+
 export const StyledLink = styled(Link)(({ theme }) => ({
-  textDecoration: "none",
-  color: theme.palette.primary.dark
+  textDecoration: 'none',
+  color: theme.palette.primary.dark,
 }))
 
 export const StyledOuterWarapperBox = styled(Box)(({ theme }) => ({
@@ -39,7 +117,9 @@ export const StyledOuterWarapperBox = styled(Box)(({ theme }) => ({
 
 export const StyledAppBar = styled(AppBar)(({ theme }) => ({
   background: 'transparent',
+  marginLeft: 'auto',
   height: '48px',
+  width: 'calc(100% - 70px)',
   left: 0,
   boxShadow: 'none',
   backdropFilter: 'blur( 2.5px )',
@@ -59,7 +139,7 @@ export const StyledAuthStack = styled(Stack)({
 })
 
 export const StyledPopover = styled(Popover)({
-  marginTop: '10.1px',
+  marginTop: '12.1px',
 })
 
 export const StyledPopoverStack = styled(Stack)({

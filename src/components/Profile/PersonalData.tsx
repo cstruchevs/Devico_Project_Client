@@ -1,4 +1,4 @@
-import { Avatar, IconButton, InputAdornment } from '@mui/material'
+import { Avatar, IconButton, InputAdornment, Tooltip } from '@mui/material'
 import {
   BoxAvatar,
   BoxPersonalDataForm,
@@ -19,33 +19,49 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../store'
 import { sagaActions } from '../../store/sagaActions'
 import { useDispatch } from 'react-redux'
+import InfoIcon from '@mui/icons-material/Info'
 
-const schema = yup.object().shape({
-  picture: yup
-    .mixed()
-    .required('You need to provide a file')
-    .test('fileSize', 'The file is too large', value => {
-      return value && value[0].size <= 2000000
+const schema = yup.object().shape(
+  {
+    picture: yup
+      .mixed()
+      .test('fileSize', 'The file is too large', value => {
+        return value && value[0].size <= 2000000
+      })
+      .test('type', 'We only support jpeg', value => {
+        return value && value[0].type === 'image/jpeg'
+      })
+      .nullable(true),
+    fullName: yup.string().when('fullName', {
+      is: (fullName: string) => fullName?.length > 0,
+      then: yup.string().min(8, 'fullName must be at least 3 characters'),
+    }),
+    email: yup.string().email().required('Write correct email'),
+    password: yup.string().when('password', {
+      is: (password: string) => password?.length > 0,
+      then: yup.string().min(8, 'Password must be at least 8 characters'),
+    }),
+    confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
+    phone: yup.string().when('phone', {
+      is: (phone: string) => phone?.length > 0,
+      then: yup.string().min(10, 'Phone must be at least 10 characters'),
     })
-    .test('type', 'We only support jpeg', value => {
-      return value && value[0].type === 'image/jpeg'
-    })
-    .nullable(true),
-  fullName: yup.string().min(3).nullable(true),
-  email: yup.string().email().required('Write correct email'),
-  password: yup.string().min(8).max(32).nullable(true),
-  confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
-  phone: yup.string().min(10).nullable(true),
-})
+  },
+  [
+    ['fullName', 'fullName'],
+    ['password', 'password'],
+    ['phone', 'phone']
+  ]
+)
 
 interface IPersonalData {}
 
 const PersonalData: FC<IPersonalData> = () => {
   const dispatch = useDispatch()
   const userData = useSelector((state: RootState) => state.auth.user)
-  const [formDataName, setFormDataName] = useState(userData?.fullName)
-  const [formDataPhone, setFormDataPhone] = useState(userData?.phone)
-  const [formDataEmail, setFormDataEmail] = useState(userData?.email)
+  const [formDataName, setFormDataName] = useState(userData?.fullName ? userData?.fullName : '')
+  const [formDataPhone, setFormDataPhone] = useState(userData?.phone ? userData?.phone : '')
+  const [formDataEmail, setFormDataEmail] = useState(userData?.email ? userData?.email : '')
 
   const handleChangeName = (e: any) => {
     let value = e.target.value
@@ -79,7 +95,7 @@ const PersonalData: FC<IPersonalData> = () => {
     resetField,
   } = useForm({
     resolver: yupResolver(schema),
-    mode: 'onChange',
+    mode: 'onSubmit',
   })
 
   const onSubmitHandler = useCallback(
@@ -113,6 +129,7 @@ const PersonalData: FC<IPersonalData> = () => {
                   accept="image/*"
                   id="icon-button-file"
                   type="file"
+                  defaultValue=""
                   name="picture"
                 />
                 <IconButton color="primary" aria-label="upload picture" component="span">
@@ -130,9 +147,19 @@ const PersonalData: FC<IPersonalData> = () => {
                 type="text"
                 value={formDataName}
                 onChange={e => handleChangeName(e)}
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                InputProps={
+                  errors.fullName && {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Tooltip title={errors.fullName?.message}>
+                          <IconButton edge="end">
+                            <InfoIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </InputAdornment>
+                    ),
+                  }
+                }
               />
               <StyledTypography>EMAIL</StyledTypography>
               <StyledTextField
@@ -141,11 +168,20 @@ const PersonalData: FC<IPersonalData> = () => {
                 type="email"
                 value={formDataEmail}
                 onChange={e => handleChangeEmail(e)}
-                required
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
                 error={Boolean(errors.email)}
+                InputProps={
+                  errors.email && {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Tooltip title={errors.email?.message}>
+                          <IconButton edge="end">
+                            <InfoIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </InputAdornment>
+                    ),
+                  }
+                }
               />
               <StyledTypography>PHONE</StyledTypography>
               <StyledTextField
@@ -154,19 +190,26 @@ const PersonalData: FC<IPersonalData> = () => {
                 type="text"
                 value={formDataPhone}
                 onChange={e => handleChangePhone(e)}
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
                 error={Boolean(errors.phone)}
+                InputProps={
+                  errors.phone && {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Tooltip title={errors.phone?.message}>
+                          <IconButton edge="end">
+                            <InfoIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </InputAdornment>
+                    ),
+                  }
+                }
               />
               <StyledTypography>NEW PASSWORD</StyledTypography>
               <StyledTextField
                 {...register('password')}
                 name="password"
                 type={passValue.showPassword ? 'text' : 'password'}
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
                 error={Boolean(errors.password)}
                 InputProps={{
                   endAdornment: (
@@ -188,9 +231,6 @@ const PersonalData: FC<IPersonalData> = () => {
                 {...register('confirmPassword')}
                 name="confirmPassword"
                 type="password"
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
                 error={Boolean(errors.confirmPassword)}
               />
               <StyledBoxConfirmButton>

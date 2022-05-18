@@ -1,6 +1,7 @@
 import { call, takeEvery, put } from 'redux-saga/effects'
 import { authActions } from './auth'
 import { newsActions } from './news'
+import { uiActions } from './ui-slice'
 import { sagaActions } from './sagaActions'
 import axios from 'axios'
 import callApi from '../services/callApi'
@@ -9,17 +10,18 @@ const addUserToLocalStorage = ({ user, token }) => {
   localStorage.setItem('user', JSON.stringify(user))
   localStorage.setItem('token', token)
 }
-const { setUser, setCar, addCar, setDriversData } = authActions
+const { setUser, setCar, addCar, setDriversData, setLicenseTypeData } = authActions
 const { setNews } = newsActions
+const { toggleCongratAuth } = uiActions
 
 export function* userSetupSaga(action) {
   try {
     const data = yield call(() => {
       return callApi.post('/register', { ...action.payload })
     })
-    console.log(data)
     const { user, token } = data.data
     yield put(setUser({ user, token }))
+    yield put(toggleCongratAuth())
     addUserToLocalStorage({ user, token })
   } catch (error) {
     console.log(error)
@@ -28,14 +30,16 @@ export function* userSetupSaga(action) {
 export function* userLoginSaga(action) {
   try {
     console.log({ ...action.payload })
+    console.log(action.payload.checked)
     const data = yield call(() => {
       return callApi.post('/login', { ...action.payload })
     })
-    console.log(data)
     const { user, token } = data.data
-    console.log({ user, token })
     yield put(setUser({ user, token }))
-    addUserToLocalStorage({ user, token })
+    yield put(toggleCongratAuth())
+    if (action.payload.checked) {
+      addUserToLocalStorage({ user, token })
+    }
   } catch (error) {
     console.log(error)
   }
@@ -136,14 +140,11 @@ export function* getDriversDataSaga(action) {
     console.log({ ...action.payload })
     const data = yield call(() => {
       const id = action.payload.id
-      return callApi.get(
-        `/driversData/${id}`,
-        {
-          params: {
-            id: id,
-          },
+      return callApi.get(`/driversData/${id}`, {
+        params: {
+          id: id,
         },
-      )
+      })
     })
     console.log(data)
     yield put(setDriversData(data.data))
@@ -164,6 +165,48 @@ export function* postDriversDataSaga(action) {
   }
 }
 
+export function* getLicenses(action) {
+  try {
+    console.log({ ...action.payload })
+    const data = yield call(() => {
+      return callApi.get('/license/licenseType')
+    })
+    yield put(setLicenseTypeData(data.data))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export function* postLicense(action) {
+  try {
+    console.log({ ...action.payload })
+    const data = yield call(() => {
+      return callApi.post('/license', { ...action.payload })
+    })
+    console.log(data)
+    console.log(data.data.id)
+    const datamember = yield call(() => {
+      return callApi.post('/license/registerToLicense', {
+        licenseId: data.data.id,
+        id: action.payload.userDataId,
+      })
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export function* registerToLicense(action) {
+  try {
+    console.log({ ...action.payload })
+    const data = yield call(() => {
+      return callApi.post('/license', { ...action.payload })
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export default function* rootSaga() {
   yield takeEvery(sagaActions.USER_SETUP_SAGA, userSetupSaga)
   yield takeEvery(sagaActions.USER_LOGIN_SAGA, userLoginSaga)
@@ -175,4 +218,7 @@ export default function* rootSaga() {
   yield takeEvery(sagaActions.GET_NEWS_SAGA, getNewsSaga)
   yield takeEvery(sagaActions.GET_DRIVERS_DATA_SAGA, getDriversDataSaga)
   yield takeEvery(sagaActions.POST_DRIVERS_DATA_SAGA, postDriversDataSaga)
+  yield takeEvery(sagaActions.GET_LICENSES, getLicenses)
+  yield takeEvery(sagaActions.POST_LICENSE, postLicense)
+  yield takeEvery(sagaActions.REGISTER_TO_LICENSE, registerToLicense)
 }

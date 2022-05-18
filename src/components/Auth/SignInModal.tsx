@@ -1,4 +1,4 @@
-import { Checkbox, Dialog, DialogContent, Divider, Stack, Typography, Box } from '@mui/material'
+import { Checkbox, Dialog, DialogContent, Divider, Stack, Typography, Box, InputAdornment, Tooltip, IconButton } from '@mui/material'
 import React, { memo, useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { uiActions } from '../../store/ui-slice'
@@ -6,6 +6,7 @@ import { RootState } from '../../store'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { sagaActions } from '../../store/sagaActions'
+import InfoIcon from '@mui/icons-material/Info'
 import * as yup from 'yup'
 import {
   StyledButton,
@@ -37,7 +38,7 @@ const SignIn = () => {
     reset,
   } = useForm({
     resolver: yupResolver(schema),
-    mode: 'onChange',
+    mode: 'onSubmit'
   })
 
   const [checked, setChecked] = useState(true)
@@ -54,13 +55,11 @@ const SignIn = () => {
 
   const onSubmitHandler = useCallback(
     async (data: object) => {
-      console.log({ data })
-      dispatch({ type: sagaActions.USER_LOGIN_SAGA, payload: data })
-      dispatch(uiActions.toggleCongratAuth())
+      dispatch({ type: sagaActions.USER_LOGIN_SAGA, payload: {...data, checked} })
       reset()
       toggleHandler()
     },
-    [dispatch, reset, toggleHandler],
+    [dispatch, reset, toggleHandler, checked],
   )
 
   const changeSignHandler = useCallback(() => {
@@ -79,7 +78,7 @@ const SignIn = () => {
   }
 
   const handleChangeCheckBox = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked)
+    setChecked((prevState) => !prevState)
   }
   return (
     <>
@@ -102,22 +101,40 @@ const SignIn = () => {
                   {...register('email')}
                   name="email"
                   type="email"
-                  required
-                  fullWidth
-                  id="outlined-basic"
-                  variant="outlined"
                   error={Boolean(errors.email)}
+                  InputProps={
+                    errors.email && {
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <Tooltip title={errors.email?.message}>
+                            <IconButton edge="end">
+                              <InfoIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </InputAdornment>
+                      ),
+                    }
+                  }
                 />
                 <StyledTypography>PASSWORD*</StyledTypography>
                 <StyledTextField
                   {...register('password')}
                   name="password"
                   type="password"
-                  required
-                  fullWidth
-                  id="outlined-basic"
-                  variant="outlined"
                   error={Boolean(errors.password)}
+                  InputProps={
+                    errors.password && {
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <Tooltip title={errors.password?.message}>
+                            <IconButton edge="end">
+                              <InfoIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </InputAdornment>
+                      ),
+                    }
+                  }
                 />
               </Stack>
             </Stack>
@@ -136,7 +153,7 @@ const SignIn = () => {
               </StyledTypographyHandler>
             </StyledStackDescription>
             <StyledBoxConfirmButton>
-              <ConfirmStyledButton type="submit" disabled={checked ? false : true}>
+              <ConfirmStyledButton type="submit">
                 Sign In
               </ConfirmStyledButton>
             </StyledBoxConfirmButton>

@@ -36,6 +36,10 @@ const CarList = () => {
     console.log(lolka)
   }, [cars]) 
 
+  const log = () => {
+    console.log("asda")
+  }
+
   return (
     <SortableList
       items={lolka}
@@ -59,7 +63,7 @@ const CarList = () => {
               <SubElText>Vin number: {item.viaNumber}</SubElText>
             </StackElText>
             <StackElIcons>
-              <IconButton aria-label="delete" size="small" onClick={() => {console.log('asda')}}>
+              <IconButton aria-label="delete" size="small" onClick={() => log()}>
                 <ModeEditIcon />
               </IconButton>
               <IconButton aria-label="delete" size="small">
