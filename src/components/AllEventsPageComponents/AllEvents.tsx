@@ -13,7 +13,6 @@ import SortIcon from '@mui/icons-material/Sort'
 import FilterAltIcon from '@mui/icons-material/FilterAlt'
 import { FakeUpcomingEvents } from '../../FakeUpcomingEvents'
 import SmallEventCard from '../SmallEventCard/SmallEventCard'
-import { v4 as uuidv4 } from 'uuid'
 import BackButton from '../BackButton/BackButton'
 
 const AllEvents = () => {
@@ -81,7 +80,7 @@ const AllEvents = () => {
 
       <AllEventsStack>
         {FakeUpcomingEvents.map(event => (
-          <BowOuterStyled key={uuidv4()}>
+          <BowOuterStyled key={event.eventId}>
             <SmallEventCard {...event} button={ButtonReg} />
           </BowOuterStyled>
         ))}

@@ -13,7 +13,6 @@ import React, { FC, memo, useCallback, useMemo, useRef, useState } from 'react'
 import { TypographyInfoSub } from '../../pages/LicensePage/LicensePageStyles'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { v4 as uuidv4 } from 'uuid'
 import * as yup from 'yup'
 import { StyledTextField, StyledTypography } from '../Auth/AuthStyles'
 import {
@@ -198,7 +197,7 @@ const LicenseForm: FC<ILicenseForm> = () => {
                 DUMMY_DATA_LICENSES.map((el: any, index) => (
                   <FormControlLabelStyled
                     {...register('license')}
-                    key={uuidv4()}
+                    key={index}
                     value={el.value}
                     name="license"
                     control={<Radio />}

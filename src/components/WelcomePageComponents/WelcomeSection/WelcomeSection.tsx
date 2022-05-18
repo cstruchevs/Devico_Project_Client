@@ -21,13 +21,20 @@ import {
   WelcomSubTextStyled,
   WelcomTextStyled,
 } from './WelcomeSectionStyles'
-import { FC, memo, useCallback } from 'react'
+import { FC, memo, useCallback, useEffect, useState } from 'react'
+import { IUserInterface } from '../../../store/auth'
+import { IEvents } from '../../../pages/WelcomePage/WelcomePage'
 
-interface IWelcomeSection {}
+interface IWelcomeSection {
+  events: IEvents[]
+}
 
-const WelcomeSection: FC<IWelcomeSection> = () => {
+const WelcomeSection: FC<IWelcomeSection> = ({ events }) => {
   const dispatch = useDispatch()
-  const user = useSelector<RootState, IWelcomeSection | null>(state => state.auth.user)
+  const user = useSelector<RootState, IUserInterface | null>(state => state.auth.user)
+  const [nextEvent, setNextEvent] = useState<IEvents | null>(null)
+  const [nextEventImg, setNextEventImg] = useState<String | null>(null)
+  const [nextEventDate, setNextEventDate] = useState<String | null>(null)
 
   const toggleRegHandler = useCallback(() => {
     dispatch(uiActions.toggleReg())
@@ -40,6 +47,23 @@ const WelcomeSection: FC<IWelcomeSection> = () => {
   const toggleRecoverHandler = useCallback(() => {
     dispatch(uiActions.toggleForgetPassword())
   }, [dispatch])
+
+  const findNextEventHandler = useCallback(() => {
+    const today = new Date()
+    for (let i = 0; i < events.length; i++) {
+      if (new Date(events[i].date) > today) {
+        setNextEvent(events[i])
+        setNextEventImg(`http://localhost:5000/images/${events[i].image}`)
+        const date = new Date(events[i].date) 
+        setNextEventDate(`${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`)
+        break
+      }
+    }
+  }, [events])
+
+  useEffect(() => {
+    findNextEventHandler()
+  }, [findNextEventHandler])
 
   return (
     <SectionWrappperStyled component={'section'} id="welcome">
@@ -60,31 +84,33 @@ const WelcomeSection: FC<IWelcomeSection> = () => {
           )}
           {!user && (
             <Box mt={3} onClick={toggleRecoverHandler}>
-              <LinkStyled underline='always'>Forgot password?</LinkStyled>
+              <LinkStyled underline="always">Forgot password?</LinkStyled>
             </Box>
           )}
         </Box>
       </InfoStackStyled>
-      <ImageStackStyled>
-        <ImageBox
-          sx={{
-            backgroundImage: `url(${BgImage})`,
-          }}
-        />
-        <NextEventBoxStyled>
-          <NextEventLabelStyled>Next Event</NextEventLabelStyled>
-          <TitleStyled>AUTO.RIA Race</TitleStyled>
-          <DatePositionStackStyled>
-            <DateStyled>12.12.2021</DateStyled>
-            <PositionStyled>Kharkiv. Maidan constitution</PositionStyled>
-          </DatePositionStackStyled>
-          <Box mt={3}>
-            <EventLinkStyled underline="always" href="/">
-              View details
-            </EventLinkStyled>
-          </Box>
-        </NextEventBoxStyled>
-      </ImageStackStyled>
+      {nextEvent && (
+        <ImageStackStyled>
+          <ImageBox
+            sx={{
+              backgroundImage: `url(${nextEventImg ? nextEventImg : BgImage})`,
+            }}
+          />
+          <NextEventBoxStyled>
+            <NextEventLabelStyled>Next Event</NextEventLabelStyled>
+            <TitleStyled>{nextEvent.name}</TitleStyled>
+            <DatePositionStackStyled>
+              <DateStyled>{nextEventDate}</DateStyled>
+              <PositionStyled>{nextEvent.place}</PositionStyled>
+            </DatePositionStackStyled>
+            <Box mt={3}>
+              <EventLinkStyled underline="always" href={`/event/${nextEvent.id}`}>
+                View details
+              </EventLinkStyled>
+            </Box>
+          </NextEventBoxStyled>
+        </ImageStackStyled>
+      )}
     </SectionWrappperStyled>
   )
 }

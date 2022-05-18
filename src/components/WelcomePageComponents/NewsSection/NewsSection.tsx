@@ -5,7 +5,6 @@ import { FC, memo, useMemo } from 'react'
 import NewsCard from './NewsCard/NewsCard'
 import { DUMMY_NEWS } from './DummyNews'
 import { SampleNextArrow, SamplePrevArrow } from './NewsConfig'
-import { v4 as uuidv4 } from 'uuid';
 
 interface INewsSection {}
 
@@ -44,7 +43,7 @@ const NewsSection: FC<INewsSection> = () => {
       <Box width="100%" mt="20px">
         <Slider {...settings}>
           {DUMMY_NEWS.map((item) => (
-            <OuterBoxStyled key={uuidv4()}>
+            <OuterBoxStyled key={item.id}>
               <NewsCard {...item} />
             </OuterBoxStyled>
           ))}

@@ -5,7 +5,6 @@ import { carouselConfig } from './CarouselConfig'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import { ContainerSlideStyled, ContainerSectionStyled, MobileStepperStyled } from './CarouselStyles'
-import { v4 as uuidv4 } from 'uuid';
 interface CarouselProps {
   items: JSX.Element[]
 }
@@ -20,8 +19,8 @@ const Carousel: FC<CarouselProps> = ({ items }) => {
   return (
     <ContainerSectionStyled>
         <Slider {...carouselConfig} afterChange={changeStepperHandler}>
-          {items.map(item => (
-            <ContainerSlideStyled key={uuidv4()}>{item}</ContainerSlideStyled>
+          {items.map((item, index) => (
+            <ContainerSlideStyled key={index}>{item}</ContainerSlideStyled>
           ))}
         </Slider>
         <MobileStepperStyled
