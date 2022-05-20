@@ -37,7 +37,7 @@ const PersonalData: FC<IPersonalData> = () => {
   const [formDataName, setFormDataName] = useState(userData?.fullName)
   const [formDataPhone, setFormDataPhone] = useState(userData?.phone)
   const [formDataEmail, setFormDataEmail] = useState(userData?.email)
-  const [formDataPicture, setFormDataPicture] = useState('')
+  const [formDataPicture, setFormDataPicture] = useState<any>('')
   const [previewPicture, setPreviewPicture] = useState('')
 
   const handleChangeName = (e: any) => {
@@ -53,8 +53,6 @@ const PersonalData: FC<IPersonalData> = () => {
     setFormDataEmail(value)
   }
   const handleChangeAvatar = (e: any) => {
-    // let value = e.target.value
-    // console.log(e.target.files)
     setPreviewPicture(URL.createObjectURL(e.target.files[0]))
     setFormDataPicture(e.target.files)
   }
@@ -81,30 +79,45 @@ const PersonalData: FC<IPersonalData> = () => {
     mode: 'onChange',
   })
 
+  const onUploadAvatar = useCallback(async () => {
+    //Ask for upload url
+    const req = await axios.get(`http://localhost:5000/image/uploadUrl/avatars`)
+
+    //Upload to aws
+    let file = formDataPicture[0]
+    await axios.put(req.data.uploadURL, file)
+
+    //Change user avatar in db
+    await axios.patch(`http://localhost:5000/user/avatar`, {id: userData?.id, key: req.data.Key})
+  }, [formDataPicture, userData?.id])
+
   const onSubmitHandler = useCallback(
-    (data: any) => {
+    async (data: any) => {
       console.log('profile', data)
 
       const id = userData?.id
       dispatch({
         type: sagaActions.UPDATE_USER_SAGA,
-        payload: { ...data, id, avatar: formDataPicture },
+        payload: { ...data, id },
       })
       resetField('password')
       resetField('confirmPassword')
+      if (formDataPicture) {
+        onUploadAvatar()
+      }
     },
-    [resetField, dispatch, userData, formDataPicture],
+    [resetField, dispatch, userData, onUploadAvatar, formDataPicture],
   )
 
-  const getUserInfoHandler = async () => {
-    const req: any = await (axios.get('http://localhost:5000/user') as any)
+  const getUserInfoHandler = useCallback(async () => {
+    const req = await axios.get(`http://localhost:5000/user/${userData?.id}`)
 
-    setPreviewPicture(`http://localhost:5000/images/${req.data.data.avatar}`)
-  }
+    setPreviewPicture(req.data.data.avatarUrl)
+  }, [userData?.id])
 
   useEffect(() => {
     getUserInfoHandler()
-  }, [])
+  }, [getUserInfoHandler])
 
   return (
     <>

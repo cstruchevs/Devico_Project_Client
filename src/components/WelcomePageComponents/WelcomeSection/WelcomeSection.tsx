@@ -53,8 +53,10 @@ const WelcomeSection: FC<IWelcomeSection> = ({ events }) => {
     for (let i = 0; i < events.length; i++) {
       if (new Date(events[i].date) > today) {
         setNextEvent(events[i])
-        setNextEventImg(`http://localhost:5000/images/${events[i].image}`)
-        const date = new Date(events[i].date) 
+        if (events[i].image) {
+          setNextEventImg(`http://localhost:5000/images/${events[i].image}`)
+        }
+        const date = new Date(events[i].date)
         setNextEventDate(`${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`)
         break
       }

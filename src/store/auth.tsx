@@ -1,11 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 export interface IUserInterface {
-  id?: string
-  email?: string
-  password?: string
-  phone?: string
-  fullName? :string
+  id: string
+  email: string
+  phone: string
+  fullName: string
 }
 
 interface ICar {

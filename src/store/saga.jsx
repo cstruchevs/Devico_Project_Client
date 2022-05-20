@@ -85,21 +85,15 @@ export function* deleteCarSaga(action) {
 
 export function* updateUserSaga(action) {
   try {
-    const reqData = {
-      ...action.payload,
-    }
-    reqData.picture = action.payload.avatar[0]
-
-    console.log(reqData)
     const data = yield call(() => {
       return axios.patch(
-        'http://localhost:5000/update',
+        'http://localhost:5000/user/',
         {
-          ...reqData,
+          ...action.payload,
         },
-        {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        },
+        // {
+        //   headers: { 'Content-Type': 'multipart/form-data' },
+        // },
       )
     })
     const { user, token } = data.data
