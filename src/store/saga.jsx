@@ -29,8 +29,6 @@ export function* userSetupSaga(action) {
 }
 export function* userLoginSaga(action) {
   try {
-    console.log({ ...action.payload })
-    console.log(action.payload.checked)
     const data = yield call(() => {
       return callApi.post('/login', { ...action.payload })
     })
@@ -50,9 +48,8 @@ export function* addCarSaga(action) {
     const data = yield call(() => {
       return callApi.post('/cars/post', { ...action.payload })
     })
-    console.log(`Data`, data.data)
     const fetchedData = data.data
-    yield put(addCar({ ...fetchedData }))
+    yield put(addCar({ newCar: { ...fetchedData } }))
   } catch (error) {
     console.log(error)
   }
@@ -71,7 +68,6 @@ export function* updateCarSaga(action) {
 
 export function* getCarSaga(action) {
   try {
-    console.log(action.payload.id)
     const userId = action.payload.id
     const data = yield call(() => {
       return callApi.get(
@@ -84,7 +80,7 @@ export function* getCarSaga(action) {
         },
       )
     })
-    yield put(setCar(data.data))
+    yield put(setCar({ cars: data.data }))
   } catch (error) {
     console.log(error)
   }
@@ -92,7 +88,6 @@ export function* getCarSaga(action) {
 
 export function* deleteCarSaga(action) {
   try {
-    console.log({ ...action.payload })
     const data = yield call(() => {
       return axios.delete(
         'http://localhost:5000/cars/update',
@@ -112,7 +107,6 @@ export function* deleteCarSaga(action) {
 
 export function* updateUserSaga(action) {
   try {
-    console.log({ ...action.payload })
     const data = yield call(() => {
       return callApi.patch('/update', { ...action.payload })
     })
@@ -129,7 +123,7 @@ export function* getNewsSaga(action) {
     const data = yield call(() => {
       return callApi.get(`/news`)
     })
-    yield put(setNews(data.data))
+    yield put(setNews({ news: data.data }))
   } catch (error) {
     console.log(error)
   }
@@ -137,7 +131,6 @@ export function* getNewsSaga(action) {
 
 export function* getDriversDataSaga(action) {
   try {
-    console.log({ ...action.payload })
     const data = yield call(() => {
       const id = action.payload.id
       return callApi.get(`/driversData/${id}`, {
@@ -146,7 +139,6 @@ export function* getDriversDataSaga(action) {
         },
       })
     })
-    console.log(data)
     yield put(setDriversData(data.data))
   } catch (error) {
     console.log(error)
@@ -155,7 +147,6 @@ export function* getDriversDataSaga(action) {
 
 export function* postDriversDataSaga(action) {
   try {
-    console.log({ ...action.payload })
     const data = yield call(() => {
       return callApi.post('/driversData', { ...action.payload })
     })
@@ -167,11 +158,10 @@ export function* postDriversDataSaga(action) {
 
 export function* getLicenses(action) {
   try {
-    console.log({ ...action.payload })
     const data = yield call(() => {
       return callApi.get('/license/licenseType')
     })
-    yield put(setLicenseTypeData(data.data))
+    yield put(setLicenseTypeData({ licenses: data.data }))
   } catch (error) {
     console.log(error)
   }
@@ -179,13 +169,12 @@ export function* getLicenses(action) {
 
 export function* postLicense(action) {
   try {
-    console.log({ ...action.payload })
     const data = yield call(() => {
       return callApi.post('/license', { ...action.payload })
     })
     console.log(data)
     console.log(data.data.id)
-    const datamember = yield call(() => {
+    yield call(() => {
       return callApi.post('/license/registerToLicense', {
         licenseId: data.data.id,
         id: action.payload.userDataId,
@@ -198,8 +187,7 @@ export function* postLicense(action) {
 
 export function* registerToLicense(action) {
   try {
-    console.log({ ...action.payload })
-    const data = yield call(() => {
+    yield call(() => {
       return callApi.post('/license', { ...action.payload })
     })
   } catch (error) {

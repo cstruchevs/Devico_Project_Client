@@ -3,15 +3,12 @@ import {
   Card,
   CardContent,
   Divider,
-  IconButton,
-  InputAdornment,
   Radio,
   RadioGroup,
   Stack,
-  Tooltip,
   Typography,
 } from '@mui/material'
-import { FC, memo, useCallback, useEffect, useState } from 'react'
+import { FC, memo, useCallback, useEffect } from 'react'
 import { TypographyInfoSub } from '../../pages/LicensePage/LicensePageStyles'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -32,7 +29,7 @@ import { sagaActions } from '../../store/sagaActions'
 import { useDispatch, useSelector } from 'react-redux'
 import { ILicenseType } from '../../store/auth'
 import { useNavigate } from 'react-router-dom'
-import InfoIcon from '@mui/icons-material/Info'
+import InpurtErrorHandler from '../InputErrosHandler'
 
 interface ILicenseForm {}
 
@@ -105,15 +102,7 @@ const LicenseForm: FC<ILicenseForm> = () => {
               error={Boolean(errors.fullNameUkranian)}
               InputProps={
                 errors.fullNameUkranian && {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <Tooltip title={errors.fullNameUkranian?.message}>
-                        <IconButton edge="end">
-                          <InfoIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </InputAdornment>
-                  ),
+                  endAdornment: <InpurtErrorHandler errors={errors.fullNameUkrania} />
                 }
               }
             />
@@ -125,15 +114,7 @@ const LicenseForm: FC<ILicenseForm> = () => {
               error={Boolean(errors.fullNameLatin)}
               InputProps={
                 errors.fullNameLatin && {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <Tooltip title={errors.fullNameLatin?.message}>
-                        <IconButton edge="end">
-                          <InfoIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </InputAdornment>
-                  ),
+                  endAdornment: <InpurtErrorHandler errors={errors.fullNameLatin} />
                 }
               }
             />
@@ -145,15 +126,7 @@ const LicenseForm: FC<ILicenseForm> = () => {
               error={Boolean(errors.dob)}
               InputProps={
                 errors.dob && {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <Tooltip title={errors.dob?.message}>
-                        <IconButton edge="end">
-                          <InfoIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </InputAdornment>
-                  ),
+                  endAdornment: <InpurtErrorHandler errors={errors.dob} />
                 }
               }
             />
@@ -165,15 +138,7 @@ const LicenseForm: FC<ILicenseForm> = () => {
               error={Boolean(errors.nativeCity)}
               InputProps={
                 errors.nativeCity && {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <Tooltip title={errors.nativeCity?.message}>
-                        <IconButton edge="end">
-                          <InfoIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </InputAdornment>
-                  ),
+                  endAdornment: <InpurtErrorHandler errors={errors.nativeCity} />
                 }
               }
             />
@@ -187,15 +152,7 @@ const LicenseForm: FC<ILicenseForm> = () => {
               error={Boolean(errors.address)}
               InputProps={
                 errors.address && {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <Tooltip title={errors.address?.message}>
-                        <IconButton edge="end">
-                          <InfoIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </InputAdornment>
-                  ),
+                  endAdornment: <InpurtErrorHandler errors={errors.address} />
                 }
               }
             />
@@ -207,15 +164,7 @@ const LicenseForm: FC<ILicenseForm> = () => {
               error={Boolean(errors.identificationNum)}
               InputProps={
                 errors.identificationNum && {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <Tooltip title={errors.identificationNum?.message}>
-                        <IconButton edge="end">
-                          <InfoIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </InputAdornment>
-                  ),
+                  endAdornment: <InpurtErrorHandler errors={errors.identificationNum} />
                 }
               }
             />
@@ -227,15 +176,7 @@ const LicenseForm: FC<ILicenseForm> = () => {
               error={Boolean(errors.email)}
               InputProps={
                 errors.email && {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <Tooltip title={errors.email?.message}>
-                        <IconButton edge="end">
-                          <InfoIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </InputAdornment>
-                  ),
+                  endAdornment: <InpurtErrorHandler errors={errors.email} />
                 }
               }
             />
@@ -247,15 +188,7 @@ const LicenseForm: FC<ILicenseForm> = () => {
               error={Boolean(errors.phone)}
               InputProps={
                 errors.phone && {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <Tooltip title={errors.phone?.message}>
-                        <IconButton edge="end">
-                          <InfoIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </InputAdornment>
-                  ),
+                  endAdornment: <InpurtErrorHandler errors={errors.phone} />
                 }
               }
             />

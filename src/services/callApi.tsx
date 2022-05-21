@@ -21,7 +21,6 @@ callApi.interceptors.response.use(
     return response
   },
   (error: AxiosError) => {
-    // console.log(error.response)
     if (error.response?.status === 401) {
       // logoutUser()
     }

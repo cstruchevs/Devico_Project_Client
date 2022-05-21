@@ -8,11 +8,23 @@ import uiSlice from './ui-slice'
 
 export type RootState = ReturnType<typeof store.getState>
 
+export interface ActionReducer<T = any> {
+  payload: T
+}
+
 let sagaMiddleware = createSagaMiddleware()
-const middleware = [...getDefaultMiddleware({ thunk: false, serializableCheck: false }), sagaMiddleware]
+const middleware = [
+  ...getDefaultMiddleware({ thunk: false, serializableCheck: false }),
+  sagaMiddleware,
+]
 
 const store = configureStore({
-  reducer: { ui: uiSlice.reducer, auth: authSlice.reducer, news: newsSlice.reducer, notifications: notificationSlice.reducer },
+  reducer: {
+    ui: uiSlice.reducer,
+    auth: authSlice.reducer,
+    news: newsSlice.reducer,
+    notifications: notificationSlice.reducer,
+  },
   middleware,
 })
 

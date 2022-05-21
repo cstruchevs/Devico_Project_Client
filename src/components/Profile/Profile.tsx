@@ -28,13 +28,13 @@ interface IProfie {}
 
 const Profile: React.FC<IProfie> = () => {
   const dispatch = useDispatch()
-  const userId: any = useSelector((state: RootState) => state.auth.user?.id)
+  const userId: string | undefined = useSelector((state: RootState) => state.auth.user?.id)
   const [value, setValue] = React.useState(0)
-  
+
   useEffect(() => {
     dispatch({ type: sagaActions.GET_CAR_SAGA, payload: { id: userId } })
     dispatch({ type: sagaActions.GET_DRIVERS_DATA_SAGA, payload: { id: userId } })
-    dispatch({ type: sagaActions.GET_LICENSES})
+    dispatch({ type: sagaActions.GET_LICENSES })
   }, [dispatch, userId])
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {

@@ -1,15 +1,4 @@
-import {
-  Checkbox,
-  Dialog,
-  DialogContent,
-  Divider,
-  Stack,
-  Typography,
-  Box,
-  InputAdornment,
-  IconButton,
-  Tooltip,
-} from '@mui/material'
+import { Checkbox, Dialog, DialogContent, Divider, Stack, Typography, Box } from '@mui/material'
 import React, { memo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { uiActions } from '../../store/ui-slice'
@@ -32,14 +21,22 @@ import {
 import { sagaActions } from '../../store/sagaActions'
 import axios from 'axios'
 import callApi from '../../services/callApi'
+import InpurtErrorHandler from '../InputErrosHandler'
+import { GoogleLogin } from '@react-oauth/google'
 
 const phoneRegex: RegExp =
   /^(?:\+38)?(?:\(044\)[ .-]?[0-9]{3}[ .-]?[0-9]{2}[ .-]?[0-9]{2}|044[ .-]?[0-9]{3}[ .-]?[0-9]{2}[ .-]?[0-9]{2}|044[0-9]{7})$/
 
 const schema = yup.object().shape({
   email: yup.string().email().required('Write correct email'),
-  password: yup.string().min(8).max(32).required('Write correct password, length 8 to 32 characters'),
-  confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match your initial password'),
+  password: yup
+    .string()
+    .min(8)
+    .max(32)
+    .required('Write correct password, length 8 to 32 characters'),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref('password'), null], 'Passwords must match your initial password'),
 })
 
 const SignUp = () => {
@@ -63,8 +60,12 @@ const SignUp = () => {
     toggleHandler()
   }
 
-  const onSubmitHandlerGoogle = async (data: object) => {
-    await callApi.get('/auth/google')
+  const onSubmitHandlerGoogle = async (accessToken: any) => {
+    await callApi.get('/auth/google', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
   }
 
   const regCartIsShown = useSelector<RootState, boolean>(state => state.ui.showReg)
@@ -91,7 +92,15 @@ const SignUp = () => {
         <StyledDialogTitle>Sign Up</StyledDialogTitle>
         <Divider />
         <Stack pt={2} direction="row" sx={{ margin: 'auto' }}>
-          <StyledButton variant="contained" onClick={onSubmitHandlerGoogle}>CONNECT WITH GOOGLE</StyledButton>
+          <GoogleLogin
+            onSuccess={CredentialResponse => {
+              onSubmitHandlerGoogle(CredentialResponse)
+            }}
+            onError={() => {
+              console.log('Login Failed')
+            }}
+            useOneTap
+          />
           <StyledButton variant="contained">CONNECT WITH FACEBOOK</StyledButton>
         </Stack>
         <Divider sx={{ marginTop: '13px' }} variant="middle">
@@ -109,15 +118,7 @@ const SignUp = () => {
                   error={Boolean(errors.email)}
                   InputProps={
                     errors.email && {
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Tooltip title={errors.email?.message}>
-                            <IconButton edge="end">
-                              <InfoIcon />
-                            </IconButton>
-                          </Tooltip>
-                        </InputAdornment>
-                      ),
+                      endAdornment: <InpurtErrorHandler errors={errors.email} />,
                     }
                   }
                 />
@@ -129,26 +130,14 @@ const SignUp = () => {
                   error={Boolean(errors.password)}
                   InputProps={
                     errors.password && {
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Tooltip title={errors.password?.message}>
-                            <IconButton edge="end">
-                              <InfoIcon />
-                            </IconButton>
-                          </Tooltip>
-                        </InputAdornment>
-                      ),
+                      endAdornment: <InpurtErrorHandler errors={errors.password} />,
                     }
                   }
                 />
               </Stack>
               <Stack direction="column">
                 <StyledTypography>TELEPHONE</StyledTypography>
-                <StyledTextField
-                  {...register('phone')}
-                  name="phone"
-
-                />
+                <StyledTextField {...register('phone')} name="phone" />
                 <StyledTypography>CONFIRM PASSWORD*</StyledTypography>
                 <StyledTextField
                   {...register('confirmPassword')}
@@ -157,15 +146,7 @@ const SignUp = () => {
                   error={Boolean(errors.confirmPassword)}
                   InputProps={
                     errors.confirmPassword && {
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Tooltip title={errors.confirmPassword?.message}>
-                            <IconButton edge="end">
-                              <InfoIcon />
-                            </IconButton>
-                          </Tooltip>
-                        </InputAdornment>
-                      ),
+                      endAdornment: <InpurtErrorHandler errors={errors.confirmPassword} />,
                     }
                   }
                 />

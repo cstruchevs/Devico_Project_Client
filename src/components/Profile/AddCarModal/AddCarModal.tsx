@@ -10,16 +10,14 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { AddCarCancelButton, AddCarConfirmButton, DialogActionsStyled } from './AddCarModalStyles'
 import { sagaActions } from '../../../store/sagaActions'
+import InpurtErrorHandler from '../../InputErrosHandler'
 
 interface IAddCarModal {}
 
 const schema = yup.object().shape({
   fullNameOwner: yup.string().min(3),
   model: yup.string().min(4).required('Write model, min 4 characters'),
-  year: yup
-    .string()
-    .min(4)
-    .required('Write year of the car, it must me greater than 1960'),
+  year: yup.string().min(4).required('Write year of the car, it must me greater than 1960'),
   capaciteEngine: yup.string().min(2).required('Write capicicty engine'),
   regVihicleNumber: yup.string().min(4).required('Vehicle humber must contain at least 4 number'),
   technicalPassNumber: yup.string().min(4).required('Tech pass must contain at least 4 number'),
@@ -29,7 +27,7 @@ const schema = yup.object().shape({
 
 const AddCarModal: FC<IAddCarModal> = () => {
   const dispatch = useDispatch()
-  const id: any = useSelector((state: RootState) => state.auth.user?.id)
+  const id: string | undefined = useSelector((state: RootState) => state.auth.user?.id)
   const addCarIsShown = useSelector<RootState, boolean>(state => state.ui.showAddCar)
   const editCar = useSelector<RootState, boolean>(state => state.ui.editCar)
 
@@ -57,9 +55,8 @@ const AddCarModal: FC<IAddCarModal> = () => {
       reset()
       toggleAddCarCongrat()
       toggleAddCar()
-      console.log(data)
     },
-    [reset, toggleAddCar, toggleAddCarCongrat, dispatch],
+    [reset, toggleAddCar, toggleAddCarCongrat, dispatch, id],
   )
 
   return (
@@ -76,10 +73,11 @@ const AddCarModal: FC<IAddCarModal> = () => {
                 error={Boolean(errors.model)}
                 name="model"
                 type="text"
-                required
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                InputProps={
+                  errors.model && {
+                    endAdornment: <InpurtErrorHandler errors={errors.model} />,
+                  }
+                }
               />
               <StyledTypography>YEAR*</StyledTypography>
               <StyledTextField
@@ -87,10 +85,11 @@ const AddCarModal: FC<IAddCarModal> = () => {
                 error={Boolean(errors.year)}
                 name="year"
                 type="text"
-                required
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                InputProps={
+                  errors.year && {
+                    endAdornment: <InpurtErrorHandler errors={errors.year} />,
+                  }
+                }
               />
               <StyledTypography>CAPACITY ENGINE*</StyledTypography>
               <StyledTextField
@@ -98,10 +97,6 @@ const AddCarModal: FC<IAddCarModal> = () => {
                 error={Boolean(errors.capaciteEngine)}
                 name="capaciteEngine"
                 type="text"
-                required
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
               />
               <StyledTypography>REG. VEHICLE NUMBER*</StyledTypography>
               <StyledTextField
@@ -109,10 +104,11 @@ const AddCarModal: FC<IAddCarModal> = () => {
                 error={Boolean(errors.regVihicleNumber)}
                 name="regVihicleNumber"
                 type="text"
-                required
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                InputProps={
+                  errors.regVihicleNumber && {
+                    endAdornment: <InpurtErrorHandler errors={errors.regVihicleNumber} />,
+                  }
+                }
               />
             </Stack>
             <Stack direction="column">
@@ -122,10 +118,11 @@ const AddCarModal: FC<IAddCarModal> = () => {
                 error={Boolean(errors.technicalPassNumber)}
                 name="technicalPassNumber"
                 type="text"
-                required
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                InputProps={
+                  errors.technicalPassNumber && {
+                    endAdornment: <InpurtErrorHandler errors={errors.technicalPassNumber} />,
+                  }
+                }
               />
               <StyledTypography>VIN NUMBER*</StyledTypography>
               <StyledTextField
@@ -133,10 +130,11 @@ const AddCarModal: FC<IAddCarModal> = () => {
                 error={Boolean(errors.viaNumber)}
                 name="viaNumber"
                 type="text"
-                required
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                InputProps={
+                  errors.viaNumber && {
+                    endAdornment: <InpurtErrorHandler errors={errors.viaNumber} />,
+                  }
+                }
               />
               <StyledTypography>DRIVE TRAIN*</StyledTypography>
               <StyledTextField
@@ -144,10 +142,11 @@ const AddCarModal: FC<IAddCarModal> = () => {
                 error={Boolean(errors.driveTrain)}
                 name="driveTrain"
                 type="text"
-                required
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                InputProps={
+                  errors.driveTrain && {
+                    endAdornment: <InpurtErrorHandler errors={errors.driveTrain} />,
+                  }
+                }
               />
               <StyledTypography>FULL NAME VEHICLE OWNER*</StyledTypography>
               <StyledTextField
@@ -155,10 +154,11 @@ const AddCarModal: FC<IAddCarModal> = () => {
                 error={Boolean(errors.fullNameOwner)}
                 name="fullNameOwner"
                 type="text"
-                required
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                InputProps={
+                  errors.fullNameOwner && {
+                    endAdornment: <InpurtErrorHandler errors={errors.fullNameOwner} />,
+                  }
+                }
               />
             </Stack>
           </Stack>

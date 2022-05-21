@@ -51,7 +51,7 @@ export const StyledNotificationsBox = styled(Box)(({ theme }) => ({
 export const StyledNotificationsTypography = styled(Typography)(({ theme }) => ({
   fontSize: '14px',
   marginTop: '8px',
-  textAlign: 'center'
+  textAlign: 'center',
 }))
 
 export const StyledNotificationsMainTypography = styled(Typography)(({ theme }) => ({
@@ -61,8 +61,8 @@ export const StyledNotificationsMainTypography = styled(Typography)(({ theme }) 
 
 export const StyledNotificationsMarkTypography = styled(Typography)(({ theme }) => ({
   fontSize: '14px',
-  textDecoration: "underline",
-  color: "blue",
+  textDecoration: 'underline',
+  color: 'blue',
   '&:hover': {
     cursor: 'pointer',
   },
@@ -86,14 +86,14 @@ export const StyledNotificaionDivider = styled(Divider)(({ theme }) => ({
 }))
 
 export const StyledNotificationInnerBox = styled(Box)(({ theme }) => ({
-  width: '370px',
+  width: '450px',
   height: '350px',
 }))
 
 export const StyledNotificationInnerHeaderStack = styled(Stack)(({ theme }) => ({
   flexDirection: 'row',
   justifyContent: 'space-between',
-  alignItems: "center",
+  alignItems: 'center',
   padding: 9,
   paddingLeft: 15,
   paddingRight: 15,
@@ -128,6 +128,13 @@ export const StyledAppBar = styled(AppBar)(({ theme }) => ({
 export const StyledAuthStackWrapper = styled(Stack)({
   flexDirection: 'row',
   marginRight: '10px',
+  alignItems: 'center',
+  
+})
+
+export const StyledAuthBoxIconWrapper = styled(Box)({
+  display: 'flex',
+  justifyContent: 'center',
 })
 
 export const StyledAuthStack = styled(Stack)({

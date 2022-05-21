@@ -1,5 +1,5 @@
-import { FC } from 'react'
-import { Divider, Popover, Typography } from '@mui/material'
+import { FC, useCallback } from 'react'
+import { Typography, Stack, Box } from '@mui/material'
 import {
   StyledNotificationBox,
   StyledNotificationPopover,
@@ -14,8 +14,14 @@ import {
 } from '../MainNavigatioStyles'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import { useDispatch, useSelector } from 'react-redux'
-import { INotifications } from '../../../store/notifications'
+import {
+  INotifications,
+  notificationActions,
+  NotificationStatus,
+} from '../../../store/notifications'
 import { RootState } from '../../../store'
+import NotificationElement from './NotificationElement/NotificationElement'
+import { StyledBoxNotification } from './NotificationsStyles'
 
 interface INotification {
   idNotification: 'simple-popover' | undefined
@@ -30,9 +36,25 @@ const Notifications: FC<INotification> = ({
   anchorElNotification,
   handleCloseNotification,
 }) => {
-  const notifications = useSelector<RootState, INotifications[] | null>(
+  const dispatch = useDispatch()
+
+  const notifications = useSelector<RootState, INotifications[]>(
     state => state.notifications.notifications,
   )
+
+  const deleteNotifications = useCallback(() => {
+    dispatch(notificationActions.deleteNotifications())
+  }, [dispatch])
+
+  const notificationList = (
+    <Stack pl={2} pr={2}>
+      {notifications.map((el: INotifications, index: number) => {
+        return <NotificationElement message={el.message} status={el.status} index={index} date={el.date}/>
+      })}
+    </Stack>
+  )
+
+  console.log(notifications)
 
   return (
     <StyledNotificationPopover
@@ -50,7 +72,7 @@ const Notifications: FC<INotification> = ({
           overflow: 'visible',
           boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px !important',
           borderRadius: '10px',
-          marginTop: '10px',
+          marginTop: '14px',
         },
       }}
     >
@@ -67,7 +89,7 @@ const Notifications: FC<INotification> = ({
             height: 12,
             top: -15,
             transform: 'rotate(45deg)',
-            left: 'calc(57.5% - 6px)',
+            left: 'calc(63.5% - 6px)',
             boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px !important',
           },
         }}
@@ -75,10 +97,14 @@ const Notifications: FC<INotification> = ({
       <StyledNotificationInnerBox>
         <StyledNotificationInnerHeaderStack>
           <Typography variant="h6">Notification</Typography>
-          <StyledNotificationsMarkTypography>Mark all as read</StyledNotificationsMarkTypography>
+          <StyledNotificationsMarkTypography onClick={deleteNotifications}>
+            Mark all as read
+          </StyledNotificationsMarkTypography>
         </StyledNotificationInnerHeaderStack>
         <StyledNotificaionDivider variant="middle" />
-        {notifications ? null : (
+        {notifications.length > 0 ? (
+          <StyledBoxNotification>{notificationList}</StyledBoxNotification>
+        ) : (
           <StyledNotificationsBox>
             <StyledNotificaionIconBox>
               <NotificationsIcon sx={{ fontSize: '24px', color: 'white' }} />

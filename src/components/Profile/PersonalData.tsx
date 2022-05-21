@@ -19,7 +19,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../store'
 import { sagaActions } from '../../store/sagaActions'
 import { useDispatch } from 'react-redux'
-import InfoIcon from '@mui/icons-material/Info'
+import InpurtErrorHandler from '../InputErrosHandler'
 
 const schema = yup.object().shape(
   {
@@ -149,15 +149,7 @@ const PersonalData: FC<IPersonalData> = () => {
                 onChange={e => handleChangeName(e)}
                 InputProps={
                   errors.fullName && {
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <Tooltip title={errors.fullName?.message}>
-                          <IconButton edge="end">
-                            <InfoIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </InputAdornment>
-                    ),
+                    endAdornment: <InpurtErrorHandler errors={errors.fullName} />
                   }
                 }
               />
@@ -171,15 +163,7 @@ const PersonalData: FC<IPersonalData> = () => {
                 error={Boolean(errors.email)}
                 InputProps={
                   errors.email && {
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <Tooltip title={errors.email?.message}>
-                          <IconButton edge="end">
-                            <InfoIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </InputAdornment>
-                    ),
+                    endAdornment: <InpurtErrorHandler errors={errors.email} />
                   }
                 }
               />
@@ -193,15 +177,7 @@ const PersonalData: FC<IPersonalData> = () => {
                 error={Boolean(errors.phone)}
                 InputProps={
                   errors.phone && {
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <Tooltip title={errors.phone?.message}>
-                          <IconButton edge="end">
-                            <InfoIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </InputAdornment>
-                    ),
+                    endAdornment: <InpurtErrorHandler errors={errors.phone} />
                   }
                 }
               />
@@ -232,6 +208,11 @@ const PersonalData: FC<IPersonalData> = () => {
                 name="confirmPassword"
                 type="password"
                 error={Boolean(errors.confirmPassword)}
+                InputProps={
+                  errors.confirmPassword && {
+                    endAdornment: <InpurtErrorHandler errors={errors.confirmPassword} />
+                  }
+                }
               />
               <StyledBoxConfirmButton>
                 <StyledButtonPersonal type="submit">Save</StyledButtonPersonal>

@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { ActionReducer } from './index'
 
 export interface IUserInterface {
-  id?: string
-  email?: string
+  id: string
+  email: string
   password?: string
   phone?: string
   fullName?: string
@@ -51,14 +52,14 @@ const initialState: IAuthSlice = {
   token: '',
   cars: [],
   driversData: {},
-  licenseTypes: []
+  licenseTypes: [],
 }
 
 const authSlice = createSlice({
   name: 'auth',
   initialState: initialState,
   reducers: {
-    setUser(state, action: any) {
+    setUser(state, action: ActionReducer<{ user: IUserInterface; token: string }>) {
       state.user = action.payload.user
       state.token = action.payload.token
     },
@@ -67,17 +68,17 @@ const authSlice = createSlice({
       localStorage.removeItem('token')
       state.user = null
     },
-    setCar(state, action: any) {
-      return { ...state, cars: [...action.payload] }
+    setCar(state, action: ActionReducer<{ cars: ICar[] }>) {
+      return { ...state, cars: [...action.payload.cars] }
     },
-    addCar(state, action: any) {
-      return { ...state, cars: state.cars.concat(action.payload) }
+    addCar(state, action: ActionReducer<{ newCar: ICar }>) {
+      return { ...state, cars: [...state.cars, action.payload.newCar] }
     },
-    setDriversData(state, action: any) {
+    setDriversData(state, action: ActionReducer<IDriversData>) {
       return { ...state, driversData: { ...action.payload } }
     },
-    setLicenseTypeData(state, action: any) {
-      return { ...state, licenseTypes: [ ...action.payload ] }
+    setLicenseTypeData(state, action: ActionReducer<{ licenses: ILicenseType[] }>) {
+      return { ...state, licenseTypes: [...action.payload.licenses] }
     },
   },
 })

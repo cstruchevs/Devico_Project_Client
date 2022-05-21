@@ -3,9 +3,6 @@ import {
   Typography,
   MenuItem,
   SelectChangeEvent,
-  InputAdornment,
-  Tooltip,
-  IconButton,
 } from '@mui/material'
 import {
   ProfileConfirmBox,
@@ -29,7 +26,7 @@ import { sagaActions } from '../../store/sagaActions'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store'
 import { IDriversData } from '../../store/auth'
-import InfoIcon from '@mui/icons-material/Info'
+import InpurtErrorHandler from '../InputErrosHandler'
 
 interface IDataProfile {
   representiveFullName: string
@@ -130,15 +127,7 @@ const ProfileData: FC<IProfileData> = () => {
                   error={Boolean(errors.nickname)}
                   InputProps={
                     errors.nickname && {
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Tooltip title={errors.nickname?.message}>
-                            <IconButton edge="end">
-                              <InfoIcon />
-                            </IconButton>
-                          </Tooltip>
-                        </InputAdornment>
-                      ),
+                      endAdornment: <InpurtErrorHandler errors={errors.nickname} />,
                     }
                   }
                 />
@@ -152,15 +141,7 @@ const ProfileData: FC<IProfileData> = () => {
                   error={Boolean(errors.dob)}
                   InputProps={
                     errors.dob && {
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Tooltip title={errors.dob?.message}>
-                            <IconButton edge="end">
-                              <InfoIcon />
-                            </IconButton>
-                          </Tooltip>
-                        </InputAdornment>
-                      ),
+                      endAdornment: <InpurtErrorHandler errors={errors.dob} />,
                     }
                   }
                 />
@@ -174,15 +155,7 @@ const ProfileData: FC<IProfileData> = () => {
                   error={Boolean(errors.driverLicense)}
                   InputProps={
                     errors.driverLicense && {
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Tooltip title={errors.driverLicense?.message}>
-                            <IconButton edge="end">
-                              <InfoIcon />
-                            </IconButton>
-                          </Tooltip>
-                        </InputAdornment>
-                      ),
+                      endAdornment: <InpurtErrorHandler errors={errors.driverLicense} />,
                     }
                   }
                 />
@@ -196,15 +169,7 @@ const ProfileData: FC<IProfileData> = () => {
                   error={Boolean(errors.phone)}
                   InputProps={
                     errors.phone && {
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Tooltip title={errors.phone?.message}>
-                            <IconButton edge="end">
-                              <InfoIcon />
-                            </IconButton>
-                          </Tooltip>
-                        </InputAdornment>
-                      ),
+                      endAdornment: <InpurtErrorHandler errors={errors.phone} />,
                     }
                   }
                 />
@@ -218,15 +183,7 @@ const ProfileData: FC<IProfileData> = () => {
                   error={Boolean(errors.idNumber)}
                   InputProps={
                     errors.idNumber && {
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Tooltip title={errors.idNumber?.message}>
-                            <IconButton edge="end">
-                              <InfoIcon />
-                            </IconButton>
-                          </Tooltip>
-                        </InputAdornment>
-                      ),
+                      endAdornment: <InpurtErrorHandler errors={errors.idNumber} />,
                     }
                   }
                 />
@@ -256,15 +213,7 @@ const ProfileData: FC<IProfileData> = () => {
                   error={Boolean(errors.regAdress)}
                   InputProps={
                     errors.regAdress && {
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Tooltip title={errors.regAdress?.message}>
-                            <IconButton edge="end">
-                              <InfoIcon />
-                            </IconButton>
-                          </Tooltip>
-                        </InputAdornment>
-                      ),
+                      endAdornment: <InpurtErrorHandler errors={errors.regAdress} />,
                     }
                   }
                 />
@@ -278,15 +227,7 @@ const ProfileData: FC<IProfileData> = () => {
                   error={Boolean(errors.representiveFullName)}
                   InputProps={
                     errors.representiveFullName && {
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Tooltip title={errors.representiveFullName?.message}>
-                            <IconButton edge="end">
-                              <InfoIcon />
-                            </IconButton>
-                          </Tooltip>
-                        </InputAdornment>
-                      ),
+                      endAdornment: <InpurtErrorHandler errors={errors.representiveFullName} />,
                     }
                   }
                 />
@@ -300,15 +241,7 @@ const ProfileData: FC<IProfileData> = () => {
                   error={Boolean(errors.representiveLicense)}
                   InputProps={
                     errors.representiveLicense && {
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Tooltip title={errors.representiveLicense?.message}>
-                            <IconButton edge="end">
-                              <InfoIcon />
-                            </IconButton>
-                          </Tooltip>
-                        </InputAdornment>
-                      ),
+                      endAdornment: <InpurtErrorHandler errors={errors.representiveLicense} />,
                     }
                   }
                 />
@@ -322,15 +255,7 @@ const ProfileData: FC<IProfileData> = () => {
                   error={Boolean(errors.sportDriverLicense)}
                   InputProps={
                     errors.sportDriverLicense && {
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Tooltip title={errors.sportDriverLicense?.message}>
-                            <IconButton edge="end">
-                              <InfoIcon />
-                            </IconButton>
-                          </Tooltip>
-                        </InputAdornment>
-                      ),
+                      endAdornment: <InpurtErrorHandler errors={errors.sportDriverLicense} />,
                     }
                   }
                 />

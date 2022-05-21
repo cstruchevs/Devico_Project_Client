@@ -1,4 +1,15 @@
-import { Checkbox, Dialog, DialogContent, Divider, Stack, Typography, Box, InputAdornment, Tooltip, IconButton } from '@mui/material'
+import {
+  Checkbox,
+  Dialog,
+  DialogContent,
+  Divider,
+  Stack,
+  Typography,
+  Box,
+  InputAdornment,
+  Tooltip,
+  IconButton,
+} from '@mui/material'
 import React, { memo, useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { uiActions } from '../../store/ui-slice'
@@ -20,6 +31,7 @@ import {
   StyledDialogActions,
   StyledStackDescriptionElement,
 } from './AuthStyles'
+import InpurtErrorHandler from '../InputErrosHandler'
 
 const PHONE_REGEX: RegExp =
   /^(?:\+38)?(?:\(044\)[ .-]?[0-9]{3}[ .-]?[0-9]{2}[ .-]?[0-9]{2}|044[ .-]?[0-9]{3}[ .-]?[0-9]{2}[ .-]?[0-9]{2}|044[0-9]{7})$/
@@ -38,7 +50,7 @@ const SignIn = () => {
     reset,
   } = useForm({
     resolver: yupResolver(schema),
-    mode: 'onSubmit'
+    mode: 'onSubmit',
   })
 
   const [checked, setChecked] = useState(true)
@@ -55,7 +67,7 @@ const SignIn = () => {
 
   const onSubmitHandler = useCallback(
     async (data: object) => {
-      dispatch({ type: sagaActions.USER_LOGIN_SAGA, payload: {...data, checked} })
+      dispatch({ type: sagaActions.USER_LOGIN_SAGA, payload: { ...data, checked } })
       reset()
       toggleHandler()
     },
@@ -78,7 +90,7 @@ const SignIn = () => {
   }
 
   const handleChangeCheckBox = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked((prevState) => !prevState)
+    setChecked(prevState => !prevState)
   }
   return (
     <>
@@ -104,15 +116,7 @@ const SignIn = () => {
                   error={Boolean(errors.email)}
                   InputProps={
                     errors.email && {
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Tooltip title={errors.email?.message}>
-                            <IconButton edge="end">
-                              <InfoIcon />
-                            </IconButton>
-                          </Tooltip>
-                        </InputAdornment>
-                      ),
+                      endAdornment: <InpurtErrorHandler errors={errors.email} />,
                     }
                   }
                 />
@@ -124,15 +128,7 @@ const SignIn = () => {
                   error={Boolean(errors.password)}
                   InputProps={
                     errors.password && {
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Tooltip title={errors.password?.message}>
-                            <IconButton edge="end">
-                              <InfoIcon />
-                            </IconButton>
-                          </Tooltip>
-                        </InputAdornment>
-                      ),
+                      endAdornment: <InpurtErrorHandler errors={errors.password} />,
                     }
                   }
                 />
@@ -153,9 +149,7 @@ const SignIn = () => {
               </StyledTypographyHandler>
             </StyledStackDescription>
             <StyledBoxConfirmButton>
-              <ConfirmStyledButton type="submit">
-                Sign In
-              </ConfirmStyledButton>
+              <ConfirmStyledButton type="submit">Sign In</ConfirmStyledButton>
             </StyledBoxConfirmButton>
           </form>
         </DialogContent>
