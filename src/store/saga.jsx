@@ -12,7 +12,7 @@ const addUserToLocalStorage = ({ user, token }) => {
 }
 const { setUser, setCar, addCar, setDriversData, setLicenseTypeData } = authActions
 const { setNews } = newsActions
-const { toggleCongratAuth } = uiActions
+const { toggleCongratAuth, toggleLogReg } = uiActions
 
 export function* userSetupSaga(action) {
   try {
@@ -195,6 +195,56 @@ export function* registerToLicense(action) {
   }
 }
 
+export function* googleAuth(action) {
+  try {
+    const googleUserInfo = yield call(() => {
+      return callApi.get('/google-register', {
+        headers: {
+          Authorization: `Bearer ${action.payload.token}`,
+        },
+      })
+    })
+    const { user, token } = googleUserInfo.data
+    console.log(user, token)
+    yield put(setUser({ user, token }))
+    yield put(toggleLogReg())
+    yield put(toggleCongratAuth())
+    addUserToLocalStorage({ user, token })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export function* facebookAuth(action) {
+  try {
+    const token = localStorage.getItem('token')
+
+    const check = yield call(() => {
+      return axios.get(`https://graph.facebook.com/me?access_token=${token}`)
+    })
+
+    const facebookUserInfo = yield call(() => {
+      return callApi.post(
+        '/facebook-register',
+        { email: action.payload.email, name: action.payload.name },
+        {
+          headers: {
+            Authorization: `Bearer ${action.payload.token}`,
+          },
+        },
+      )
+    })
+    const user = facebookUserInfo.data.user
+    console.log(facebookUserInfo)
+    yield put(setUser({ user, token }))
+    yield put(toggleLogReg())
+    yield put(toggleCongratAuth())
+    addUserToLocalStorage({ user, token })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export default function* rootSaga() {
   yield takeEvery(sagaActions.USER_SETUP_SAGA, userSetupSaga)
   yield takeEvery(sagaActions.USER_LOGIN_SAGA, userLoginSaga)
@@ -209,4 +259,6 @@ export default function* rootSaga() {
   yield takeEvery(sagaActions.GET_LICENSES, getLicenses)
   yield takeEvery(sagaActions.POST_LICENSE, postLicense)
   yield takeEvery(sagaActions.REGISTER_TO_LICENSE, registerToLicense)
+  yield takeEvery(sagaActions.GOOGLE_AUTH, googleAuth)
+  yield takeEvery(sagaActions.FACEBOOK_AUTH, facebookAuth)
 }

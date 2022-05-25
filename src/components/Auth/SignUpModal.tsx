@@ -5,7 +5,6 @@ import { uiActions } from '../../store/ui-slice'
 import { RootState } from '../../store'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import InfoIcon from '@mui/icons-material/Info'
 import * as yup from 'yup'
 import {
   StyledButton,
@@ -17,12 +16,13 @@ import {
   StyledStackDescription,
   StyledBoxConfirmButton,
   StyledDialogActions,
+  StyledStackDialogHeader,
+  StyledGoogleButton,
 } from './AuthStyles'
 import { sagaActions } from '../../store/sagaActions'
-import axios from 'axios'
-import callApi from '../../services/callApi'
 import InpurtErrorHandler from '../InputErrosHandler'
-import { GoogleLogin } from '@react-oauth/google'
+import { GoogleLogin, useGoogleLogin } from '@react-oauth/google'
+import FacebookLogin from '@greatsumini/react-facebook-login'
 
 const phoneRegex: RegExp =
   /^(?:\+38)?(?:\(044\)[ .-]?[0-9]{3}[ .-]?[0-9]{2}[ .-]?[0-9]{2}|044[ .-]?[0-9]{3}[ .-]?[0-9]{2}[ .-]?[0-9]{2}|044[0-9]{7})$/
@@ -60,11 +60,14 @@ const SignUp = () => {
     toggleHandler()
   }
 
-  const onSubmitHandlerGoogle = async (accessToken: any) => {
-    await callApi.get('/auth/google', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+  const onSubmitHandlerGoogle = async (CredentialResponse: any) => {
+    dispatch({ type: sagaActions.GOOGLE_AUTH, payload: { token: CredentialResponse.credential } })
+  }
+
+  const onSubmitHandlerFacebook = async (CredentialResponse: any) => {
+    dispatch({
+      type: sagaActions.FACEBOOK_AUTH,
+      payload: { email: CredentialResponse.email, name: CredentialResponse.name },
     })
   }
 
@@ -86,12 +89,24 @@ const SignUp = () => {
     setChecked(event.target.checked)
   }
 
+  const onSuccessFacebokLogin = (response: any) => {
+    localStorage.setItem('token', response.accessToken)
+  }
+
+  const login = useGoogleLogin({
+    onSuccess:  tokenResponse => console.log(tokenResponse),
+    onError: () => {
+      console.log('Login Failed')
+    },
+    flow: 'auth-code',
+  })
+
   return (
     <>
       <Dialog open={regCartIsShown} onClose={toggleHandler}>
         <StyledDialogTitle>Sign Up</StyledDialogTitle>
         <Divider />
-        <Stack pt={2} direction="row" sx={{ margin: 'auto' }}>
+        <StyledStackDialogHeader pt={2} gap={3}>
           <GoogleLogin
             onSuccess={CredentialResponse => {
               onSubmitHandlerGoogle(CredentialResponse)
@@ -101,8 +116,27 @@ const SignUp = () => {
             }}
             useOneTap
           />
-          <StyledButton variant="contained">CONNECT WITH FACEBOOK</StyledButton>
-        </Stack>
+          <FacebookLogin
+            appId="674600793627154"
+            onSuccess={response => {
+              onSuccessFacebokLogin(response)
+            }}
+            onFail={error => {
+              console.log('Login Failed!', error)
+            }}
+            onProfileSuccess={response => {
+              onSubmitHandlerFacebook(response)
+            }}
+            style={{
+              backgroundColor: '#4267b2',
+              color: '#fff',
+              fontSize: '16px',
+              padding: '10px 24px',
+              border: 'none',
+              borderRadius: '4px',
+            }}
+          />
+        </StyledStackDialogHeader>
         <Divider sx={{ marginTop: '13px' }} variant="middle">
           OR
         </Divider>

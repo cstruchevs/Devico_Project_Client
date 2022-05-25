@@ -19,7 +19,7 @@ const initialState: SliceState = {
   congratAuth: false,
   showAddCar: false,
   showCongratAddCar: false,
-  editCar: false
+  editCar: false,
 }
 
 const uiSlice = createSlice({
@@ -31,6 +31,10 @@ const uiSlice = createSlice({
     },
     toggleLog(state) {
       state.showLog = !state.showLog
+    },
+    toggleLogReg(state) {
+      state.showReg = false
+      state.showLog = false
     },
     toggleForgetPassword(state) {
       state.showForgetPassword = !state.showForgetPassword
@@ -49,7 +53,7 @@ const uiSlice = createSlice({
     },
     toggleEditCar(state) {
       state.editCar = !state.editCar
-    }
+    },
   },
 })
 

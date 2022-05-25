@@ -1,15 +1,4 @@
-import {
-  Checkbox,
-  Dialog,
-  DialogContent,
-  Divider,
-  Stack,
-  Typography,
-  Box,
-  InputAdornment,
-  Tooltip,
-  IconButton,
-} from '@mui/material'
+import { Checkbox, Dialog, DialogContent, Divider, Stack, Typography, Box } from '@mui/material'
 import React, { memo, useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { uiActions } from '../../store/ui-slice'
@@ -17,7 +6,6 @@ import { RootState } from '../../store'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { sagaActions } from '../../store/sagaActions'
-import InfoIcon from '@mui/icons-material/Info'
 import * as yup from 'yup'
 import {
   StyledButton,
@@ -30,8 +18,11 @@ import {
   StyledBoxConfirmButton,
   StyledDialogActions,
   StyledStackDescriptionElement,
+  StyledStackDialogHeader,
 } from './AuthStyles'
 import InpurtErrorHandler from '../InputErrosHandler'
+import { GoogleLogin } from '@react-oauth/google'
+import FacebookLogin from '@greatsumini/react-facebook-login'
 
 const PHONE_REGEX: RegExp =
   /^(?:\+38)?(?:\(044\)[ .-]?[0-9]{3}[ .-]?[0-9]{2}[ .-]?[0-9]{2}|044[ .-]?[0-9]{3}[ .-]?[0-9]{2}[ .-]?[0-9]{2}|044[0-9]{7})$/
@@ -89,18 +80,60 @@ const SignIn = () => {
     dispatch(uiActions.toggleForgetPassword())
   }
 
+  const onSubmitHandlerGoogle = async (CredentialResponse: any) => {
+    dispatch({ type: sagaActions.GOOGLE_AUTH, payload: { token: CredentialResponse.credential } })
+  }
+
+  const onSubmitHandlerFacebook = async (CredentialResponse: any) => {
+    dispatch({
+      type: sagaActions.FACEBOOK_AUTH,
+      payload: { email: CredentialResponse.email, name: CredentialResponse.name },
+    })
+  }
+
   const handleChangeCheckBox = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(prevState => !prevState)
+  }
+
+  const onSuccessFacebokLogin = (response: any) => {
+    localStorage.setItem('token', response.accessToken)
   }
   return (
     <>
       <Dialog open={logCartIsShown} onClose={toggleHandler}>
         <StyledDialogTitle>Sign In</StyledDialogTitle>
         <Divider />
-        <Stack pt={2} direction="column" sx={{ margin: 'auto' }}>
-          <StyledButton variant="contained">CONNECT WITH FACEBOOK</StyledButton>
-          <StyledButton variant="contained">CONNECT WITH GOOGLE</StyledButton>
-        </Stack>
+        <StyledStackDialogHeader pt={2} gap={3}>
+          <GoogleLogin
+            onSuccess={CredentialResponse => {
+              onSubmitHandlerGoogle(CredentialResponse)
+            }}
+            onError={() => {
+              console.log('Login Failed')
+            }}
+            useOneTap
+          />
+          <FacebookLogin
+            appId="674600793627154"
+            onSuccess={response => {
+              onSuccessFacebokLogin(response)
+            }}
+            onFail={error => {
+              console.log('Login Failed!', error)
+            }}
+            onProfileSuccess={response => {
+              onSubmitHandlerFacebook(response)
+            }}
+            style={{
+              backgroundColor: '#4267b2',
+              color: '#fff',
+              fontSize: '16px',
+              padding: '10px 24px',
+              border: 'none',
+              borderRadius: '4px',
+            }}
+          />
+        </StyledStackDialogHeader>
         <Divider sx={{ marginTop: '13px' }} variant="middle">
           OR
         </Divider>
