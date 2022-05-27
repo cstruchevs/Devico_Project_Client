@@ -2,13 +2,12 @@ import { createSlice } from '@reduxjs/toolkit'
 import { ActionReducer } from './index'
 
 export interface INews {
-  title: string
-  date: string
-  description: string
+  news: { id: string; title: string; date: string; description: string }
+  url: string
 }
 
 interface INewsSlice {
-  news: INews[] | []
+  news: INews[]
 }
 
 const initialState: INewsSlice = {

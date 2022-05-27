@@ -8,7 +8,8 @@ export const ContainerSectionStyled = styled(Box)(({ theme }) => ({
 
 export const ContainerSlideStyled = styled(Box)(({ theme }) => ({
   backgroundColor: 'transparent',
-  padding: '0px !important',
+  paddingInline: '0px !important',
+  paddingBlock: '5px !important',
   '& > div': {
     marginInline: '15px',
   },
