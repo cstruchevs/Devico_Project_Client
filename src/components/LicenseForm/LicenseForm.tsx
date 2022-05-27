@@ -9,7 +9,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
-import React, { FC, memo, useCallback, useMemo, useRef, useState } from 'react'
+import React, { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { TypographyInfoSub } from '../../pages/LicensePage/LicensePageStyles'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -95,8 +95,8 @@ const LicenseForm: FC<ILicenseForm> = () => {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     accept: {
       'image/jpeg': [],
-      'image/png': []
-    }
+      'image/png': [],
+    },
   })
   const [selectedFile, setSelecetedFile] = useState<string>()
 
@@ -112,8 +112,9 @@ const LicenseForm: FC<ILicenseForm> = () => {
       <form onSubmit={handleSubmit(onSubmitHandler)}>
         <MainStackForm>
           <Stack direction="column" flex={1}></Stack>
+        </MainStackForm>
         <MainStackForm direction="row" gap={3}>
-          <Stack direction="column" flex={1} alignItems={"center"}>
+          <Stack direction="column" flex={1} alignItems={'center'}>
             <div {...getRootProps({ className: 'dropzone' })}>
               <input {...getInputProps()} />
               <UploadFileIconStyled />
@@ -139,7 +140,7 @@ const LicenseForm: FC<ILicenseForm> = () => {
               error={Boolean(errors.fullNameUkranian)}
               InputProps={
                 errors.fullNameUkranian && {
-                  endAdornment: <InpurtErrorHandler errors={errors.fullNameUkrania} />
+                  endAdornment: <InpurtErrorHandler errors={errors.fullNameUkrania} />,
                 }
               }
             />
@@ -151,7 +152,7 @@ const LicenseForm: FC<ILicenseForm> = () => {
               error={Boolean(errors.fullNameLatin)}
               InputProps={
                 errors.fullNameLatin && {
-                  endAdornment: <InpurtErrorHandler errors={errors.fullNameLatin} />
+                  endAdornment: <InpurtErrorHandler errors={errors.fullNameLatin} />,
                 }
               }
             />
@@ -163,7 +164,7 @@ const LicenseForm: FC<ILicenseForm> = () => {
               error={Boolean(errors.dob)}
               InputProps={
                 errors.dob && {
-                  endAdornment: <InpurtErrorHandler errors={errors.dob} />
+                  endAdornment: <InpurtErrorHandler errors={errors.dob} />,
                 }
               }
             />
@@ -175,7 +176,7 @@ const LicenseForm: FC<ILicenseForm> = () => {
               error={Boolean(errors.nativeCity)}
               InputProps={
                 errors.nativeCity && {
-                  endAdornment: <InpurtErrorHandler errors={errors.nativeCity} />
+                  endAdornment: <InpurtErrorHandler errors={errors.nativeCity} />,
                 }
               }
             />
@@ -189,7 +190,7 @@ const LicenseForm: FC<ILicenseForm> = () => {
               error={Boolean(errors.address)}
               InputProps={
                 errors.address && {
-                  endAdornment: <InpurtErrorHandler errors={errors.address} />
+                  endAdornment: <InpurtErrorHandler errors={errors.address} />,
                 }
               }
             />
@@ -201,7 +202,7 @@ const LicenseForm: FC<ILicenseForm> = () => {
               error={Boolean(errors.identificationNum)}
               InputProps={
                 errors.identificationNum && {
-                  endAdornment: <InpurtErrorHandler errors={errors.identificationNum} />
+                  endAdornment: <InpurtErrorHandler errors={errors.identificationNum} />,
                 }
               }
             />
@@ -213,7 +214,7 @@ const LicenseForm: FC<ILicenseForm> = () => {
               error={Boolean(errors.email)}
               InputProps={
                 errors.email && {
-                  endAdornment: <InpurtErrorHandler errors={errors.email} />
+                  endAdornment: <InpurtErrorHandler errors={errors.email} />,
                 }
               }
             />
@@ -225,7 +226,7 @@ const LicenseForm: FC<ILicenseForm> = () => {
               error={Boolean(errors.phone)}
               InputProps={
                 errors.phone && {
-                  endAdornment: <InpurtErrorHandler errors={errors.phone} />
+                  endAdornment: <InpurtErrorHandler errors={errors.phone} />,
                 }
               }
             />

@@ -58,7 +58,7 @@ const NewsSection: FC<INewsSection> = () => {
       <Box width="100%" mt="20px">
         <Slider {...settings}>
           {news.map((item) => (
-            <OuterBoxStyled key={item.id)}>
+            <OuterBoxStyled key={uuidv4()}>
               <NewsCard {...item} />
             </OuterBoxStyled>
           ))}

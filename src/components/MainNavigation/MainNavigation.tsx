@@ -84,7 +84,7 @@ const MainNavigation: FC<IMainNavigation> = () => {
     <StyledOuterWarapperBox>
       <StyledAppBar>
         <StyledInnerWarapperBox>
-          <StyledPageTitle>{locationResultPath}</StyledPageTitle>
+          <StyledPageTitle></StyledPageTitle>
           <StyledMenuBoxNav pr={1} pl={1}>
             {(user || userLocalStorage) && (
               <StyledAuthStackWrapper gap={1.5}>

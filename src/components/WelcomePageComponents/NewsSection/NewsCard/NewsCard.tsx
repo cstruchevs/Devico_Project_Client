@@ -1,6 +1,7 @@
 import { CardActions, CardContent, CardMedia, Link, Typography } from '@mui/material'
 import { FC, memo } from 'react'
 import { CardWrappperStyled } from './NewsCardStyles'
+import BitMap from "../../../../assets/imgs/Bitmap.png"
 
 interface INewsCard {
   image?: string
@@ -13,7 +14,7 @@ interface INewsCard {
 const NewsCard: FC<INewsCard> = ({ image, title, date, description, link }) => {
   return (
     <CardWrappperStyled>
-      <CardMedia component="img" alt="news image" height="220" image={image} />
+      <CardMedia component="img" alt="news image" height="220" image={image ? image : BitMap} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {title}
