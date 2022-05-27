@@ -3,7 +3,9 @@ import { useSelector } from 'react-redux'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import AllEventsPage from '../pages/AllEventsPage/AllEventsPage'
 import LicensePage from '../pages/LicensePage/LicensePage'
+import RecoverPasswordPage from '../pages/RecoverPasswordPage/RecoverPasswordPage'
 import SingleEventPage from '../pages/SingleEventPage/SingleEventPage'
+
 import checkLocalStorage from '../services/checkLocalStorage'
 import { RootState } from '../store'
 import { IUserInterface } from '../store/auth'
@@ -26,6 +28,7 @@ const PageRoutes: FC<IPageRoutes> = () => {
         <Route path="/event/:event_id" element={<SingleEventPage/>}/> 
         <Route path="/profile" element={(user || userLocalStorage) ? <ProfilePage/> : <Navigate to="/" />}/> 
         <Route path="/profile/license" element={(user || userLocalStorage) ? <LicensePage/> : <Navigate to="/" />}/>
+        <Route path="/recover-password/:id/:token" element={<RecoverPasswordPage />}/> 
         <Route path="*" element={<NoPage />} />
       </Routes>
     </Suspense>

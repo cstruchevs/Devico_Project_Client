@@ -23,7 +23,8 @@ export const StackElText = styled(Typography)(({ theme }) => ({
   flexDirection: 'column',
   alignContent: 'center',
   justifyContent: 'center',
-  justifyItems: 'center'
+  justifyItems: 'center',
+  flex: 3
 }))
 
 export const StackElIcons = styled(Typography)(({ theme }) => ({
@@ -31,6 +32,7 @@ export const StackElIcons = styled(Typography)(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   justifyItems: 'center',
+  flex: 1
 }))
 
 export const StackElIcon = styled(Typography)(({ theme }) => ({
@@ -38,5 +40,6 @@ export const StackElIcon = styled(Typography)(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   alignContent: 'center',
-  gap:"10px"
+  gap:"10px",
+  flex: 1
 }))

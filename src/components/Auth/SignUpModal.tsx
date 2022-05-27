@@ -16,21 +16,32 @@ import {
   StyledStackDescription,
   StyledBoxConfirmButton,
   StyledDialogActions,
+  StyledStackDialogHeader,
+  StyledGoogleButton,
 } from './AuthStyles'
 import { sagaActions } from '../../store/sagaActions'
+import InpurtErrorHandler from '../InputErrosHandler'
+import { GoogleLogin, useGoogleLogin } from '@react-oauth/google'
+import FacebookLogin from '@greatsumini/react-facebook-login'
 
 const phoneRegex: RegExp =
   /^(?:\+38)?(?:\(044\)[ .-]?[0-9]{3}[ .-]?[0-9]{2}[ .-]?[0-9]{2}|044[ .-]?[0-9]{3}[ .-]?[0-9]{2}[ .-]?[0-9]{2}|044[0-9]{7})$/
 
 const schema = yup.object().shape({
   email: yup.string().email().required('Write correct email'),
-  password: yup.string().min(8).max(32).required('Write correct password'),
-  confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
+  password: yup
+    .string()
+    .min(8)
+    .max(32)
+    .required('Write correct password, length 8 to 32 characters'),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref('password'), null], 'Passwords must match your initial password'),
 })
 
 const SignUp = () => {
   const dispatch = useDispatch()
-  const [checked, setChecked] = useState(true)
+  const [checked, setChecked] = useState(false)
 
   const {
     register,
@@ -39,15 +50,25 @@ const SignUp = () => {
     reset,
   } = useForm({
     resolver: yupResolver(schema),
-    mode: 'onChange',
+    mode: 'onSubmit',
   })
 
   const onSubmitHandler = (data: object) => {
     console.log({ data })
     dispatch({ type: sagaActions.USER_SETUP_SAGA, payload: data })
-    dispatch(uiActions.toggleCongratAuth())
     reset()
     toggleHandler()
+  }
+
+  const onSubmitHandlerGoogle = async (CredentialResponse: any) => {
+    dispatch({ type: sagaActions.GOOGLE_AUTH, payload: { token: CredentialResponse.credential } })
+  }
+
+  const onSubmitHandlerFacebook = async (CredentialResponse: any) => {
+    dispatch({
+      type: sagaActions.FACEBOOK_AUTH,
+      payload: { email: CredentialResponse.email, name: CredentialResponse.name },
+    })
   }
 
   const regCartIsShown = useSelector<RootState, boolean>(state => state.ui.showReg)
@@ -68,15 +89,54 @@ const SignUp = () => {
     setChecked(event.target.checked)
   }
 
+  const onSuccessFacebokLogin = (response: any) => {
+    localStorage.setItem('token', response.accessToken)
+  }
+
+  const login = useGoogleLogin({
+    onSuccess:  tokenResponse => console.log(tokenResponse),
+    onError: () => {
+      console.log('Login Failed')
+    },
+    flow: 'auth-code',
+  })
+
   return (
     <>
       <Dialog open={regCartIsShown} onClose={toggleHandler}>
         <StyledDialogTitle>Sign Up</StyledDialogTitle>
         <Divider />
-        <Stack pt={2} direction="row" sx={{ margin: 'auto' }}>
-          <StyledButton variant="contained">CONNECT WITH GOOGLE</StyledButton>
-          <StyledButton variant="contained">CONNECT WITH FACEBOOK</StyledButton>
-        </Stack>
+        <StyledStackDialogHeader pt={2} gap={3}>
+          <GoogleLogin
+            onSuccess={CredentialResponse => {
+              onSubmitHandlerGoogle(CredentialResponse)
+            }}
+            onError={() => {
+              console.log('Login Failed')
+            }}
+            useOneTap
+          />
+          <FacebookLogin
+            appId="674600793627154"
+            onSuccess={response => {
+              onSuccessFacebokLogin(response)
+            }}
+            onFail={error => {
+              console.log('Login Failed!', error)
+            }}
+            onProfileSuccess={response => {
+              onSubmitHandlerFacebook(response)
+            }}
+            style={{
+              backgroundColor: '#4267b2',
+              color: '#fff',
+              fontSize: '16px',
+              padding: '10px 24px',
+              border: 'none',
+              borderRadius: '4px',
+            }}
+          />
+        </StyledStackDialogHeader>
         <Divider sx={{ marginTop: '13px' }} variant="middle">
           OR
         </Divider>
@@ -89,40 +149,40 @@ const SignUp = () => {
                   {...register('email')}
                   name="email"
                   type="email"
-                  required
-                  fullWidth
-                  id="outlined-basic"
-                  variant="outlined"
                   error={Boolean(errors.email)}
+                  InputProps={
+                    errors.email && {
+                      endAdornment: <InpurtErrorHandler errors={errors.email} />,
+                    }
+                  }
                 />
                 <StyledTypography>PASSWORD*</StyledTypography>
                 <StyledTextField
                   {...register('password')}
                   name="password"
                   type="password"
-                  required
-                  fullWidth
-                  id="outlined-basic"
-                  variant="outlined"
                   error={Boolean(errors.password)}
+                  InputProps={
+                    errors.password && {
+                      endAdornment: <InpurtErrorHandler errors={errors.password} />,
+                    }
+                  }
                 />
               </Stack>
               <Stack direction="column">
                 <StyledTypography>TELEPHONE</StyledTypography>
-                <StyledTextField
-                  {...register('phone')}
-                  name="phone"
-                  id="outlined-basic"
-                  variant="outlined"
-                />
+                <StyledTextField {...register('phone')} name="phone" />
                 <StyledTypography>CONFIRM PASSWORD*</StyledTypography>
                 <StyledTextField
                   {...register('confirmPassword')}
-                  id="outlined-basic"
-                  variant="outlined"
                   name="confirmPassword"
-                  required
+                  type="password"
                   error={Boolean(errors.confirmPassword)}
+                  InputProps={
+                    errors.confirmPassword && {
+                      endAdornment: <InpurtErrorHandler errors={errors.confirmPassword} />,
+                    }
+                  }
                 />
               </Stack>
             </Stack>

@@ -22,6 +22,7 @@ import {
   StyledTypography,
   StyledTypographyHandler,
 } from '../Auth/AuthStyles'
+import callApi from '../../services/callApi'
 
 const schema = yup.object().shape({
   email: yup.string().email().required('There is no account with this email'),
@@ -54,14 +55,15 @@ const RecoverPas = () => {
     setIsSend(false)
   }, [dispatch, reset])
 
-  const toggleHandlerCheck = () => {
+  const toggleHandlerCheck = useCallback(() => {
     if (Boolean(errors.email)) return
     if (recoverIsShown) {
       setIsSend(!isSend)
     }
-  }
+  }, [setIsSend, recoverIsShown, isSend, errors.email])
 
-  const onSubmitHandler = useCallback((data: object) => {
+  const onSubmitHandler = useCallback(async (data: object) => {
+    callApi.post("/recover-password", data)
     toggleHandlerCheck()
     reset()
   }, [reset, toggleHandlerCheck])

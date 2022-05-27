@@ -26,7 +26,7 @@ const NewsCard: FC<INewsCard> = ({ image, title, date, description, link }) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Link href={link}>
+        <Link href="#">
           Read more
         </Link>
       </CardActions>
