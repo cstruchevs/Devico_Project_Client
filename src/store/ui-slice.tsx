@@ -9,6 +9,7 @@ type SliceState = {
   showAddCar: boolean
   showCongratAddCar: boolean
   editCar: boolean
+  alertDialog: boolean
 }
 
 const initialState: SliceState = {
@@ -20,6 +21,7 @@ const initialState: SliceState = {
   showAddCar: false,
   showCongratAddCar: false,
   editCar: false,
+  alertDialog: false
 }
 
 const uiSlice = createSlice({
@@ -53,6 +55,9 @@ const uiSlice = createSlice({
     },
     toggleEditCar(state) {
       state.editCar = !state.editCar
+    },
+    toggleAlertDialog(state) {
+      state.alertDialog = !state.alertDialog
     },
   },
 })

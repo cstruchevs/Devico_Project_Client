@@ -6,6 +6,7 @@ import CongratModule from './CongratModule.tsx/CongratModule'
 import SignUpModal from './Auth/SignUpModal'
 import RecoverPassModule from './RecoverPass/RecoverPassModule'
 import MainNavigation from './MainNavigation/MainNavigation'
+import ErrorModal from './ErrorModal/ErrorModal'
 
 interface ILayout {
   children?: JSX.Element | JSX.Element[]
@@ -15,6 +16,7 @@ const Layout: React.FunctionComponent<ILayout> = ({ children }) => {
   return (
     <>
       <CssBaseline />
+      <ErrorModal />
       <Sidebar />
       <MainNavigation />
       <CongratModule />

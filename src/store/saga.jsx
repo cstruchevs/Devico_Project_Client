@@ -5,6 +5,8 @@ import { uiActions } from './ui-slice'
 import { sagaActions } from './sagaActions'
 import axios from 'axios'
 import callApi from '../services/callApi'
+import { notificationActions, NotificationStatus } from './notifications'
+import moment from 'moment'
 
 const addUserToLocalStorage = ({ user, token }) => {
   localStorage.setItem('user', JSON.stringify(user))
@@ -12,7 +14,8 @@ const addUserToLocalStorage = ({ user, token }) => {
 }
 const { setUser, setCar, addCar, setDriversData, setLicenseTypeData } = authActions
 const { setNews } = newsActions
-const { toggleCongratAuth, toggleLogReg } = uiActions
+const { toggleCongratAuth, toggleLogReg, toggleAlertDialog } = uiActions
+const { setNotification } = notificationActions
 
 export function* userSetupSaga(action) {
   try {
@@ -24,12 +27,13 @@ export function* userSetupSaga(action) {
     yield put(toggleCongratAuth())
     addUserToLocalStorage({ user, token })
   } catch (error) {
+    yield put(toggleAlertDialog())
     console.log(error)
   }
 }
 export function* userLoginSaga(action) {
   try {
-    console.log({ ...action.payload})
+    console.log({ ...action.payload })
     const data = yield call(() => {
       return callApi.post('/login', { ...action.payload })
     })
@@ -40,6 +44,7 @@ export function* userLoginSaga(action) {
       addUserToLocalStorage({ user, token })
     }
   } catch (error) {
+    yield put(toggleAlertDialog())
     console.log(error)
   }
 }
@@ -109,12 +114,9 @@ export function* deleteCarSaga(action) {
 export function* updateUserSaga(action) {
   try {
     const data = yield call(() => {
-      return callApi.patch(
-        '/user/',
-        {
-          ...action.payload,
-        },
-      )
+      return callApi.patch('/user/', {
+        ...action.payload,
+      })
     })
     const { user, token } = data.data
     yield put(setUser({ user, token }))
