@@ -140,12 +140,11 @@ const SignIn = () => {
         <DialogContent>
           <form onSubmit={handleSubmit(onSubmitHandler)}>
             <Stack direction="row">
-              <Stack direction="column" sx={{ margin: 'auto' }}>
+              <Stack direction="column" sx={{ margin: 'auto', width: '80%' }}>
                 <StyledTypography>EMAIL*</StyledTypography>
                 <StyledTextField
                   {...register('email')}
                   name="email"
-                  type="email"
                   error={Boolean(errors.email)}
                   InputProps={
                     errors.email && {

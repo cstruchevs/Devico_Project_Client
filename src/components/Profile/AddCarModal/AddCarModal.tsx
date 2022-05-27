@@ -65,8 +65,8 @@ const AddCarModal: FC<IAddCarModal> = () => {
       <Divider />
       <form onSubmit={handleSubmit(onSubmitHandler)}>
         <DialogContent>
-          <Stack direction="row">
-            <Stack direction="column">
+          <Stack direction="row" >
+            <Stack direction="column" sx={{width: '50%'}}>
               <StyledTypography>MODEL*</StyledTypography>
               <StyledTextField
                 {...register('model')}
@@ -111,8 +111,8 @@ const AddCarModal: FC<IAddCarModal> = () => {
                 }
               />
             </Stack>
-            <Stack direction="column">
-              <StyledTypography>TECHNICAL PASSPORT NUMBER*</StyledTypography>
+            <Stack direction="column" sx={{width: '50%'}}>
+              <StyledTypography>TECHNICAL PASSPORT*</StyledTypography>
               <StyledTextField
                 {...register('technicalPassNumber')}
                 error={Boolean(errors.technicalPassNumber)}
@@ -148,7 +148,7 @@ const AddCarModal: FC<IAddCarModal> = () => {
                   }
                 }
               />
-              <StyledTypography>FULL NAME VEHICLE OWNER*</StyledTypography>
+              <StyledTypography>FULL NAME OWNER*</StyledTypography>
               <StyledTextField
                 {...register('fullNameOwner')}
                 error={Boolean(errors.fullNameOwner)}

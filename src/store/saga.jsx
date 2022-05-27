@@ -29,6 +29,7 @@ export function* userSetupSaga(action) {
 }
 export function* userLoginSaga(action) {
   try {
+    console.log({ ...action.payload})
     const data = yield call(() => {
       return callApi.post('/login', { ...action.payload })
     })

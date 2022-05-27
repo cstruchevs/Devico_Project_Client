@@ -183,7 +183,6 @@ const PersonalData: FC<IPersonalData> = () => {
               <StyledTextField
                 {...register('email')}
                 name="email"
-                type="email"
                 value={formDataEmail}
                 onChange={e => handleChangeEmail(e)}
                 error={Boolean(errors.email)}

@@ -94,7 +94,7 @@ const SignUp = () => {
   }
 
   const login = useGoogleLogin({
-    onSuccess:  tokenResponse => console.log(tokenResponse),
+    onSuccess: tokenResponse => console.log(tokenResponse),
     onError: () => {
       console.log('Login Failed')
     },
@@ -143,12 +143,11 @@ const SignUp = () => {
         <DialogContent>
           <form onSubmit={handleSubmit(onSubmitHandler)}>
             <Stack direction="row">
-              <Stack direction="column" sx={{ margin: 'auto' }}>
+              <Stack direction="column" sx={{ width: '50%' }}>
                 <StyledTypography>EMAIL*</StyledTypography>
                 <StyledTextField
                   {...register('email')}
                   name="email"
-                  type="email"
                   error={Boolean(errors.email)}
                   InputProps={
                     errors.email && {
@@ -169,7 +168,7 @@ const SignUp = () => {
                   }
                 />
               </Stack>
-              <Stack direction="column">
+              <Stack direction="column" sx={{ width: '50%' }}>
                 <StyledTypography>TELEPHONE</StyledTypography>
                 <StyledTextField {...register('phone')} name="phone" />
                 <StyledTypography>CONFIRM PASSWORD*</StyledTypography>
