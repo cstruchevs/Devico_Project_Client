@@ -1,4 +1,4 @@
-import { Badge, Divider, Popover, Typography } from '@mui/material'
+import { Badge, Typography } from '@mui/material'
 import {
   StyledPopover,
   StyledButton,
@@ -25,8 +25,6 @@ import { authActions } from '../../store/auth'
 import { IUserInterface } from '../../store/auth'
 import checkLocalStorage from '../../services/checkLocalStorage'
 import { useLocation } from 'react-router-dom'
-import { Box } from '@mui/system'
-import NotificationsIcon from '@mui/icons-material/Notifications'
 import { INotifications } from '../../store/notifications'
 import Notifications from './Notifications/Notifications'
 

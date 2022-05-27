@@ -46,7 +46,7 @@ const AddCarModal: FC<IAddCarModal> = () => {
     reset,
   } = useForm({
     resolver: yupResolver(schema),
-    mode: 'onChange',
+    mode: 'onSubmit',
   })
 
   const onSubmitHandler = useCallback(
