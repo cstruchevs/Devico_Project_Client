@@ -23,7 +23,7 @@ const PageRoutes: FC<IPageRoutes> = () => {
       <Routes>
         <Route path="/" element={<WelcomePage />} />
         <Route path="/events" element={<AllEventsPage/>}/> 
-        <Route path="/event/:id" element={<SingleEventPage/>}/> 
+        <Route path="/event/:event_id" element={<SingleEventPage/>}/> 
         <Route path="/profile" element={(user || userLocalStorage) ? <ProfilePage/> : <Navigate to="/" />}/> 
         <Route path="/profile/license" element={(user || userLocalStorage) ? <LicensePage/> : <Navigate to="/" />}/>
         <Route path="*" element={<NoPage />} />

@@ -23,16 +23,16 @@ import {
 } from './WelcomeSectionStyles'
 import { FC, memo, useCallback, useEffect, useState } from 'react'
 import { IUserInterface } from '../../../store/auth'
-import { IEvents } from '../../../pages/WelcomePage/WelcomePage'
+import { IEvent, IEvents } from '../../../pages/WelcomePage/WelcomePage'
 
 interface IWelcomeSection {
-  events: IEvents[]
+  event: IEvents
 }
 
-const WelcomeSection: FC<IWelcomeSection> = ({ events }) => {
+const WelcomeSection: FC<IWelcomeSection> = ({ event }) => {
   const dispatch = useDispatch()
   const user = useSelector<RootState, IUserInterface | null>(state => state.auth.user)
-  const [nextEvent, setNextEvent] = useState<IEvents | null>(null)
+  const [nextEvent, setNextEvent] = useState<IEvent | null>(null)
   const [nextEventImg, setNextEventImg] = useState<String | null>(null)
   const [nextEventDate, setNextEventDate] = useState<String | null>(null)
 
@@ -48,24 +48,12 @@ const WelcomeSection: FC<IWelcomeSection> = ({ events }) => {
     dispatch(uiActions.toggleForgetPassword())
   }, [dispatch])
 
-  const findNextEventHandler = useCallback(() => {
-    const today = new Date()
-    for (let i = 0; i < events.length; i++) {
-      if (new Date(events[i].date) > today) {
-        setNextEvent(events[i])
-        if (events[i].image) {
-          setNextEventImg(`http://localhost:5000/images/${events[i].image}`)
-        }
-        const date = new Date(events[i].date)
-        setNextEventDate(`${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`)
-        break
-      }
-    }
-  }, [events])
-
   useEffect(() => {
-    findNextEventHandler()
-  }, [findNextEventHandler])
+    setNextEvent(event.event)
+    setNextEventImg(event.url)
+    const date = new Date(event.event.date)
+    setNextEventDate(`${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`)
+  }, [event])
 
   return (
     <SectionWrappperStyled component={'section'} id="welcome">

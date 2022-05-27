@@ -112,7 +112,7 @@ const PersonalData: FC<IPersonalData> = () => {
   const getUserInfoHandler = useCallback(async () => {
     const req = await axios.get(`http://localhost:5000/user/${userData?.id}`)
 
-    setPreviewPicture(req.data.data.avatarUrl)
+    setPreviewPicture(req.data.image)
   }, [userData?.id])
 
   useEffect(() => {
@@ -208,7 +208,7 @@ const PersonalData: FC<IPersonalData> = () => {
                   ),
                 }}
               />
-              <StyledTypography>CONFRIM NEW PASSWORD</StyledTypography>
+              <StyledTypography>CONFIRM NEW PASSWORD</StyledTypography>
               <StyledTextField
                 {...register('confirmPassword')}
                 name="confirmPassword"

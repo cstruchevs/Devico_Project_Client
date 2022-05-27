@@ -3,7 +3,7 @@ import { styled } from '@mui/material'
 import { Box } from '@mui/system'
 
 export const SectionWrappperStyled = styled(Box)(({ theme }) => ({
-  wdisplay: 'flex',
+  display: 'flex',
   flexFlow: 'column',
   marginTop: '120px',
   marginBottom: "30px",

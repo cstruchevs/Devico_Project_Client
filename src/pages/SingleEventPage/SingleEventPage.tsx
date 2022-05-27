@@ -7,6 +7,7 @@ interface ISingleEventPage {}
 
 const SingleEventPage: FC<ISingleEventPage> = () => {
   let { event_id } = useParams()
+  
   return (
     <Box component={'section'}>
       <SingleEvent eventId={event_id}/>

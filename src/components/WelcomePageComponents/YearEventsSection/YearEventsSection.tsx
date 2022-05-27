@@ -1,17 +1,69 @@
 import { SectionWrappperStyled } from './YearEventsSectionStyles'
-import { Link, Stack, Typography } from '@mui/material'
-import { FC, memo, useMemo } from 'react'
+import { Button, Link, Stack, Typography } from '@mui/material'
+import { FC, memo, useEffect, useMemo, useState } from 'react'
 import Carousel from '../../Carousel/Carousel'
 import { FakeUpcomingEvents } from '../../../FakeUpcomingEvents'
 import UpcomingEventCard from '../../UpcomingEventCard/UpcomingEventCard'
+import { IEvents } from '../../../pages/WelcomePage/WelcomePage'
 
-interface IYearEventsSection {}
+interface IYearEventsSection {
+  events: IEvents[]
+}
 
-const YearEventsSection: FC<IYearEventsSection> = () => {
-  const upcomingCard = useMemo(
-    () => FakeUpcomingEvents.map(item => <UpcomingEventCard {...item} />),
+const YearEventsSection: FC<IYearEventsSection> = ({ events }) => {
+  const [yearsCards, setYearsCards] = useState<JSX.Element[]>([])
+
+  const ButtonReg = useMemo(
+    () => (
+      <Button sx={{ width: '130px', paddingBlock: '5px' }} variant="contained">
+        Register
+      </Button>
+    ),
     [],
   )
+
+  const ButtonFinished = useMemo(
+    () => (
+      <Button
+        sx={{ width: '130px', paddingBlock: '5px', '&:hover': { cursor: 'not-allowed' } }}
+        variant="contained"
+      >
+        Finished
+      </Button>
+    ),
+    [],
+  )
+
+  useEffect(() => {
+    setYearsCards(
+      events.map((event: IEvents) => {
+        const date = new Date(event.event.date)
+        const today = new Date()
+        let eventLabel: string = ''
+        if (date < today) {
+          eventLabel = 'Finished event'
+        } else {
+          eventLabel = 'Next event'
+        }
+
+        return (
+          <UpcomingEventCard
+            eventLabel={eventLabel}
+            title={event.event.name}
+            date={`${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`}
+            address={event.event.place}
+            backgroundImage={event.url}
+            discipline={event.event.discipline}
+            status={event.event.status}
+            series={event.event.series}
+            eventId={event.event.id}
+            button={eventLabel === 'Next event' ? ButtonReg : ButtonFinished}
+            linkShow={true}
+          />
+        )
+      }),
+    )
+  }, [events, ButtonReg, ButtonFinished])
 
   return (
     <SectionWrappperStyled component={'section'}>
@@ -21,10 +73,10 @@ const YearEventsSection: FC<IYearEventsSection> = () => {
         width={'100%'}
         alignItems={'baseline'}
       >
-        <Typography variant="h4">Events for the lst year</Typography>
+        <Typography variant="h4">Events for the last year</Typography>
         <Link href={'#'}>View all</Link>
       </Stack>
-      <Carousel items={upcomingCard} />
+      <Carousel items={yearsCards} />
     </SectionWrappperStyled>
   )
 }
