@@ -5,19 +5,40 @@ import {
   SectionWrappperStyled,
   TableContainerStyled,
 } from './AllEventsSectionStyles'
-import React, { useCallback, useState, memo } from 'react'
+import React, { useCallback, useState, memo, FC, useEffect } from 'react'
 import { Table, TableBody, TableCell, TableHead, TableRow, Pagination } from '@mui/material'
-import { allEventsColumns, allEventsRows } from './AllEventsDummyData'
+import { allEventsColumns, createData, IData } from './AllEventsUtils'
 import { v4 as uuidv4 } from 'uuid'
+import { IEvents } from '../../../pages/WelcomePage/WelcomePage'
 
 const ELEMENTS_PER_PAGE = 6
 
-const AllEventsSection = () => {
+interface IAllEventsSection {
+  events: IEvents[]
+}
+const AllEventsSection: FC<IAllEventsSection> = ({ events }) => {
   const [page, setPage] = useState(0)
 
   const cahngePageHandling = useCallback((event: React.ChangeEvent<unknown>, newPage: number) => {
     setPage(newPage - 1)
   }, [])
+
+  const [allEventsRows, setAllEventsRows] = useState<IData[]>([])
+
+  useEffect(() => {
+    setAllEventsRows(
+      events.map((event: IEvents) => {
+        const date = new Date(event.event.date)
+        return createData(
+          `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`,
+          event.event.discipline,
+          event.event.status,
+          event.event.name,
+          event.event.place,
+        )
+      }),
+    )
+  }, [events])
 
   return (
     <SectionWrappperStyled component={'section'}>

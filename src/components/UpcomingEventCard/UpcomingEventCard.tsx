@@ -16,7 +16,7 @@ import {
   UpcomingEventCardStyled,
 } from './UpcomingEventCardStyles'
 
-interface UpcomingEventCardProps {
+export interface IUpcomingEventCard {
   eventLabel: string
   title: string
   date: string
@@ -32,7 +32,7 @@ interface UpcomingEventCardProps {
   linkShow?: boolean
 }
 
-const UpcomingEventCard: FC<UpcomingEventCardProps> = ({
+const UpcomingEventCard: FC<IUpcomingEventCard> = ({
   eventLabel,
   title,
   date,

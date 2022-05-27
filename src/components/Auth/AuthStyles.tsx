@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material'
 import { Box } from '@mui/system'
+import { GoogleLogin } from '@react-oauth/google'
 
 export const StyledButton = styled(Button)({
   margin: '10px',
@@ -24,7 +25,7 @@ export const StyledAuthBoxRecPass = styled(Button)({
 export const ConfirmStyledButton = styled(Button)({
   margin: 'auto',
   width: '80%',
-  color: '#fff',
+  color: 'black',
   height: '33px',
   borderRadius: '0px',
   border: '1px solid black',
@@ -99,4 +100,21 @@ export const StyledTypographyHandler = styled(Typography)({
   '&:hover': {
     cursor: 'pointer',
   },
+})
+
+export const StyledStackDialogHeader = styled(Stack)({
+  alignItems: 'center',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  paddingLeft: '14px',
+  paddingRight: '14px',
+})
+
+export const StyledGoogleButton = styled(Button)({
+  backgroundColor: '#4267b2',
+  color: '#fff',
+  fontSize: '16px',
+  padding: '12px 24px',
+  border: 'none',
+  borderRadius: '4px',
 })

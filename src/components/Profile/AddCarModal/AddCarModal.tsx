@@ -9,30 +9,34 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { AddCarCancelButton, AddCarConfirmButton, DialogActionsStyled } from './AddCarModalStyles'
+import { sagaActions } from '../../../store/sagaActions'
+import InpurtErrorHandler from '../../InputErrosHandler'
 
 interface IAddCarModal {}
 
 const schema = yup.object().shape({
-  fullName: yup.string().min(3),
+  fullNameOwner: yup.string().min(3),
   model: yup.string().min(4).required('Write model, min 4 characters'),
-  year: yup
-    .number()
-    .min(1960)
-    .positive()
-    .required('Write year of the car, it must me greater than 1960'),
-  capacityEngine: yup.string().min(2).required('Write capicicty engine'),
-  regVehNumber: yup.string().min(4).required('Vehicle humber must contain at least 4 number'),
-  techPassNumber: yup.number().min(1000).required('Tech pass must contain at least 4 number'),
-  vinNumber: yup.number().min(1000).required('Vin number must contain at least 4 number'),
+  year: yup.string().min(4).required('Write year of the car, it must me greater than 1960'),
+  capaciteEngine: yup.string().min(2).required('Write capicicty engine'),
+  regVihicleNumber: yup.string().min(4).required('Vehicle humber must contain at least 4 number'),
+  technicalPassNumber: yup.string().min(4).required('Tech pass must contain at least 4 number'),
+  viaNumber: yup.string().min(5).required('Vin number must contain at least 4 number'),
   driveTrain: yup.string().min(4).required('Drive train must contain at least 4 number'),
 })
 
 const AddCarModal: FC<IAddCarModal> = () => {
   const dispatch = useDispatch()
+  const id: string | undefined = useSelector((state: RootState) => state.auth.user?.id)
   const addCarIsShown = useSelector<RootState, boolean>(state => state.ui.showAddCar)
+  const editCar = useSelector<RootState, boolean>(state => state.ui.editCar)
 
   const toggleAddCar = useCallback(() => {
     dispatch(uiActions.toggleShowAddCar())
+  }, [dispatch])
+
+  const toggleAddCarCongrat = useCallback(() => {
+    dispatch(uiActions.toggleCongratAddCar())
   }, [dispatch])
 
   const {
@@ -42,14 +46,18 @@ const AddCarModal: FC<IAddCarModal> = () => {
     reset,
   } = useForm({
     resolver: yupResolver(schema),
-    mode: 'onChange',
+    mode: 'onSubmit',
   })
 
-  const onSubmitHandler = useCallback((data: any) => {
-    reset()
-    toggleAddCar()
-    console.log(data)
-  }, [reset, toggleAddCar])
+  const onSubmitHandler = useCallback(
+    (data: any) => {
+      dispatch({ type: sagaActions.ADD_CAR_SAGA, payload: { ...data, id: id } })
+      reset()
+      toggleAddCarCongrat()
+      toggleAddCar()
+    },
+    [reset, toggleAddCar, toggleAddCarCongrat, dispatch, id],
+  )
 
   return (
     <Dialog open={addCarIsShown} onClose={toggleAddCar}>
@@ -65,10 +73,11 @@ const AddCarModal: FC<IAddCarModal> = () => {
                 error={Boolean(errors.model)}
                 name="model"
                 type="text"
-                required
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                InputProps={
+                  errors.model && {
+                    endAdornment: <InpurtErrorHandler errors={errors.model} />,
+                  }
+                }
               />
               <StyledTypography>YEAR*</StyledTypography>
               <StyledTextField
@@ -76,56 +85,56 @@ const AddCarModal: FC<IAddCarModal> = () => {
                 error={Boolean(errors.year)}
                 name="year"
                 type="text"
-                required
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                InputProps={
+                  errors.year && {
+                    endAdornment: <InpurtErrorHandler errors={errors.year} />,
+                  }
+                }
               />
               <StyledTypography>CAPACITY ENGINE*</StyledTypography>
               <StyledTextField
-                {...register('capacityEngine')}
-                error={Boolean(errors.capacityEngine)}
-                name="capacityEngine"
+                {...register('capaciteEngine')}
+                error={Boolean(errors.capaciteEngine)}
+                name="capaciteEngine"
                 type="text"
-                required
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
               />
               <StyledTypography>REG. VEHICLE NUMBER*</StyledTypography>
               <StyledTextField
-                {...register('regVehNumber')}
-                error={Boolean(errors.regVehNumber)}
-                name="regVehNumber"
+                {...register('regVihicleNumber')}
+                error={Boolean(errors.regVihicleNumber)}
+                name="regVihicleNumber"
                 type="text"
-                required
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                InputProps={
+                  errors.regVihicleNumber && {
+                    endAdornment: <InpurtErrorHandler errors={errors.regVihicleNumber} />,
+                  }
+                }
               />
             </Stack>
             <Stack direction="column">
               <StyledTypography>TECHNICAL PASSPORT NUMBER*</StyledTypography>
               <StyledTextField
-                {...register('techPassNumber')}
-                error={Boolean(errors.techPassNumber)}
-                name="techPassNumber"
+                {...register('technicalPassNumber')}
+                error={Boolean(errors.technicalPassNumber)}
+                name="technicalPassNumber"
                 type="text"
-                required
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                InputProps={
+                  errors.technicalPassNumber && {
+                    endAdornment: <InpurtErrorHandler errors={errors.technicalPassNumber} />,
+                  }
+                }
               />
               <StyledTypography>VIN NUMBER*</StyledTypography>
               <StyledTextField
-                {...register('vinNumber')}
-                error={Boolean(errors.vinNumber)}
-                name="vinNumber"
+                {...register('viaNumber')}
+                error={Boolean(errors.viaNumber)}
+                name="viaNumber"
                 type="text"
-                required
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                InputProps={
+                  errors.viaNumber && {
+                    endAdornment: <InpurtErrorHandler errors={errors.viaNumber} />,
+                  }
+                }
               />
               <StyledTypography>DRIVE TRAIN*</StyledTypography>
               <StyledTextField
@@ -133,26 +142,28 @@ const AddCarModal: FC<IAddCarModal> = () => {
                 error={Boolean(errors.driveTrain)}
                 name="driveTrain"
                 type="text"
-                required
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                InputProps={
+                  errors.driveTrain && {
+                    endAdornment: <InpurtErrorHandler errors={errors.driveTrain} />,
+                  }
+                }
               />
               <StyledTypography>FULL NAME VEHICLE OWNER*</StyledTypography>
               <StyledTextField
-                {...register('fullName')}
-                error={Boolean(errors.fullName)}
-                name="fullName"
+                {...register('fullNameOwner')}
+                error={Boolean(errors.fullNameOwner)}
+                name="fullNameOwner"
                 type="text"
-                required
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                InputProps={
+                  errors.fullNameOwner && {
+                    endAdornment: <InpurtErrorHandler errors={errors.fullNameOwner} />,
+                  }
+                }
               />
             </Stack>
           </Stack>
         </DialogContent>
-        <DialogActionsStyled >
+        <DialogActionsStyled>
           <AddCarCancelButton onClick={toggleAddCar}>Cancel</AddCarCancelButton>
           <AddCarConfirmButton type="submit">Subscribe</AddCarConfirmButton>
         </DialogActionsStyled>

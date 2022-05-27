@@ -18,7 +18,11 @@ import {
   StyledBoxConfirmButton,
   StyledDialogActions,
   StyledStackDescriptionElement,
+  StyledStackDialogHeader,
 } from './AuthStyles'
+import InpurtErrorHandler from '../InputErrosHandler'
+import { GoogleLogin } from '@react-oauth/google'
+import FacebookLogin from '@greatsumini/react-facebook-login'
 
 const PHONE_REGEX: RegExp =
   /^(?:\+38)?(?:\(044\)[ .-]?[0-9]{3}[ .-]?[0-9]{2}[ .-]?[0-9]{2}|044[ .-]?[0-9]{3}[ .-]?[0-9]{2}[ .-]?[0-9]{2}|044[0-9]{7})$/
@@ -37,7 +41,7 @@ const SignIn = () => {
     reset,
   } = useForm({
     resolver: yupResolver(schema),
-    mode: 'onChange',
+    mode: 'onSubmit',
   })
 
   const [checked, setChecked] = useState(true)
@@ -54,13 +58,11 @@ const SignIn = () => {
 
   const onSubmitHandler = useCallback(
     async (data: object) => {
-      console.log({ data })
-      dispatch({ type: sagaActions.USER_LOGIN_SAGA, payload: data })
-      dispatch(uiActions.toggleCongratAuth())
+      dispatch({ type: sagaActions.USER_LOGIN_SAGA, payload: { ...data, checked } })
       reset()
       toggleHandler()
     },
-    [dispatch, reset, toggleHandler],
+    [dispatch, reset, toggleHandler, checked],
   )
 
   const changeSignHandler = useCallback(() => {
@@ -78,18 +80,60 @@ const SignIn = () => {
     dispatch(uiActions.toggleForgetPassword())
   }
 
+  const onSubmitHandlerGoogle = async (CredentialResponse: any) => {
+    dispatch({ type: sagaActions.GOOGLE_AUTH, payload: { token: CredentialResponse.credential } })
+  }
+
+  const onSubmitHandlerFacebook = async (CredentialResponse: any) => {
+    dispatch({
+      type: sagaActions.FACEBOOK_AUTH,
+      payload: { email: CredentialResponse.email, name: CredentialResponse.name },
+    })
+  }
+
   const handleChangeCheckBox = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked)
+    setChecked(prevState => !prevState)
+  }
+
+  const onSuccessFacebokLogin = (response: any) => {
+    localStorage.setItem('token', response.accessToken)
   }
   return (
     <>
       <Dialog open={logCartIsShown} onClose={toggleHandler}>
         <StyledDialogTitle>Sign In</StyledDialogTitle>
         <Divider />
-        <Stack pt={2} direction="column" sx={{ margin: 'auto' }}>
-          <StyledButton variant="contained">CONNECT WITH FACEBOOK</StyledButton>
-          <StyledButton variant="contained">CONNECT WITH GOOGLE</StyledButton>
-        </Stack>
+        <StyledStackDialogHeader pt={2} gap={3}>
+          <GoogleLogin
+            onSuccess={CredentialResponse => {
+              onSubmitHandlerGoogle(CredentialResponse)
+            }}
+            onError={() => {
+              console.log('Login Failed')
+            }}
+            useOneTap
+          />
+          <FacebookLogin
+            appId="674600793627154"
+            onSuccess={response => {
+              onSuccessFacebokLogin(response)
+            }}
+            onFail={error => {
+              console.log('Login Failed!', error)
+            }}
+            onProfileSuccess={response => {
+              onSubmitHandlerFacebook(response)
+            }}
+            style={{
+              backgroundColor: '#4267b2',
+              color: '#fff',
+              fontSize: '16px',
+              padding: '10px 24px',
+              border: 'none',
+              borderRadius: '4px',
+            }}
+          />
+        </StyledStackDialogHeader>
         <Divider sx={{ marginTop: '13px' }} variant="middle">
           OR
         </Divider>
@@ -102,22 +146,24 @@ const SignIn = () => {
                   {...register('email')}
                   name="email"
                   type="email"
-                  required
-                  fullWidth
-                  id="outlined-basic"
-                  variant="outlined"
                   error={Boolean(errors.email)}
+                  InputProps={
+                    errors.email && {
+                      endAdornment: <InpurtErrorHandler errors={errors.email} />,
+                    }
+                  }
                 />
                 <StyledTypography>PASSWORD*</StyledTypography>
                 <StyledTextField
                   {...register('password')}
                   name="password"
                   type="password"
-                  required
-                  fullWidth
-                  id="outlined-basic"
-                  variant="outlined"
                   error={Boolean(errors.password)}
+                  InputProps={
+                    errors.password && {
+                      endAdornment: <InpurtErrorHandler errors={errors.password} />,
+                    }
+                  }
                 />
               </Stack>
             </Stack>
@@ -136,9 +182,7 @@ const SignIn = () => {
               </StyledTypographyHandler>
             </StyledStackDescription>
             <StyledBoxConfirmButton>
-              <ConfirmStyledButton type="submit" disabled={checked ? false : true}>
-                Sign In
-              </ConfirmStyledButton>
+              <ConfirmStyledButton type="submit">Sign In</ConfirmStyledButton>
             </StyledBoxConfirmButton>
           </form>
         </DialogContent>

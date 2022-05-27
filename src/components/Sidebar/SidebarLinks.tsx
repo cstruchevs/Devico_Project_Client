@@ -49,7 +49,7 @@ export const downSidebarLinks = [
     },
     {
         icon: PolicyOutlinedIcon,
-        title: "Privacy & Term of use",
+        title: "Privacy & Terms of use",
         link: "/policy"
     },
 ]

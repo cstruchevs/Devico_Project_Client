@@ -4,7 +4,7 @@ import Sidebar from './Sidebar/Sidebar'
 import SignInModal from './Auth/SignInModal'
 import CongratModule from './CongratModule.tsx/CongratModule'
 import SignUpModal from './Auth/SignUpModal'
-import RecoverPassModule from './RecoverPassModule/RecoverPassModule'
+import RecoverPassModule from './RecoverPass/RecoverPassModule'
 import MainNavigation from './MainNavigation/MainNavigation'
 
 interface ILayout {

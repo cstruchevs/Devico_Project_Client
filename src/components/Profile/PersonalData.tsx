@@ -1,4 +1,4 @@
-import { Avatar, IconButton, InputAdornment } from '@mui/material'
+import { Avatar, IconButton, InputAdornment, Tooltip } from '@mui/material'
 import {
   BoxAvatar,
   BoxPersonalDataForm,
@@ -13,40 +13,50 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { StyledBoxConfirmButton, StyledTextField, StyledTypography } from '../Auth/AuthStyles'
-import React, { FC, memo, useCallback, useState } from 'react'
+import React, { FC, memo, useCallback, useEffect, useState } from 'react'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store'
 import { sagaActions } from '../../store/sagaActions'
 import { useDispatch } from 'react-redux'
+import axios from 'axios'
 
-const schema = yup.object().shape({
-  picture: yup
-    .mixed()
-    .required('You need to provide a file')
-    .test('fileSize', 'The file is too large', value => {
-      return value && value[0].size <= 2000000
+import InpurtErrorHandler from '../InputErrosHandler'
+
+const schema = yup.object().shape(
+  {
+    fullName: yup.string().when('fullName', {
+      is: (fullName: string) => fullName?.length > 0,
+      then: yup.string().min(8, 'fullName must be at least 3 characters'),
+    }),
+    email: yup.string().email().required('Write correct email'),
+    password: yup.string().when('password', {
+      is: (password: string) => password?.length > 0,
+      then: yup.string().min(8, 'Password must be at least 8 characters'),
+    }),
+    confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
+    phone: yup.string().when('phone', {
+      is: (phone: string) => phone?.length > 0,
+      then: yup.string().min(10, 'Phone must be at least 10 characters'),
     })
-    .test('type', 'We only support jpeg', value => {
-      return value && value[0].type === 'image/jpeg'
-    })
-    .nullable(true),
-  fullName: yup.string().min(3).nullable(true),
-  email: yup.string().email().required('Write correct email'),
-  password: yup.string().min(8).max(32).nullable(true),
-  confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
-  phone: yup.string().min(10).nullable(true),
-})
+  },
+  [
+    ['fullName', 'fullName'],
+    ['password', 'password'],
+    ['phone', 'phone']
+  ]
+)
 
 interface IPersonalData {}
 
 const PersonalData: FC<IPersonalData> = () => {
   const dispatch = useDispatch()
   const userData = useSelector((state: RootState) => state.auth.user)
-  const [formDataName, setFormDataName] = useState(userData?.fullName)
-  const [formDataPhone, setFormDataPhone] = useState(userData?.phone)
-  const [formDataEmail, setFormDataEmail] = useState(userData?.email)
-  const [formDataPicture, setFormDataPicture] = useState('')
+  const [formDataName, setFormDataName] = useState(userData?.fullName ? userData?.fullName : '')
+  const [formDataPhone, setFormDataPhone] = useState(userData?.phone ? userData?.phone : '')
+  const [formDataEmail, setFormDataEmail] = useState(userData?.email ? userData?.email : '')
+  const [formDataPicture, setFormDataPicture] = useState<any>('')
+  const [previewPicture, setPreviewPicture] = useState('')
 
   const handleChangeName = (e: any) => {
     let value = e.target.value
@@ -61,8 +71,8 @@ const PersonalData: FC<IPersonalData> = () => {
     setFormDataEmail(value)
   }
   const handleChangeAvatar = (e: any) => {
-    let value = e.target.value
-    setFormDataPicture(value)
+    setPreviewPicture(URL.createObjectURL(e.target.files[0]))
+    setFormDataPicture(e.target.files)
   }
 
   const [passValue, setValues] = useState({
@@ -84,20 +94,47 @@ const PersonalData: FC<IPersonalData> = () => {
     resetField,
   } = useForm({
     resolver: yupResolver(schema),
-    mode: 'onChange',
+    mode: 'onSubmit',
   })
 
-  const onSubmitHandler = useCallback(
-    (data: any) => {
-      console.log(data)
+  const onUploadAvatar = useCallback(async () => {
+    //Ask for upload url
+    const req = await axios.get(`http://localhost:5000/image/uploadUrl/avatars`)
 
+    //Upload to aws
+    let file = formDataPicture[0]
+    await axios.put(req.data.uploadURL, file)
+
+    //Change user avatar in db
+    await axios.patch(`http://localhost:5000/user/avatar`, {id: userData?.id, key: req.data.Key})
+  }, [formDataPicture, userData?.id])
+
+  const onSubmitHandler = useCallback(
+    async (data: any) => {
+      console.log('profile', data)
       const id = userData?.id
-      dispatch({ type: sagaActions.UPDATE_USER_SAGA, payload: { ...data, id } })
+      dispatch({
+        type: sagaActions.UPDATE_USER_SAGA,
+        payload: { ...data, id },
+      })
       resetField('password')
       resetField('confirmPassword')
+      if (formDataPicture) {
+        onUploadAvatar()
+      }
     },
-    [resetField, dispatch, userData],
+    [resetField, dispatch, userData, onUploadAvatar, formDataPicture],
   )
+
+  const getUserInfoHandler = useCallback(async () => {
+    const req = await axios.get(`http://localhost:5000/user/${userData?.id}`)
+
+    setPreviewPicture(req.data.image)
+  }, [userData?.id])
+
+  useEffect(() => {
+    getUserInfoHandler()
+  }, [getUserInfoHandler])
 
   return (
     <>
@@ -114,15 +151,15 @@ const PersonalData: FC<IPersonalData> = () => {
             >
               <label htmlFor="icon-button-file">
                 <InputFile
-                  {...register('picture')}
                   accept="image/*"
                   id="icon-button-file"
                   type="file"
+                  defaultValue=""
                   name="picture"
                   onChange={handleChangeAvatar}
                 />
                 <IconButton color="primary" aria-label="upload picture" component="span">
-                  <Avatar src={formDataPicture} sx={{ height: '180px', width: '180px' }} />
+                  <Avatar src={previewPicture} sx={{ height: '180px', width: '180px' }} />
                 </IconButton>
               </label>
             </StyledBadgeAvatar>
@@ -136,9 +173,11 @@ const PersonalData: FC<IPersonalData> = () => {
                 type="text"
                 value={formDataName}
                 onChange={e => handleChangeName(e)}
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                InputProps={
+                  errors.fullName && {
+                    endAdornment: <InpurtErrorHandler errors={errors.fullName} />
+                  }
+                }
               />
               <StyledTypography>EMAIL</StyledTypography>
               <StyledTextField
@@ -147,11 +186,12 @@ const PersonalData: FC<IPersonalData> = () => {
                 type="email"
                 value={formDataEmail}
                 onChange={e => handleChangeEmail(e)}
-                required
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
                 error={Boolean(errors.email)}
+                InputProps={
+                  errors.email && {
+                    endAdornment: <InpurtErrorHandler errors={errors.email} />
+                  }
+                }
               />
               <StyledTypography>PHONE</StyledTypography>
               <StyledTextField
@@ -160,19 +200,18 @@ const PersonalData: FC<IPersonalData> = () => {
                 type="text"
                 value={formDataPhone}
                 onChange={e => handleChangePhone(e)}
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
                 error={Boolean(errors.phone)}
+                InputProps={
+                  errors.phone && {
+                    endAdornment: <InpurtErrorHandler errors={errors.phone} />
+                  }
+                }
               />
               <StyledTypography>NEW PASSWORD</StyledTypography>
               <StyledTextField
                 {...register('password')}
                 name="password"
                 type={passValue.showPassword ? 'text' : 'password'}
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
                 error={Boolean(errors.password)}
                 InputProps={{
                   endAdornment: (
@@ -189,15 +228,17 @@ const PersonalData: FC<IPersonalData> = () => {
                   ),
                 }}
               />
-              <StyledTypography>CONFRIM NEW PASSWORD</StyledTypography>
+              <StyledTypography>CONFIRM NEW PASSWORD</StyledTypography>
               <StyledTextField
                 {...register('confirmPassword')}
                 name="confirmPassword"
                 type="password"
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
                 error={Boolean(errors.confirmPassword)}
+                InputProps={
+                  errors.confirmPassword && {
+                    endAdornment: <InpurtErrorHandler errors={errors.confirmPassword} />
+                  }
+                }
               />
               <StyledBoxConfirmButton>
                 <StyledButtonPersonal type="submit">Save</StyledButtonPersonal>

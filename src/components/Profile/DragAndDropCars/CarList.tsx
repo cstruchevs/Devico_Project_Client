@@ -1,8 +1,7 @@
-import { FC, memo, useRef, useState } from 'react'
+import { FC, memo, useCallback, useEffect, useRef, useState } from 'react'
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator'
 import DeleteIcon from '@mui/icons-material/Delete'
 import ModeEditIcon from '@mui/icons-material/ModeEdit'
-import { v4 as uuidv4 } from 'uuid'
 import { IconButton, Stack } from '@mui/material'
 import {
   BoxList,
@@ -12,40 +11,58 @@ import {
   StackElText,
   SubElText,
 } from './CarListStyle'
-import { DUMMY_DATA_CARS } from './CarListDummyData'
 import {
   SortableList,
   SortableItemProps,
   ItemRenderProps,
 } from '@thaddeusjiang/react-sortable-list'
+import { useDispatch } from 'react-redux'
+import { uiActions } from '../../../store/ui-slice'
+import { RootState } from '../../../store'
+import { useSelector } from 'react-redux'
 
 const CarList = () => {
-  const [lolka, setLolka] = useState<SortableItemProps[]>([...DUMMY_DATA_CARS])
+  const dispatch = useDispatch()
+  const cars:any = useSelector((state: RootState) => state.auth.cars)
+  const [carsList, setCarsList] = useState<SortableItemProps[]>([...cars])
+  const toggleEditCar = useCallback(() => {
+    dispatch(uiActions.toggleShowAddCar())
+    dispatch(uiActions.toggleEditCar())
+  }, [dispatch])
+
+  useEffect(()=> {
+    setCarsList([...cars])
+    console.log(carsList)
+  }, [cars]) 
+
+  const log = () => {
+    console.log("asda")
+  }
 
   return (
     <SortableList
-      items={lolka}
-      setItems={setLolka}
+      items={carsList}
+      setItems={setCarsList}
       itemRender={({ item }: ItemRenderProps) => (
         <BoxList p={2} mt={2} mb={2}>
           <Stack gap={3.4} direction="row">
             <StackElIcon>
               <DragIndicatorIcon />
               <StackElText>
-                <MainElText>{item.name}</MainElText>
+                <MainElText>{item.model}</MainElText>
                 <MainElText>{item.year}</MainElText>
               </StackElText>
             </StackElIcon>
             <StackElText>
-              <SubElText>{item.name}</SubElText>
-              <SubElText>Reg. Venchle Number: {item.reg}</SubElText>
+              <SubElText>{item.model}</SubElText>
+              <SubElText>Reg. Venchle Number: {item.regVihicleNumber}</SubElText>
             </StackElText>
             <StackElText>
-              <SubElText>Technical passport number: {item.techPass}</SubElText>
-              <SubElText>Vin number: {item.vinNum}</SubElText>
+              <SubElText>Technical passport number: {item.technicalPassNumber}</SubElText>
+              <SubElText>Vin number: {item.viaNumber}</SubElText>
             </StackElText>
             <StackElIcons>
-              <IconButton aria-label="delete" size="small">
+              <IconButton aria-label="delete" size="small" onClick={() => log()}>
                 <ModeEditIcon />
               </IconButton>
               <IconButton aria-label="delete" size="small">

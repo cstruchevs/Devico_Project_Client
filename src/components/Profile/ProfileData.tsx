@@ -1,4 +1,9 @@
-import { Stack, Typography, MenuItem, SelectChangeEvent } from '@mui/material'
+import {
+  Stack,
+  Typography,
+  MenuItem,
+  SelectChangeEvent,
+} from '@mui/material'
 import {
   ProfileConfirmBox,
   ProfileConfirmButton,
@@ -17,34 +22,65 @@ import { useDispatch } from 'react-redux'
 import { uiActions } from '../../store/ui-slice'
 import { StackProfileFormWrapper, StackProfileWrapper } from './StylesProfileData'
 import CarList from './DragAndDropCars/CarList'
+import { sagaActions } from '../../store/sagaActions'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../store'
+import { IDriversData } from '../../store/auth'
+import InpurtErrorHandler from '../InputErrosHandler'
+
+interface IDataProfile {
+  representiveFullName: string
+  nickname: string
+  representiveLicense: number
+  city: string
+  sportDriverLicense: number
+  regAdress: string
+  driverLicense: number
+  idNumber: number
+  phone: string
+  dob: Date
+}
 
 const schema = yup.object().shape({
-  fullName: yup.string().min(8).required('Write min 8 characters'),
-  nickname: yup.string().min(5).required('Write min 6 characters'),
-  representiveLicenseNum: yup.number().min(5).required('Write min 5 numbers'),
+  representiveFullName: yup.string().min(8).required('Write min 8 characters'),
+  nickname: yup.string().min(6).required('Write min 6 characters'),
+  representiveLicense: yup.number().min(5).required('Write min 5 numbers'),
   city: yup.string().nullable(true),
-  DriverLicenseNum: yup.number().min(5).required('Write min 5 numbers'),
+  sportDriverLicense: yup.number().min(5).required('Write min 5 numbers'),
   regAdress: yup.string().min(5).nullable(true),
   driverLicense: yup.number().min(8).required('Write min 8 numbers'),
   idNumber: yup.number().min(8).required('Write min 8 numbers'),
-  phone: yup.string().min(10).nullable(true),
-  birthdayDate: yup.date().required('Date is required'),
+  phone: yup.string().min(10).required('Write min 10 numbers'),
+  dob: yup.date().required('Date is required'),
 })
 
 interface IProfileData {}
 
 const ProfileData: FC<IProfileData> = () => {
   const dispatch = useDispatch()
+
+  const driversData = useSelector((state: RootState) => state.auth.driversData)
+  const userId: any = useSelector((state: RootState) => state.auth.user?.id)
+
+  const [driversDataInputs, setDriversDataInputs] = useState<IDriversData>(driversData)
+  const [city, setCity] = useState('')
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
-    mode: 'onChange',
+    mode: 'onSubmit',
   })
 
-  const [city, setCity] = useState('')
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setDriversDataInputs({
+      ...driversDataInputs,
+      [e.target.name]: value,
+    })
+  }
 
   const toggleAddCar = useCallback(() => {
     dispatch(uiActions.toggleShowAddCar())
@@ -54,9 +90,17 @@ const ProfileData: FC<IProfileData> = () => {
     setCity(event.target.value as string)
   }
 
-  const onSubmitHandler = useCallback((data: any) => {
-    console.log(data)
-  }, [])
+  const onSubmitHandler = useCallback(
+    (data: any) => {
+      let updatedData: any = data
+      updatedData.dob = updatedData.dob.toISOString().slice(0, 10)
+      dispatch({
+        type: sagaActions.POST_DRIVERS_DATA_SAGA,
+        payload: { ...updatedData, id: userId },
+      })
+    },
+    [dispatch, userId],
+  )
 
   return (
     <>
@@ -78,49 +122,70 @@ const ProfileData: FC<IProfileData> = () => {
                   {...register('nickname')}
                   name="nickname"
                   type="text"
-                  fullWidth
-                  id="outlined-basic"
+                  value={driversDataInputs.nickname}
+                  onChange={handleChangeInput}
                   error={Boolean(errors.nickname)}
+                  InputProps={
+                    errors.nickname && {
+                      endAdornment: <InpurtErrorHandler errors={errors.nickname} />,
+                    }
+                  }
                 />
                 <StyledTypography>DOB*</StyledTypography>
                 <StyledTextField
-                  {...register('birthdayDate')}
-                  name="birthdayDate"
+                  {...register('dob')}
+                  name="dob"
                   type="date"
-                  fullWidth
-                  id="outlined-basic"
-                  variant="outlined"
-                  error={Boolean(errors.birthdayDate)}
+                  value={driversDataInputs.dob}
+                  onChange={handleChangeInput}
+                  error={Boolean(errors.dob)}
+                  InputProps={
+                    errors.dob && {
+                      endAdornment: <InpurtErrorHandler errors={errors.dob} />,
+                    }
+                  }
                 />
                 <StyledTypography noWrap={true}>DRIVER LICENSE NUMBER*</StyledTypography>
                 <StyledTextField
                   {...register('driverLicense')}
                   name="driverLicense"
                   type="text"
-                  fullWidth
-                  id="outlined-basic"
-                  variant="outlined"
+                  value={driversDataInputs.driverLicense}
+                  onChange={handleChangeInput}
                   error={Boolean(errors.driverLicense)}
+                  InputProps={
+                    errors.driverLicense && {
+                      endAdornment: <InpurtErrorHandler errors={errors.driverLicense} />,
+                    }
+                  }
                 />
                 <StyledTypography>CELL NUMBER*</StyledTypography>
                 <StyledTextField
                   {...register('phone')}
                   name="phone"
                   type="text"
-                  fullWidth
-                  id="outlined-basic"
-                  variant="outlined"
+                  value={driversDataInputs.phone}
+                  onChange={handleChangeInput}
                   error={Boolean(errors.phone)}
+                  InputProps={
+                    errors.phone && {
+                      endAdornment: <InpurtErrorHandler errors={errors.phone} />,
+                    }
+                  }
                 />
                 <StyledTypography>ID NUMBER</StyledTypography>
                 <StyledTextField
                   {...register('idNumber')}
                   name="idNumber"
                   type="text"
-                  fullWidth
-                  id="outlined-basic"
-                  variant="outlined"
+                  value={driversDataInputs.idNumber}
+                  onChange={handleChangeInput}
                   error={Boolean(errors.idNumber)}
+                  InputProps={
+                    errors.idNumber && {
+                      endAdornment: <InpurtErrorHandler errors={errors.idNumber} />,
+                    }
+                  }
                 />
               </Stack>
               <Stack direction="column" flex={1}>
@@ -143,47 +208,64 @@ const ProfileData: FC<IProfileData> = () => {
                   {...register('regAdress')}
                   name="regAdress"
                   type="text"
-                  fullWidth
-                  id="outlined-basic"
-                  variant="outlined"
+                  value={driversDataInputs.regAdress}
+                  onChange={handleChangeInput}
                   error={Boolean(errors.regAdress)}
+                  InputProps={
+                    errors.regAdress && {
+                      endAdornment: <InpurtErrorHandler errors={errors.regAdress} />,
+                    }
+                  }
                 />
                 <StyledTypography noWrap={true}>FULL NAME OF YOUR REPRESENTATIVE</StyledTypography>
                 <StyledTextField
-                  {...register('fullName')}
-                  name="fullName"
+                  {...register('representiveFullName')}
+                  name="representiveFullName"
                   type="text"
-                  fullWidth
-                  id="outlined-basic"
-                  variant="outlined"
-                  error={Boolean(errors.fullName)}
+                  value={driversDataInputs.representiveFullName}
+                  onChange={handleChangeInput}
+                  error={Boolean(errors.representiveFullName)}
+                  InputProps={
+                    errors.representiveFullName && {
+                      endAdornment: <InpurtErrorHandler errors={errors.representiveFullName} />,
+                    }
+                  }
                 />
                 <StyledTypography>REPRESENTAIVE LICENSE NUMBER</StyledTypography>
                 <StyledTextField
-                  {...register('representiveLicenseNum')}
-                  name="representiveLicenseNum"
+                  {...register('representiveLicense')}
+                  name="representiveLicense"
                   type="text"
-                  fullWidth
-                  id="outlined-basic"
-                  variant="outlined"
-                  error={Boolean(errors.representiveLicenseNum)}
+                  value={driversDataInputs.representiveLicense}
+                  onChange={handleChangeInput}
+                  error={Boolean(errors.representiveLicense)}
+                  InputProps={
+                    errors.representiveLicense && {
+                      endAdornment: <InpurtErrorHandler errors={errors.representiveLicense} />,
+                    }
+                  }
                 />
                 <StyledTypography>SPORT DRIVER LICENSE NUMBER</StyledTypography>
                 <StyledTextField
-                  {...register('DriverLicenseNum')}
-                  name="DriverLicenseNum"
+                  {...register('sportDriverLicense')}
+                  name="sportDriverLicense"
                   type="text"
-                  fullWidth
-                  id="outlined-basic"
-                  variant="outlined"
-                  error={Boolean(errors.DriverLicenseNum)}
+                  value={driversDataInputs.sportDriverLicense}
+                  onChange={handleChangeInput}
+                  error={Boolean(errors.sportDriverLicense)}
+                  InputProps={
+                    errors.sportDriverLicense && {
+                      endAdornment: <InpurtErrorHandler errors={errors.sportDriverLicense} />,
+                    }
+                  }
                 />
               </Stack>
             </StackProfileFormWrapper>
             <ProfileConfirmBox>
               <ProfileConfirmButton type="submit">Save</ProfileConfirmButton>
               <Typography>
-                No License Number? Click <StyledLinkProfile to="/profile/license">here</StyledLinkProfile>
+                No License Number? Click{' '}
+                <StyledLinkProfile to="/profile/license">here</StyledLinkProfile>
               </Typography>
             </ProfileConfirmBox>
           </StackProfileWrapper>
