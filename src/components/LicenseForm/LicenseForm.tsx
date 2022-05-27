@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Card,
   CardContent,
@@ -8,11 +9,10 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
-import { FC, memo, useCallback, useEffect } from 'react'
+import React, { FC, memo, useCallback, useMemo, useRef, useState } from 'react'
 import { TypographyInfoSub } from '../../pages/LicensePage/LicensePageStyles'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { v4 as uuidv4 } from 'uuid'
 import * as yup from 'yup'
 import { StyledTextField, StyledTypography } from '../Auth/AuthStyles'
 import {
@@ -22,6 +22,8 @@ import {
   MainStackForm,
   StackCard,
   StackLicenseForm,
+  UploadFileIconStyled,
+  UploadTextStyled,
 } from './LicenseFormStyles'
 import { StyledButtonPersonal } from '../Profile/StylesPersonalData'
 import { RootState } from '../../store'
@@ -30,6 +32,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ILicenseType } from '../../store/auth'
 import { useNavigate } from 'react-router-dom'
 import InpurtErrorHandler from '../InputErrosHandler'
+import './FileUploaderOverrides.css'
+import { useDropzone } from 'react-dropzone'
 
 interface ILicenseForm {}
 
@@ -88,11 +92,44 @@ const LicenseForm: FC<ILicenseForm> = () => {
     dispatch({ type: sagaActions.GET_LICENSES })
   }, [dispatch])
 
+  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
+    accept: {
+      'image/jpeg': [],
+      'image/png': []
+    }
+  })
+  const [selectedFile, setSelecetedFile] = useState<string>()
+
+  useMemo(() => {
+    if (acceptedFiles[0]) {
+      const previewImg: File = acceptedFiles.at(-1) as File
+      setSelecetedFile(URL.createObjectURL(previewImg))
+    }
+  }, [acceptedFiles])
+
   return (
     <Box pt={4}>
       <form onSubmit={handleSubmit(onSubmitHandler)}>
         <MainStackForm>
           <Stack direction="column" flex={1}></Stack>
+        <MainStackForm direction="row" gap={3}>
+          <Stack direction="column" flex={1} alignItems={"center"}>
+            <div {...getRootProps({ className: 'dropzone' })}>
+              <input {...getInputProps()} />
+              <UploadFileIconStyled />
+              <Box>
+                <UploadTextStyled variant="subtitle1">
+                  Upload or drag files <span>here</span>
+                </UploadTextStyled>
+                <Typography variant="body2">Format only jpeg or png</Typography>
+              </Box>
+              <img
+                className={selectedFile ? 'imagePreview' : 'imageHidden'}
+                src={selectedFile}
+                alt="preview"
+              />
+            </div>
+          </Stack>
           <Stack direction="column" flex={2}>
             <StyledTypography>FULL NAME* (Ukranian)</StyledTypography>
             <StyledTextField
@@ -209,8 +246,8 @@ const LicenseForm: FC<ILicenseForm> = () => {
                 licenseTypes.map((el: any, index) => (
                   <FormControlLabelStyled
                     {...register('license')}
-                    key={uuidv4()}
-                    value={el.name}
+                    key={index}
+                    value={el.value}
                     name="license"
                     control={<Radio />}
                     label={

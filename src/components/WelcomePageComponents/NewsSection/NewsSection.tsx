@@ -12,6 +12,7 @@ import { RootState } from '../../../store'
 import { INews } from '../../../store/news'
 import { sagaActions } from '../../../store/sagaActions'
 
+
 interface INewsSection {}
 
 const NewsSection: FC<INewsSection> = () => {
@@ -57,7 +58,7 @@ const NewsSection: FC<INewsSection> = () => {
       <Box width="100%" mt="20px">
         <Slider {...settings}>
           {news.map((item) => (
-            <OuterBoxStyled key={uuidv4()}>
+            <OuterBoxStyled key={item.id)}>
               <NewsCard {...item} />
             </OuterBoxStyled>
           ))}

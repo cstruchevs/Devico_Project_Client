@@ -1,4 +1,5 @@
-import { Divider, FormControlLabel, Stack, styled } from '@mui/material'
+import { Divider, FormControlLabel, Stack, styled, Typography } from '@mui/material'
+import UploadFileIcon from '@mui/icons-material/UploadFile'
 
 export const MainStackForm = styled(Stack)(({ theme }) => ({
   width: '100%',
@@ -34,3 +35,13 @@ export const StackCard = styled(Stack)({
   flexDirection: 'row',
   justifyContent: 'space-between',
 })
+
+export const UploadTextStyled = styled(Typography)(({ theme }) => ({
+  color: theme.palette.primary.dark,
+  fontWeight: "bold",
+}))
+export const UploadFileIconStyled = styled(UploadFileIcon)(({ theme }) => ({
+  color: theme.palette.primary.dark,
+  width: "30px",
+  height: "30px",
+}))

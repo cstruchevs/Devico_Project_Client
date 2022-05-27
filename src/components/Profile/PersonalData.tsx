@@ -13,25 +13,18 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { StyledBoxConfirmButton, StyledTextField, StyledTypography } from '../Auth/AuthStyles'
-import React, { FC, memo, useCallback, useState } from 'react'
+import React, { FC, memo, useCallback, useEffect, useState } from 'react'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store'
 import { sagaActions } from '../../store/sagaActions'
 import { useDispatch } from 'react-redux'
+import axios from 'axios'
+
 import InpurtErrorHandler from '../InputErrosHandler'
 
 const schema = yup.object().shape(
   {
-    picture: yup
-      .mixed()
-      .test('fileSize', 'The file is too large', value => {
-        return value && value[0].size <= 2000000
-      })
-      .test('type', 'We only support jpeg', value => {
-        return value && value[0].type === 'image/jpeg'
-      })
-      .nullable(true),
     fullName: yup.string().when('fullName', {
       is: (fullName: string) => fullName?.length > 0,
       then: yup.string().min(8, 'fullName must be at least 3 characters'),
@@ -62,6 +55,8 @@ const PersonalData: FC<IPersonalData> = () => {
   const [formDataName, setFormDataName] = useState(userData?.fullName ? userData?.fullName : '')
   const [formDataPhone, setFormDataPhone] = useState(userData?.phone ? userData?.phone : '')
   const [formDataEmail, setFormDataEmail] = useState(userData?.email ? userData?.email : '')
+  const [formDataPicture, setFormDataPicture] = useState<any>('')
+  const [previewPicture, setPreviewPicture] = useState('')
 
   const handleChangeName = (e: any) => {
     let value = e.target.value
@@ -74,6 +69,10 @@ const PersonalData: FC<IPersonalData> = () => {
   const handleChangeEmail = (e: any) => {
     let value = e.target.value
     setFormDataEmail(value)
+  }
+  const handleChangeAvatar = (e: any) => {
+    setPreviewPicture(URL.createObjectURL(e.target.files[0]))
+    setFormDataPicture(e.target.files)
   }
 
   const [passValue, setValues] = useState({
@@ -98,17 +97,44 @@ const PersonalData: FC<IPersonalData> = () => {
     mode: 'onSubmit',
   })
 
+  const onUploadAvatar = useCallback(async () => {
+    //Ask for upload url
+    const req = await axios.get(`http://localhost:5000/image/uploadUrl/avatars`)
+
+    //Upload to aws
+    let file = formDataPicture[0]
+    await axios.put(req.data.uploadURL, file)
+
+    //Change user avatar in db
+    await axios.patch(`http://localhost:5000/user/avatar`, {id: userData?.id, key: req.data.Key})
+  }, [formDataPicture, userData?.id])
+
   const onSubmitHandler = useCallback(
-    (data: any) => {
-      console.log(userData)
+    async (data: any) => {
+      console.log('profile', data)
       const id = userData?.id
-      console.log(id)
-      dispatch({ type: sagaActions.UPDATE_USER_SAGA, payload: { ...data, id } })
+      dispatch({
+        type: sagaActions.UPDATE_USER_SAGA,
+        payload: { ...data, id },
+      })
       resetField('password')
       resetField('confirmPassword')
+      if (formDataPicture) {
+        onUploadAvatar()
+      }
     },
-    [resetField, dispatch, userData],
+    [resetField, dispatch, userData, onUploadAvatar, formDataPicture],
   )
+
+  const getUserInfoHandler = useCallback(async () => {
+    const req = await axios.get(`http://localhost:5000/user/${userData?.id}`)
+
+    setPreviewPicture(req.data.image)
+  }, [userData?.id])
+
+  useEffect(() => {
+    getUserInfoHandler()
+  }, [getUserInfoHandler])
 
   return (
     <>
@@ -125,15 +151,15 @@ const PersonalData: FC<IPersonalData> = () => {
             >
               <label htmlFor="icon-button-file">
                 <InputFile
-                  {...register('picture')}
                   accept="image/*"
                   id="icon-button-file"
                   type="file"
                   defaultValue=""
                   name="picture"
+                  onChange={handleChangeAvatar}
                 />
                 <IconButton color="primary" aria-label="upload picture" component="span">
-                  <Avatar alt="Remy Sharp" sx={{ height: '180px', width: '180px' }} />
+                  <Avatar src={previewPicture} sx={{ height: '180px', width: '180px' }} />
                 </IconButton>
               </label>
             </StyledBadgeAvatar>
@@ -202,7 +228,7 @@ const PersonalData: FC<IPersonalData> = () => {
                   ),
                 }}
               />
-              <StyledTypography>CONFRIM NEW PASSWORD</StyledTypography>
+              <StyledTypography>CONFIRM NEW PASSWORD</StyledTypography>
               <StyledTextField
                 {...register('confirmPassword')}
                 name="confirmPassword"

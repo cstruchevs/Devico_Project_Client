@@ -1,23 +1,38 @@
-import { memo } from 'react'
+import { FC, memo, useState, useEffect } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { Box } from '@mui/system'
 import { SectionWrappperStyled } from './CalendarSectionStyles'
 import './CalnedarStylesOverride.css'
+import { IEvent, IEvents } from '../../../pages/WelcomePage/WelcomePage'
+// const events = [
+//   { title: "today's event dqwdqwd qwfqwf wqf", date: new Date() },
+//   { title: "today's event", date: new Date() },
+//   { title: "today's event", date: new Date() },
+//   { title: "today's event", date: new Date() },
+//   { title: "today's event", date: new Date() },
+//   { title: "today's event", date: new Date() },
+// ]
 
-const events = [
-  { title: "today's event dqwdqwd qwfqwf wqf", date: new Date() },
-  { title: "today's event", date: new Date() },
-  { title: "today's event", date: new Date() },
-  { title: "today's event", date: new Date() },
-  { title: "today's event", date: new Date() },
-  { title: "today's event", date: new Date() },
-]
+interface ICalendarSection {
+  events: IEvents[]
+}
 
-const CalendarSection = () => {
+const CalendarSection: FC<ICalendarSection> = ({ events }) => {
+  const [allEvents, setAllEvents] = useState<{ title: string; date: Date }[]>([])
+
+  useEffect(() => {
+    setAllEvents(
+      events.map((event: IEvents) => ({
+        title: event.event.name,
+        date: new Date(event.event.date),
+      })),
+    )
+  }, [events])
+
   return (
     <SectionWrappperStyled component="section" id="calendar">
-      <Box width='100%'>
+      <Box width="100%">
         <FullCalendar
           height={660}
           headerToolbar={{
@@ -26,10 +41,10 @@ const CalendarSection = () => {
           }}
           plugins={[dayGridPlugin]}
           initialView="dayGridMonth"
-          events={events}
+          events={allEvents}
           displayEventTime={false}
           dayMaxEvents={2}
-          eventDisplay={"block"}
+          eventDisplay={'block'}
         />
       </Box>
     </SectionWrappperStyled>

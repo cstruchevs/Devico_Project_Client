@@ -108,7 +108,12 @@ export function* deleteCarSaga(action) {
 export function* updateUserSaga(action) {
   try {
     const data = yield call(() => {
-      return callApi.patch('/update', { ...action.payload })
+      return callApi.patch(
+        '/user/',
+        {
+          ...action.payload,
+        },
+      )
     })
     const { user, token } = data.data
     yield put(setUser({ user, token }))

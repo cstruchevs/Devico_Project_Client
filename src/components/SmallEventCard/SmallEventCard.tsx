@@ -14,9 +14,9 @@ import {
   PendingStatusStyled,
   TitleStyled,
   UpcomingEventCardStyled,
-} from './UpcomingEventCardStyles'
+} from './SmallEventCardStyles'
 
-export interface IUpcomingEventCard {
+interface ISmallEventCard {
   eventLabel: string
   title: string
   date: string
@@ -29,10 +29,9 @@ export interface IUpcomingEventCard {
   button?: JSX.Element
   mark?: string
   markColor?: string
-  linkShow?: boolean
 }
 
-const UpcomingEventCard: FC<IUpcomingEventCard> = ({
+const SmallEventCard: FC<ISmallEventCard> = ({
   eventLabel,
   title,
   date,
@@ -45,7 +44,6 @@ const UpcomingEventCard: FC<IUpcomingEventCard> = ({
   button,
   markColor,
   mark,
-  linkShow,
 }) => {
   return (
     <UpcomingEventCardStyled
@@ -73,7 +71,7 @@ const UpcomingEventCard: FC<IUpcomingEventCard> = ({
 
       <ActionStackStyled>
         <LinkStyled to={`/event/${eventId}`} rel="noreferrer">
-          {linkShow && 'View details'}
+          View details
         </LinkStyled>
         {button}
       </ActionStackStyled>
@@ -84,4 +82,4 @@ const UpcomingEventCard: FC<IUpcomingEventCard> = ({
   )
 }
 
-export default memo(UpcomingEventCard)
+export default memo(SmallEventCard)

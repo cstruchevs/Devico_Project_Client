@@ -2,7 +2,6 @@ import { FC, memo, useCallback, useEffect, useRef, useState } from 'react'
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator'
 import DeleteIcon from '@mui/icons-material/Delete'
 import ModeEditIcon from '@mui/icons-material/ModeEdit'
-import { v4 as uuidv4 } from 'uuid'
 import { IconButton, Stack } from '@mui/material'
 import {
   BoxList,
@@ -25,15 +24,15 @@ import { useSelector } from 'react-redux'
 const CarList = () => {
   const dispatch = useDispatch()
   const cars:any = useSelector((state: RootState) => state.auth.cars)
-  const [lolka, setLolka] = useState<SortableItemProps[]>([...cars])
+  const [carsList, setCarsList] = useState<SortableItemProps[]>([...cars])
   const toggleEditCar = useCallback(() => {
     dispatch(uiActions.toggleShowAddCar())
     dispatch(uiActions.toggleEditCar())
   }, [dispatch])
 
   useEffect(()=> {
-    setLolka([...cars])
-    console.log(lolka)
+    setCarsList([...cars])
+    console.log(carsList)
   }, [cars]) 
 
   const log = () => {
@@ -42,8 +41,8 @@ const CarList = () => {
 
   return (
     <SortableList
-      items={lolka}
-      setItems={setLolka}
+      items={carsList}
+      setItems={setCarsList}
       itemRender={({ item }: ItemRenderProps) => (
         <BoxList p={2} mt={2} mb={2}>
           <Stack gap={3.4} direction="row">

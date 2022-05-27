@@ -4,9 +4,9 @@ import { ActionReducer } from './index'
 export interface IUserInterface {
   id: string
   email: string
-  password?: string
-  phone?: string
-  fullName?: string
+  phone: string
+  fullName: string
+
 }
 
 export interface ICar {
