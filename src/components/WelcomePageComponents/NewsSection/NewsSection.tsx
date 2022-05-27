@@ -3,9 +3,7 @@ import { OuterBoxStyled, SectionHeaderStyled, SectionWrappperStyled } from './Ne
 import Slider from 'react-slick'
 import { FC, memo, useEffect, useMemo } from 'react'
 import NewsCard from './NewsCard/NewsCard'
-import { DUMMY_NEWS } from './DummyNews'
 import { SampleNextArrow, SamplePrevArrow } from './NewsConfig'
-import { v4 as uuidv4 } from 'uuid';
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../store'
@@ -17,7 +15,7 @@ interface INewsSection {}
 
 const NewsSection: FC<INewsSection> = () => {
   const dispatch = useDispatch()
-  const news:INews[] | [] = useSelector((state: RootState) => state.news.news)
+  const news: INews[] = useSelector((state: RootState) => state.news.news)
 
   const matchMd = useMediaQuery('(max-width:900px)')
   const matchSm = useMediaQuery('(max-width:600px)')
@@ -50,7 +48,7 @@ const NewsSection: FC<INewsSection> = () => {
 
   useEffect(() => {
     dispatch({ type: sagaActions.GET_NEWS_SAGA })
-  }, [])
+  }, [dispatch])
 
   return (
     <SectionWrappperStyled component="section" id="news">
@@ -58,7 +56,7 @@ const NewsSection: FC<INewsSection> = () => {
       <Box width="100%" mt="20px">
         <Slider {...settings}>
           {news.map((item) => (
-            <OuterBoxStyled key={uuidv4()}>
+            <OuterBoxStyled key={item.news.id}>
               <NewsCard {...item} />
             </OuterBoxStyled>
           ))}

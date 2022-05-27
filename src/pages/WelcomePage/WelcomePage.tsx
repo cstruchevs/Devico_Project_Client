@@ -38,7 +38,6 @@ const WelcomePage = () => {
 
   const getEventsHandler = useCallback(async () => {
     const reqData = await axios.get('http://localhost:5000/events/')
-    console.log("kkeeeeeeekk")
     const sortedEvents = reqData.data.sort((a: IEvents, b: IEvents) => {
       return new Date(a.event.date).getTime() - new Date(b.event.date).getTime()
     })
