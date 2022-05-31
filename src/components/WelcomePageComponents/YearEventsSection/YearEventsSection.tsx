@@ -13,13 +13,10 @@ interface IYearEventsSection {
 const YearEventsSection: FC<IYearEventsSection> = ({ events }) => {
   const [yearsCards, setYearsCards] = useState<JSX.Element[]>([])
 
-  const ButtonReg = useMemo(
-    () => (
-      <Button sx={{ width: '130px', paddingBlock: '5px' }} variant="contained">
-        Register
-      </Button>
-    ),
-    [],
+  const ButtonReg = (eventId: string) => (
+    <Button sx={{ width: '130px', paddingBlock: '5px' }} variant="contained" href={`/event/${eventId}`}>
+      Register
+    </Button>
   )
 
   const ButtonFinished = useMemo(
@@ -50,20 +47,20 @@ const YearEventsSection: FC<IYearEventsSection> = ({ events }) => {
           <UpcomingEventCard
             eventLabel={eventLabel}
             title={event.event.name}
-            date={`${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`}
+            date={`${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`}
             address={event.event.place}
             backgroundImage={event.url}
             discipline={event.event.discipline}
             status={event.event.status}
             series={event.event.series}
             eventId={event.event.id}
-            button={eventLabel === 'Next event' ? ButtonReg : ButtonFinished}
+            button={eventLabel === 'Next event' ? ButtonReg(event.event.id) : ButtonFinished}
             linkShow={true}
           />
         )
       }),
     )
-  }, [events, ButtonReg, ButtonFinished])
+  }, [events, ButtonFinished])
 
   return (
     <SectionWrappperStyled component={'section'}>

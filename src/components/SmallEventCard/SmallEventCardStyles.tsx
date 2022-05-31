@@ -10,6 +10,7 @@ export const UpcomingEventCardStyled = styled(Card)(({ theme }) => ({
   display: 'flex',
   flexFlow: 'column',
   position: 'relative',
+  color: theme.palette.common.white,
 }))
 
 export const CardContentStyled = styled(CardContent)(({ theme }) => ({
@@ -64,7 +65,7 @@ export const InfoStyled = styled(Typography)(({ theme }) => ({
 }))
 
 export const LinkStyled = styled(Link)(({ theme }) => ({
-  color: theme.palette.common.black,
+  color: theme.palette.common.white,
   paddingBlock: '10px',
   textDecoration: 'none',
   fontSize: '16px',

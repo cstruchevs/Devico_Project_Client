@@ -14,13 +14,10 @@ interface IUpcomingEventsSection {
 const UpcomingEventsSection: FC<IUpcomingEventsSection> = ({ events }) => {
   const [upcomingCard, setUpcomingCard] = useState<JSX.Element[]>([])
 
-  const ButtonReg = useMemo(
-    () => (
-      <Button sx={{ width: '130px', paddingBlock: '5px' }} variant="contained">
-        Register
-      </Button>
-    ),
-    [],
+  const ButtonReg = (eventId: string) => (
+    <Button sx={{ width: '130px', paddingBlock: '5px' }} variant="contained" href={`/event/${eventId}`}>
+      Register
+    </Button>
   )
 
   useEffect(() => {
@@ -31,20 +28,20 @@ const UpcomingEventsSection: FC<IUpcomingEventsSection> = ({ events }) => {
           <UpcomingEventCard
             eventLabel="Next Event"
             title={event.event.name}
-            date={`${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`}
+            date={`${date.getUTCDate()}.${date.getUTCMonth() + 1}.${date.getUTCFullYear()}`}
             address={event.event.place}
             backgroundImage={event.url}
             discipline={event.event.discipline}
             status={event.event.status}
             series={event.event.series}
             eventId={event.event.id}
-            button={ButtonReg}
+            button={ButtonReg(event.event.id)}
             linkShow={true}
           />
         )
       }),
     )
-  }, [events, ButtonReg])
+  }, [events])
 
   return (
     <SectionWrappperStyled component={'section'} id="upcoming">

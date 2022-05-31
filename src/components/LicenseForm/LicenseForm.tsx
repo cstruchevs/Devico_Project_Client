@@ -248,12 +248,12 @@ const LicenseForm: FC<ILicenseForm> = () => {
                   <FormControlLabelStyled
                     {...register('license')}
                     key={index}
-                    value={el.value}
+                    value={el.name}
                     name="license"
                     control={<Radio />}
                     label={
                       <Stack direction="row">
-                        <Card sx={{ minWidth: 275 }}>
+                        <Card sx={{ minWidth: 275, maxWidth: 400 }}>
                           <CardContent>
                             <StackCard>
                               <Typography>{el.name}</Typography>

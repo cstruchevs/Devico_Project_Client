@@ -25,6 +25,7 @@ const CarList = () => {
   const dispatch = useDispatch()
   const cars:any = useSelector((state: RootState) => state.auth.cars)
   const [carsList, setCarsList] = useState<SortableItemProps[]>([...cars])
+
   const toggleEditCar = useCallback(() => {
     dispatch(uiActions.toggleShowAddCar())
     dispatch(uiActions.toggleEditCar())
@@ -32,12 +33,8 @@ const CarList = () => {
 
   useEffect(()=> {
     setCarsList([...cars])
-    console.log(carsList)
   }, [cars]) 
 
-  const log = () => {
-    console.log("asda")
-  }
 
   return (
     <SortableList
@@ -54,7 +51,7 @@ const CarList = () => {
               </StackElText>
             </StackElIcon>
             <StackElText>
-              <SubElText>{item.model}</SubElText>
+              <SubElText>Capacity Engine: {item.capaciteEngine}</SubElText>
               <SubElText>Reg. Venchle Number: {item.regVihicleNumber}</SubElText>
             </StackElText>
             <StackElText>
@@ -62,7 +59,7 @@ const CarList = () => {
               <SubElText>Vin number: {item.viaNumber}</SubElText>
             </StackElText>
             <StackElIcons>
-              <IconButton aria-label="delete" size="small" onClick={() => log()}>
+              <IconButton aria-label="delete" size="small" onClick={toggleEditCar}>
                 <ModeEditIcon />
               </IconButton>
               <IconButton aria-label="delete" size="small">

@@ -109,7 +109,7 @@ const AllEvents = () => {
               <SmallEventCard
                 eventLabel="Next Event"
                 title={event.event.name}
-                date={`${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`}
+                date={`${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`}
                 address={event.event.place}
                 backgroundImage={event.url}
                 discipline={event.event.discipline}

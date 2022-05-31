@@ -52,7 +52,7 @@ const WelcomeSection: FC<IWelcomeSection> = ({ event }) => {
     setNextEvent(event.event)
     setNextEventImg(event.url)
     const date = new Date(event.event.date)
-    setNextEventDate(`${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`)
+    setNextEventDate(`${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`)
   }, [event])
 
   return (

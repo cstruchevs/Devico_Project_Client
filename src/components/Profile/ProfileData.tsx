@@ -46,10 +46,10 @@ const schema = yup.object().shape({
   nickname: yup.string().min(6).required('Write min 6 characters'),
   representiveLicense: yup.number().min(5).required('Write min 5 numbers'),
   city: yup.string().nullable(true),
-  sportDriverLicense: yup.number().min(5).required('Write min 5 numbers'),
+  sportDriverLicense: yup.string().min(5).required('Write min 5 numbers'),
   regAdress: yup.string().min(5).nullable(true),
-  driverLicense: yup.number().min(8).required('Write min 8 numbers'),
-  idNumber: yup.number().min(8).required('Write min 8 numbers'),
+  driverLicense: yup.string().min(8).required('Write min 8 numbers'),
+  idNumber: yup.string().min(8).required('Write min 8 numbers'),
   phone: yup.string().min(10).required('Write min 10 numbers'),
   dob: yup.date().required('Date is required'),
 })
@@ -191,7 +191,7 @@ const ProfileData: FC<IProfileData> = () => {
               <Stack direction="column" flex={1}>
                 <StyledTypography>CITY</StyledTypography>
                 <StyledSelectField
-                  value={city}
+                  value={city ? city : driversDataInputs.city}
                   {...register('city')}
                   onChange={handleChange}
                   name="city"
