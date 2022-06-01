@@ -46,7 +46,7 @@ const WelcomePage = () => {
     const today = new Date()
     const tmpUpcoming: IEvents[] = []
     for (let i = 0; i < sortedEvents.length; i++) {
-      if (new Date(sortedEvents[i].event.date) > today) {
+      if (new Date(sortedEvents[i].event.date) >= today) {
         tmpUpcoming.push(sortedEvents[i])
       }
     }
@@ -69,8 +69,8 @@ const WelcomePage = () => {
     <>
       {nextEvent && <WelcomeSection event={nextEvent} />}
       <UpcomingEventsSection events={upcomingEvents} />
-      <CalendarSection  events={events}/>
-      <AllEventsSection events={upcomingEvents}/>
+      <CalendarSection events={events} />
+      <AllEventsSection events={upcomingEvents} />
       <NewsSection />
       <PatrnersSection />
       <YearEventsSection events={eventsForYear} />

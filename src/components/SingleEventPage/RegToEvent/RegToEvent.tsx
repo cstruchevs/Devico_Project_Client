@@ -1,8 +1,5 @@
 import {
   Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
   DialogTitle,
   Button,
   Divider,
@@ -15,10 +12,9 @@ import {
   Typography,
   TextField,
 } from '@mui/material'
-import { Box } from '@mui/system'
 import { FC, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useParams, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import callApi from '../../../services/callApi'
 import { RootState } from '../../../store'
 import { IDriversData } from '../../../store/auth'
@@ -35,7 +31,7 @@ const RegToEvent: FC<IReagToEvent> = () => {
   const user = useSelector((state: RootState) => state.auth.user)
   const [car, setCar] = useState<string>('')
   const [vehicleClass, setVehicleClass] = useState<string>('')
-  const [partNumber, setPartNumber] = useState<number | null>(null)
+  const [partNumber, setPartNumber] = useState<string>('')
   let location = useLocation()
 
   const carChangeHandler = (event: SelectChangeEvent) => {
@@ -47,7 +43,7 @@ const RegToEvent: FC<IReagToEvent> = () => {
   }
 
   const partNumberChangeHandler = (event: any) => {
-    setPartNumber(event.current.value as number)
+    setPartNumber(event.target.value)
   }
 
   const handleClose = () => {
@@ -55,12 +51,14 @@ const RegToEvent: FC<IReagToEvent> = () => {
   }
 
   const regToEventHandler = async () => {
-    const data = await callApi.post("events/reg", {
+    const data = await callApi.post('events/reg', {
       id: user?.id,
       eventId: location.pathname.match(/\d+/)![0],
       carId: car,
       vehicleClass: vehicleClass,
+      desiredPartNumber: partNumber,
     })
+    console.log(data.data)
     handleClose()
   }
 
@@ -91,9 +89,9 @@ const RegToEvent: FC<IReagToEvent> = () => {
               label="Venchle class*"
               onChange={vehicleChangeHandler}
             >
-              <MenuItem value={"Class 1"}>Class 1</MenuItem>
-              <MenuItem value={"Class 2"}>Class 2</MenuItem>
-              <MenuItem value={"Class 3"}>Class 3</MenuItem>
+              <MenuItem value={'Class 1'}>Class 1</MenuItem>
+              <MenuItem value={'Class 2'}>Class 2</MenuItem>
+              <MenuItem value={'Class 3'}>Class 3</MenuItem>
             </Select>
           </FormControl>
         </Stack>
@@ -107,7 +105,7 @@ const RegToEvent: FC<IReagToEvent> = () => {
             </DialogContentTextStyled>
             <DialogContentTextStyled>
               <b>DOB: </b>
-              {'Nahuy idi'}
+              {new Date().toISOString()}
             </DialogContentTextStyled>
             <DialogContentTextStyled>
               <b>Driver license number: </b>

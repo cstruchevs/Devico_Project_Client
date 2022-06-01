@@ -4,15 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import { Box } from '@mui/system'
 import { SectionWrappperStyled } from './CalendarSectionStyles'
 import './CalnedarStylesOverride.css'
-import { IEvent, IEvents } from '../../../pages/WelcomePage/WelcomePage'
-// const events = [
-//   { title: "today's event dqwdqwd qwfqwf wqf", date: new Date() },
-//   { title: "today's event", date: new Date() },
-//   { title: "today's event", date: new Date() },
-//   { title: "today's event", date: new Date() },
-//   { title: "today's event", date: new Date() },
-//   { title: "today's event", date: new Date() },
-// ]
+import { IEvents } from '../../../pages/WelcomePage/WelcomePage'
 
 interface ICalendarSection {
   events: IEvents[]

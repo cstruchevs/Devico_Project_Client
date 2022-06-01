@@ -1,22 +1,5 @@
-import { Button, Paper, Stack, styled, TableCell, Typography } from '@mui/material'
+import { Button, Paper, Stack, styled } from '@mui/material'
 import { Box } from '@mui/system'
-import { Link } from 'react-router-dom'
-
-export const BackLinkStyled = styled(Link)(({ theme }) => ({
-  maxWidth: '120px',
-  display: 'flex',
-  flexFlow: 'row',
-  alignItems: 'baseline',
-  color: theme.palette.primary.dark,
-  textDecoration: 'none',
-  '& p': {
-    fontSize: '1.3em',
-    marginLeft: '8px',
-  },
-  '&:hover': {
-    textDecoration: 'underline',
-  },
-}))
 
 export const HeaderStackStyled = styled(Stack)(({ theme }) => ({
   width: '100%',

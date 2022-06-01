@@ -23,7 +23,7 @@ import {
 } from './WelcomeSectionStyles'
 import { FC, memo, useCallback, useEffect, useState } from 'react'
 import { IUserInterface } from '../../../store/auth'
-import { IEvent, IEvents } from '../../../pages/WelcomePage/WelcomePage'
+import { IEvents } from '../../../pages/WelcomePage/WelcomePage'
 
 interface IWelcomeSection {
   event: IEvents
@@ -32,7 +32,7 @@ interface IWelcomeSection {
 const WelcomeSection: FC<IWelcomeSection> = ({ event }) => {
   const dispatch = useDispatch()
   const user = useSelector<RootState, IUserInterface | null>(state => state.auth.user)
-  const [nextEvent, setNextEvent] = useState<IEvent | null>(null)
+  const [nextEvent, setNextEvent] = useState<IEvents | null>(null)
   const [nextEventImg, setNextEventImg] = useState<String | null>(null)
   const [nextEventDate, setNextEventDate] = useState<String | null>(null)
 
@@ -49,10 +49,10 @@ const WelcomeSection: FC<IWelcomeSection> = ({ event }) => {
   }, [dispatch])
 
   useEffect(() => {
-    setNextEvent(event.event)
+    setNextEvent(event)
     setNextEventImg(event.url)
     const date = new Date(event.event.date)
-    setNextEventDate(`${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`)
+    setNextEventDate(`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`)
   }, [event])
 
   return (
@@ -88,13 +88,13 @@ const WelcomeSection: FC<IWelcomeSection> = ({ event }) => {
           />
           <NextEventBoxStyled>
             <NextEventLabelStyled>Next Event</NextEventLabelStyled>
-            <TitleStyled>{nextEvent.name}</TitleStyled>
+            <TitleStyled>{nextEvent.event.name}</TitleStyled>
             <DatePositionStackStyled>
               <DateStyled>{nextEventDate}</DateStyled>
-              <PositionStyled>{nextEvent.place}</PositionStyled>
+              <PositionStyled>{nextEvent.event.place}</PositionStyled>
             </DatePositionStackStyled>
             <Box mt={3}>
-              <EventLinkStyled underline="always" href={`/event/${nextEvent.id}`}>
+              <EventLinkStyled underline="always" href={`/event/${nextEvent.event.id}`}>
                 View details
               </EventLinkStyled>
             </Box>

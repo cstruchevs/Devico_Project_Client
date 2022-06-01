@@ -1,13 +1,12 @@
-import { Box } from '@mui/material';
-import React from 'react';
-import AllEvents from '../../components/AllEventsPageComponents/AllEvents';
+import { Box } from '@mui/material'
+import UpcomingEvents from '../../components/AllEventsPageComponents/UpcomingEvents'
 
 const AllEventsPage = () => {
-    return (
-        <Box component={'section'}>
-            <AllEvents />
-        </Box>
-    );
-};
+  return (
+    <Box component={'section'}>
+      <UpcomingEvents />
+    </Box>
+  )
+}
 
-export default AllEventsPage;
+export default AllEventsPage

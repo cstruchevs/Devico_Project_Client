@@ -1,11 +1,9 @@
 import { Link, Stack, Button } from '@mui/material'
-import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react'
+import { FC, memo, useEffect, useState } from 'react'
 import Carousel from '../../Carousel/Carousel'
 import { SectionHeaderStyled, SectionWrappperStyled } from './UpcomingEventsSectionStyles'
-import { FakeUpcomingEvents } from '../../../FakeUpcomingEvents'
-import UpcomingEventCard, { IUpcomingEventCard } from '../../UpcomingEventCard/UpcomingEventCard'
-import { IEvent, IEvents } from '../../../pages/WelcomePage/WelcomePage'
-import axios from 'axios'
+import UpcomingEventCard from '../../UpcomingEventCard/UpcomingEventCard'
+import { IEvents } from '../../../pages/WelcomePage/WelcomePage'
 
 interface IUpcomingEventsSection {
   events: IEvents[]
@@ -15,7 +13,11 @@ const UpcomingEventsSection: FC<IUpcomingEventsSection> = ({ events }) => {
   const [upcomingCard, setUpcomingCard] = useState<JSX.Element[]>([])
 
   const ButtonReg = (eventId: string) => (
-    <Button sx={{ width: '130px', paddingBlock: '5px' }} variant="contained" href={`/event/${eventId}`}>
+    <Button
+      sx={{ width: '130px', paddingBlock: '5px' }}
+      variant="contained"
+      href={`/event/${eventId}`}
+    >
       Register
     </Button>
   )
@@ -52,7 +54,7 @@ const UpcomingEventsSection: FC<IUpcomingEventsSection> = ({ events }) => {
         alignItems={'baseline'}
       >
         <SectionHeaderStyled variant="h4">Upcoming events</SectionHeaderStyled>
-        <Link href={'/events'}>View all</Link>
+        <Link href={'/upcoming-events'}>View all</Link>
       </Stack>
       <Carousel items={upcomingCard} />
     </SectionWrappperStyled>
