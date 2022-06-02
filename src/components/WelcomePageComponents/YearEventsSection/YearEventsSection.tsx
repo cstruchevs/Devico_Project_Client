@@ -2,7 +2,6 @@ import { SectionWrappperStyled } from './YearEventsSectionStyles'
 import { Button, Link, Stack, Typography } from '@mui/material'
 import { FC, memo, useEffect, useMemo, useState } from 'react'
 import Carousel from '../../Carousel/Carousel'
-import { FakeUpcomingEvents } from '../../../FakeUpcomingEvents'
 import UpcomingEventCard from '../../UpcomingEventCard/UpcomingEventCard'
 import { IEvents } from '../../../pages/WelcomePage/WelcomePage'
 
@@ -13,13 +12,14 @@ interface IYearEventsSection {
 const YearEventsSection: FC<IYearEventsSection> = ({ events }) => {
   const [yearsCards, setYearsCards] = useState<JSX.Element[]>([])
 
-  const ButtonReg = useMemo(
-    () => (
-      <Button sx={{ width: '130px', paddingBlock: '5px' }} variant="contained">
-        Register
-      </Button>
-    ),
-    [],
+  const ButtonReg = (eventId: string) => (
+    <Button
+      sx={{ width: '130px', paddingBlock: '5px' }}
+      variant="contained"
+      href={`/event/${eventId}`}
+    >
+      Register
+    </Button>
   )
 
   const ButtonFinished = useMemo(
@@ -50,20 +50,20 @@ const YearEventsSection: FC<IYearEventsSection> = ({ events }) => {
           <UpcomingEventCard
             eventLabel={eventLabel}
             title={event.event.name}
-            date={`${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`}
+            date={`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}
             address={event.event.place}
             backgroundImage={event.url}
             discipline={event.event.discipline}
             status={event.event.status}
             series={event.event.series}
             eventId={event.event.id}
-            button={eventLabel === 'Next event' ? ButtonReg : ButtonFinished}
+            button={eventLabel === 'Next event' ? ButtonReg(event.event.id) : ButtonFinished}
             linkShow={true}
           />
         )
       }),
     )
-  }, [events, ButtonReg, ButtonFinished])
+  }, [events, ButtonFinished])
 
   return (
     <SectionWrappperStyled component={'section'}>
@@ -74,7 +74,7 @@ const YearEventsSection: FC<IYearEventsSection> = ({ events }) => {
         alignItems={'baseline'}
       >
         <Typography variant="h4">Events for the last year</Typography>
-        <Link href={'#'}>View all</Link>
+        <Link href={'/years-events'}>View all</Link>
       </Stack>
       <Carousel items={yearsCards} />
     </SectionWrappperStyled>

@@ -141,13 +141,17 @@ export function* getDriversDataSaga(action) {
   try {
     const data = yield call(() => {
       const id = action.payload.id
-      return callApi.get(`/driversData/${id}`, {
+      return callApi.get(`user/driversData/${id}`, {
         params: {
           id: id,
         },
       })
     })
-    yield put(setDriversData(data.data))
+    const driversData = {
+      ...data.data,
+      dob: new Date(data.data.dob).toISOString().split('T')[0]
+    }
+    yield put(setDriversData(driversData))
   } catch (error) {
     console.log(error)
   }
@@ -156,9 +160,13 @@ export function* getDriversDataSaga(action) {
 export function* postDriversDataSaga(action) {
   try {
     const data = yield call(() => {
-      return callApi.post('/driversData', { ...action.payload })
+      return callApi.post('user/driversData', { ...action.payload })
     })
-    yield put(setDriversData(data.data))
+    const driversData = {
+      ...data.data,
+      dob: new Date(data.data.dob).toISOString().split('T')[0]
+    }
+    yield put(setDriversData(driversData))
   } catch (error) {
     console.log(error)
   }

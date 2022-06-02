@@ -30,7 +30,7 @@ const AllEventsSection: FC<IAllEventsSection> = ({ events }) => {
       events.map((event: IEvents) => {
         const date = new Date(event.event.date)
         return createData(
-          `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`,
+          `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`,
           event.event.discipline,
           event.event.status,
           event.event.name,

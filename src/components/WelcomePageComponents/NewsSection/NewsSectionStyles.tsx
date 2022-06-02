@@ -17,6 +17,9 @@ export const SectionHeaderStyled= styled(Typography)(({ theme }) => ({
 
 export const OuterBoxStyled = styled(Box)(({ theme }) => ({
   paddingInline: "10px",
+  display: "flex",
+  minHeight: "380px",
+  paddingBottom: "10px",
 }))
 
 export const NextButtonStyled = styled(IconButton)(({ theme }) => ({

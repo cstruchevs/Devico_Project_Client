@@ -7,6 +7,7 @@ import SignUpModal from './Auth/SignUpModal'
 import RecoverPassModule from './RecoverPass/RecoverPassModule'
 import MainNavigation from './MainNavigation/MainNavigation'
 import ErrorModal from './ErrorModal/ErrorModal'
+import RegToEvent from './SingleEventPage/RegToEvent/RegToEvent'
 
 interface ILayout {
   children?: JSX.Element | JSX.Element[]
@@ -16,6 +17,7 @@ const Layout: React.FunctionComponent<ILayout> = ({ children }) => {
   return (
     <>
       <CssBaseline />
+      <RegToEvent />
       <ErrorModal />
       <Sidebar />
       <MainNavigation />

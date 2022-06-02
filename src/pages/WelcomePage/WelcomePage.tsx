@@ -38,7 +38,6 @@ const WelcomePage = () => {
 
   const getEventsHandler = useCallback(async () => {
     const reqData = await axios.get('http://localhost:5000/events/')
-    console.log("kkeeeeeeekk")
     const sortedEvents = reqData.data.sort((a: IEvents, b: IEvents) => {
       return new Date(a.event.date).getTime() - new Date(b.event.date).getTime()
     })
@@ -47,7 +46,7 @@ const WelcomePage = () => {
     const today = new Date()
     const tmpUpcoming: IEvents[] = []
     for (let i = 0; i < sortedEvents.length; i++) {
-      if (new Date(sortedEvents[i].event.date) > today) {
+      if (new Date(sortedEvents[i].event.date) >= today) {
         tmpUpcoming.push(sortedEvents[i])
       }
     }
@@ -70,8 +69,8 @@ const WelcomePage = () => {
     <>
       {nextEvent && <WelcomeSection event={nextEvent} />}
       <UpcomingEventsSection events={upcomingEvents} />
-      <CalendarSection  events={events}/>
-      <AllEventsSection events={events}/>
+      <CalendarSection events={events} />
+      <AllEventsSection events={upcomingEvents} />
       <NewsSection />
       <PatrnersSection />
       <YearEventsSection events={eventsForYear} />

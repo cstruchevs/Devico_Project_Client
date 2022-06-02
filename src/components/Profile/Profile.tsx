@@ -16,6 +16,7 @@ import { useDispatch } from 'react-redux'
 import { sagaActions } from '../../store/sagaActions'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store'
+import BackButton from '../BackButton/BackButton'
 
 const a11yProps = (index: number) => {
   return {
@@ -40,12 +41,7 @@ const Profile: React.FC<IProfie> = () => {
       <AddCarModal />
       <CongratModalCar />
       <Box sx={{ paddingLeft: '10px' }}>
-        <Stack direction="row">
-          <StyledLink to="/" sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-            <ArrowBackIosIcon sx={{ height: '15px' }} />
-            <TypographyLinkProfile> Back</TypographyLinkProfile>
-          </StyledLink>
-        </Stack>
+        <BackButton />
         <TypographyInfo variant="h4">My Profile</TypographyInfo>
       </Box>
       <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '95%' }}>
