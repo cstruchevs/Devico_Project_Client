@@ -1,10 +1,15 @@
 import { Box } from '@mui/material'
-import UpcomingEvents from '../../components/AllEventsPageComponents/UpcomingEvents'
+import { FC } from 'react'
+import AllEvents, { EventEnum } from '../../components/AllEventsPageComponents/AllEvents'
 
-const AllEventsPage = () => {
+interface IAllEvents {
+  type: EventEnum
+}
+
+const AllEventsPage: FC<IAllEvents> = ({ type }) => {
   return (
     <Box component={'section'}>
-      <UpcomingEvents />
+      <AllEvents type={type} />
     </Box>
   )
 }

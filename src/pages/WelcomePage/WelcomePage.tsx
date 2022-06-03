@@ -68,7 +68,7 @@ const WelcomePage = () => {
   return (
     <>
       {nextEvent && <WelcomeSection event={nextEvent} />}
-      <UpcomingEventsSection events={upcomingEvents} />
+      <UpcomingEventsSection events={upcomingEvents}/>
       <CalendarSection events={events} />
       <AllEventsSection events={upcomingEvents} />
       <NewsSection />

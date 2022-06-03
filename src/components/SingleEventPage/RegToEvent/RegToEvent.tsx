@@ -12,7 +12,7 @@ import {
   Typography,
   TextField,
 } from '@mui/material'
-import { FC, useState } from 'react'
+import { ChangeEvent, FC, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import callApi from '../../../services/callApi'
@@ -42,7 +42,7 @@ const RegToEvent: FC<IReagToEvent> = () => {
     setVehicleClass(event.target.value as string)
   }
 
-  const partNumberChangeHandler = (event: any) => {
+  const partNumberChangeHandler = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setPartNumber(event.target.value)
   }
 
@@ -58,7 +58,6 @@ const RegToEvent: FC<IReagToEvent> = () => {
       vehicleClass: vehicleClass,
       desiredPartNumber: partNumber,
     })
-    console.log(data.data)
     handleClose()
   }
 
@@ -153,6 +152,9 @@ const RegToEvent: FC<IReagToEvent> = () => {
             onChange={partNumberChangeHandler}
             InputLabelProps={{
               shrink: true,
+            }}
+            inputProps={{
+              min: 0,
             }}
           />
         </Stack>

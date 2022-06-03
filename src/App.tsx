@@ -13,13 +13,12 @@ function App() {
   searchParams.get('token')
 
   useEffect(() => {
-    console.log(searchParams)
     const user = JSON.parse(localStorage.getItem('user') || '{}')
     const token = localStorage.getItem('token')
     if (user && token) {
       dispatch(authActions.setUser({ user, token }))
     }
-  }, [])
+  }, [dispatch])
 
   return (
     <Layout>

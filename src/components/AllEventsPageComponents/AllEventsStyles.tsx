@@ -50,3 +50,8 @@ export const BowOuterStyled = styled(Box)(({ theme }) => ({
     flexBasis: 'calc((100% / 3) - 2rem)',
   },
 }))
+
+export const RegButtonStyled = styled(Button)(({ theme }) => ({
+  width: '130px',
+  paddingBlock: '5px',
+}))
