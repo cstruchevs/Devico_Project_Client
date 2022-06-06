@@ -129,12 +129,14 @@ export const StyledAuthStackWrapper = styled(Stack)({
   flexDirection: 'row',
   marginRight: '10px',
   alignItems: 'center',
-  
 })
 
 export const StyledAuthBoxIconWrapper = styled(Box)({
   display: 'flex',
   justifyContent: 'center',
+  '&:hover': {
+    cursor: 'pointer',
+  },
 })
 
 export const StyledAuthStack = styled(Stack)({

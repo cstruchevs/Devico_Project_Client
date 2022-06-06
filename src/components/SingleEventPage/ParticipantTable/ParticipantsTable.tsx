@@ -14,7 +14,7 @@ interface IParticipantsTableContent {
   users: IRow[]
 }
 
-const ParticipantsTableContent: FC<IParticipantsTableContent> = ({ users }) => {
+const ParticipantsTable: FC<IParticipantsTableContent> = ({ users }) => {
   const allParticipantsColumns: IColumn[] = useMemo(
     () => [
       { id: 'number', label: 'Number', minWidth: '40px', align: 'center' },
@@ -56,4 +56,4 @@ const ParticipantsTableContent: FC<IParticipantsTableContent> = ({ users }) => {
   )
 }
 
-export default memo(ParticipantsTableContent)
+export default memo(ParticipantsTable)

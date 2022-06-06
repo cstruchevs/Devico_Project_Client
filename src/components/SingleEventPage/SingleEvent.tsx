@@ -15,7 +15,7 @@ import {
 import { Divider, Typography } from '@mui/material'
 import DetailsItem from './DetailsItem'
 import FileItem from './FileItem'
-import PartisipantsTable from './ParticipantTable/PartisipantsModal'
+import ParticipantsModal from './ParticipantTable/PartisipantsModal'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
 import { IDriversData } from '../../store/auth'
@@ -124,7 +124,7 @@ const SingleEvent: FC<ISingleEventPage> = ({ eventId }) => {
     <>
       {!isLoading && event && (
         <Box width="100%" paddingBottom="100px">
-          <PartisipantsTable
+          <ParticipantsModal
             open={partTabelOpen}
             handleClose={toggleParticipants}
             users={event.users}

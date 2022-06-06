@@ -76,7 +76,9 @@ const RegToEvent: FC<IReagToEvent> = () => {
               onChange={carChangeHandler}
             >
               {cars.map(car => (
-                <MenuItem value={car.id}>{car.model}</MenuItem>
+                <MenuItem value={car.id} key={car.id}>
+                  {car.model}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>

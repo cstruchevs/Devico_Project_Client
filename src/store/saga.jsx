@@ -7,7 +7,7 @@ import axios from 'axios'
 import callApi from '../services/callApi'
 import { notificationActions, NotificationStatus } from './notifications'
 import moment from 'moment'
-import { upcomngEventsActions } from './events'
+import { eventsActions } from './events'
 
 const addUserToLocalStorage = ({ user, token }) => {
   localStorage.setItem('user', JSON.stringify(user))
@@ -15,7 +15,7 @@ const addUserToLocalStorage = ({ user, token }) => {
 }
 const { setUser, setCar, addCar, setDriversData, setLicenseTypeData } = authActions
 const { setNews } = newsActions
-const { setUpcomingEvents } = upcomngEventsActions
+const { setUpcomingEvents, setYearsEvents, setCalendarEvents } = eventsActions
 const { toggleCongratAuth, toggleLogReg, toggleAlertDialog } = uiActions
 const { setNotification } = notificationActions
 
@@ -266,7 +266,6 @@ export function* getUpcomngEvents() {
     const reqData = yield call(() => {
       return callApi.get('/events/')
     })
-    console.log("Req", reqData.data)
     const sortedEvents = yield reqData.data.sort((a, b) => {
       return new Date(a.event.date).getTime() - new Date(b.event.date).getTime()
     })
@@ -277,12 +276,44 @@ export function* getUpcomngEvents() {
         tmpUpcoming.push(sortedEvents[i])
       }
     }
-    console.log("Tmp", tmpUpcoming)
-    yield put(setUpcomingEvents(tmpUpcoming))
+    yield put(setUpcomingEvents({ upcomingEvents: tmpUpcoming }))
   } catch (error) {
     console.log(error)
   }
 }
+
+export function* getYearsEvents() {
+  try {
+    const reqData = yield call(() => {
+      return callApi.get('/events/yearsEvents')
+    })
+    const sortedEvents = yield reqData.data.sort((a, b) => {
+      return new Date(a.event.date).getTime() - new Date(b.event.date).getTime()
+    })
+    const today = yield new Date()
+    const tmpYears = []
+    for (let i = 0; i < sortedEvents.length; i++) {
+      if (new Date(sortedEvents[i].event.date).getFullYear() === today.getFullYear()) {
+        tmpYears.push(sortedEvents[i])
+      }
+    }
+    yield put(setYearsEvents({ yearsEvents: tmpYears }))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export function* getCalendarEvents() {
+  try {
+    const reqData = yield call(() => {
+      return callApi.get('/events/calendar')
+    })
+    yield put(setCalendarEvents({ calendarEvents:  reqData.data }))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 
 export default function* rootSaga() {
   yield takeEvery(sagaActions.USER_SETUP_SAGA, userSetupSaga)
@@ -300,5 +331,7 @@ export default function* rootSaga() {
   yield takeEvery(sagaActions.REGISTER_TO_LICENSE, registerToLicense)
   yield takeEvery(sagaActions.GOOGLE_AUTH, googleAuth)
   yield takeEvery(sagaActions.FACEBOOK_AUTH, facebookAuth)
-  yield takeEvery(sagaActions.UPCOMING_EVENTS, getUpcomngEvents)
+  yield takeEvery(sagaActions.GET_UPCOMING_EVENTS, getUpcomngEvents)
+  yield takeEvery(sagaActions.GET_YEARS_EVENTS, getYearsEvents)
+  yield takeEvery(sagaActions.GET_CALENDAR_EVENTS, getCalendarEvents)
 }

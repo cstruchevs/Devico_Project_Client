@@ -17,7 +17,7 @@ import {
 } from './ParticipantsModalStyles'
 import GroupIcon from '@mui/icons-material/Group'
 import CloseIcon from '@mui/icons-material/Close'
-import ParticipantsTableContent from './ParticipantsTable'
+import ParticipantsTable from './ParticipantsTable'
 
 export interface IRow {
   number: string
@@ -30,7 +30,7 @@ interface IParticipantsTable {
   users: IRow[]
 }
 
-const ParticipantsTable: FC<IParticipantsTable> = ({ open, handleClose, users }) => {
+const ParticipantsModal: FC<IParticipantsTable> = ({ open, handleClose, users }) => {
 
   return (
     <Modal
@@ -53,7 +53,7 @@ const ParticipantsTable: FC<IParticipantsTable> = ({ open, handleClose, users })
           <Divider />
           <TableWrapperStyled>
             {users && users.length !== 0 ? (
-              <ParticipantsTableContent users={users} />
+              <ParticipantsTable users={users} />
             ) : (
               <NoParticipantsBoxStyled>
                 <NoParticipantsIconBoxStyled>
@@ -69,4 +69,4 @@ const ParticipantsTable: FC<IParticipantsTable> = ({ open, handleClose, users })
   )
 }
 
-export default memo(ParticipantsTable)
+export default memo(ParticipantsModal)
