@@ -6,6 +6,7 @@ import AllEventsPage from '../pages/AllEventsPage/AllEventsPage'
 import LicensePage from '../pages/LicensePage/LicensePage'
 import RecoverPasswordPage from '../pages/RecoverPasswordPage/RecoverPasswordPage'
 import SingleEventPage from '../pages/SingleEventPage/SingleEventPage'
+import UserEventsPage from '../pages/UserEventsPage/UserEventsPage'
 
 import checkLocalStorage from '../services/checkLocalStorage'
 import { RootState } from '../store'
@@ -30,6 +31,7 @@ const PageRoutes: FC<IPageRoutes> = () => {
         <Route path="/event/:event_id" element={<SingleEventPage/>}/> 
         <Route path="/profile" element={(user || userLocalStorage) ? <ProfilePage/> : <Navigate to="/" />}/> 
         <Route path="/profile/license" element={(user || userLocalStorage) ? <LicensePage/> : <Navigate to="/" />}/>
+        <Route path="/user-events" element={(user || userLocalStorage) ? <UserEventsPage/> : <Navigate to="/" />}/>
         <Route path="/recover-password/:id/:token" element={<RecoverPasswordPage />}/> 
         <Route path="*" element={<NoPage />} />
       </Routes>

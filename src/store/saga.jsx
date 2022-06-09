@@ -266,14 +266,11 @@ export function* getUpcomngEvents() {
     const reqData = yield call(() => {
       return callApi.get('/events/')
     })
-    const sortedEvents = yield reqData.data.sort((a, b) => {
-      return new Date(a.event.date).getTime() - new Date(b.event.date).getTime()
-    })
     const today = yield new Date()
     const tmpUpcoming = yield []
-    for (let i = 0; i < sortedEvents.length; i++) {
-      if (new Date(sortedEvents[i].event.date) >= today) {
-        tmpUpcoming.push(sortedEvents[i])
+    for (let i = 0; i < reqData.data.length; i++) {
+      if (new Date(reqData.data[i].event.date) >= today) {
+        tmpUpcoming.push(reqData.data[i])
       }
     }
     yield put(setUpcomingEvents({ upcomingEvents: tmpUpcoming }))
@@ -287,17 +284,7 @@ export function* getYearsEvents() {
     const reqData = yield call(() => {
       return callApi.get('/events/yearsEvents')
     })
-    const sortedEvents = yield reqData.data.sort((a, b) => {
-      return new Date(a.event.date).getTime() - new Date(b.event.date).getTime()
-    })
-    const today = yield new Date()
-    const tmpYears = []
-    for (let i = 0; i < sortedEvents.length; i++) {
-      if (new Date(sortedEvents[i].event.date).getFullYear() === today.getFullYear()) {
-        tmpYears.push(sortedEvents[i])
-      }
-    }
-    yield put(setYearsEvents({ yearsEvents: tmpYears }))
+    yield put(setYearsEvents({ yearsEvents: reqData.data }))
   } catch (error) {
     console.log(error)
   }
@@ -308,12 +295,17 @@ export function* getCalendarEvents() {
     const reqData = yield call(() => {
       return callApi.get('/events/calendar')
     })
-    yield put(setCalendarEvents({ calendarEvents:  reqData.data }))
+    yield put(setCalendarEvents({ calendarEvents: reqData.data }))
   } catch (error) {
     console.log(error)
   }
 }
 
+export function* cancelEvent(action) {
+  yield alert(
+    `You try to cancel event: ${action.payload.eventId} with reason: ${action.payload.reason}`,
+  )
+}
 
 export default function* rootSaga() {
   yield takeEvery(sagaActions.USER_SETUP_SAGA, userSetupSaga)
@@ -334,4 +326,5 @@ export default function* rootSaga() {
   yield takeEvery(sagaActions.GET_UPCOMING_EVENTS, getUpcomngEvents)
   yield takeEvery(sagaActions.GET_YEARS_EVENTS, getYearsEvents)
   yield takeEvery(sagaActions.GET_CALENDAR_EVENTS, getCalendarEvents)
+  yield takeEvery(sagaActions.CANCEL_EVENT, cancelEvent)
 }

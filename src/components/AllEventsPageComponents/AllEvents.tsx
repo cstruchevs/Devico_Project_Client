@@ -20,7 +20,6 @@ import RegButton from './RegButton'
 export enum EventEnum {
   upcoming = 'upcoming',
   years = 'years',
-  user = 'user',
 }
 interface IAllEvents {
   type: EventEnum
@@ -68,10 +67,7 @@ const AllEvents: FC<IAllEvents> = ({ type }) => {
 
   const getYearsEventsHandler = useCallback(async () => {
     const reqData = await axios.get('http://localhost:5000/events/yearsEvents')
-    const sortedEvents = reqData.data.sort((a: IEvents, b: IEvents) => {
-      return new Date(a.event.date).getTime() - new Date(b.event.date).getTime()
-    })
-    setEvents(sortedEvents)
+    setEvents(reqData.data)
   }, [])
 
   useEffect(() => {
