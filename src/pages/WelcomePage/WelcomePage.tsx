@@ -71,7 +71,7 @@ const WelcomePage = () => {
       <UpcomingEventsSection events={upcomingEvents} />
       <CalendarSection events={events} />
       <AllEventsSection events={upcomingEvents} />
-      <NewsSection />
+      {/* <NewsSection /> */}
       <PatrnersSection />
       <YearEventsSection events={eventsForYear} />
     </>

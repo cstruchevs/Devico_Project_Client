@@ -40,6 +40,7 @@ const MainNavigation: FC<IMainNavigation> = () => {
   locationResultPath = locationPathName.charAt(0).toUpperCase() + locationPathName.slice(1)
 
   const user = useSelector<RootState, IUserInterface | null>(state => state.auth.user)
+  const isShowNotifications = useSelector<RootState, boolean>(state => state.ui.notifications)
   const notifications = useSelector<RootState, INotifications[]>(
     state => state.notifications.notifications,
   )
@@ -60,6 +61,7 @@ const MainNavigation: FC<IMainNavigation> = () => {
   }
   const handleCloseNotification = (event: React.MouseEvent<SVGSVGElement>) => {
     setAnchorElNotification(null)
+    dispatch(uiActions.disableNotifications)
   }
 
   const logOutUser = useCallback(() => {
@@ -77,7 +79,7 @@ const MainNavigation: FC<IMainNavigation> = () => {
   const open = Boolean(anchorEl)
   const id = open ? 'simple-popover' : undefined
 
-  const openNotification = Boolean(anchorElNotification)
+  const openNotification = (Boolean(anchorElNotification))
   const idNotification = openNotification ? 'simple-popover' : undefined
 
   return (

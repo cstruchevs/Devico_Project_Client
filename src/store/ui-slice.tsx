@@ -11,6 +11,7 @@ type SliceState = {
   editCar: boolean
   alertDialog: boolean
   eventRegister: boolean
+  notifications: boolean
 }
 
 const initialState: SliceState = {
@@ -23,7 +24,8 @@ const initialState: SliceState = {
   showCongratAddCar: false,
   editCar: false,
   alertDialog: false,
-  eventRegister: false
+  eventRegister: false,
+  notifications: false
 }
 
 const uiSlice = createSlice({
@@ -63,6 +65,12 @@ const uiSlice = createSlice({
     },
     toggleEventRegister(state) {
       state.eventRegister = !state.eventRegister
+    },
+    toggleNotifications(state) {
+      state.notifications = !state.notifications
+    },
+    disableNotifications(state) {
+      state.notifications = false
     },
   },
 })

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import Layout from './components/Layout'
 import PageRoutes from './routes/Routes'
 import { authActions } from './store/auth'
-import callApi from './services/callApi'
 import { RootState } from './store'
 import { useSearchParams } from 'react-router-dom'
 import { sagaActions } from './store/sagaActions'
@@ -16,7 +15,6 @@ function App() {
   const userId: string | undefined = useSelector((state: RootState) => state.auth.user?.id)
 
   useEffect(() => {
-    console.log(searchParams)
     const user = JSON.parse(localStorage.getItem('user') || '{}')
     const token = localStorage.getItem('token')
     if (user && token) {
