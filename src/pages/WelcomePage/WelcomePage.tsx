@@ -54,7 +54,7 @@ const WelcomePage = () => {
       {upcomingEvents.length !== 0 && <UpcomingEventsSection events={upcomingEvents} />}
       <CalendarSection events={calendarEvents} />
       <AllEventsSection events={upcomingEvents} />
-      <NewsSection />
+      {/* <NewsSection /> */}
       <PatrnersSection />
       {yearsEvents.length !== 0 && <YearEventsSection events={yearsEvents} />}
     </>

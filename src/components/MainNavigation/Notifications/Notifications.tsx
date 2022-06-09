@@ -1,4 +1,4 @@
-import { FC, useCallback } from 'react'
+import { FC, memo, useCallback, useMemo } from 'react'
 import { Typography, Stack, Box } from '@mui/material'
 import {
   StyledNotificationBox,
@@ -121,4 +121,4 @@ const Notifications: FC<INotification> = ({
   )
 }
 
-export default Notifications
+export default memo(Notifications)

@@ -21,30 +21,7 @@ interface INotificationSlice {
 }
 
 const initialState: INotificationSlice = {
-  notifications: [
-    {
-      message:
-        'You cannot apply because you do not have information in my cars, drivers. To fill in the data go to the profile section',
-      status: NotificationStatus.info,
-      date: moment(),
-    },
-    {
-      message: 'You cannot apply because you do not have information',
-      status: NotificationStatus.pending,
-      date: moment(),
-    },
-    {
-      message:
-        'You cannot apply because you do not have information in my cars, drivers. To fill in the data go to the profile section',
-      status: NotificationStatus.success,
-      date: moment(),
-    },
-    {
-      message: 'You cannot apply because you do not have information',
-      status: NotificationStatus.error,
-      date: moment(),
-    },
-  ],
+  notifications: [],
 }
 
 const notificationSlice = createSlice({

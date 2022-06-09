@@ -89,10 +89,6 @@ const RecoverPas = () => {
               {...register('email')}
               name="email"
               type="email"
-              required
-              fullWidth
-              id="outlined-basic"
-              variant="outlined"
               error={Boolean(errors.email)}
               helperText={errors.email?.message}
             />
