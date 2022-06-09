@@ -15,7 +15,7 @@ import {
 import { Divider, Typography } from '@mui/material'
 import DetailsItem from './DetailsItem'
 import FileItem from './FileItem'
-import PartisipantsTable from './ParticipantTable/PartisipantsTable'
+import ParticipantsModal from './ParticipantTable/PartisipantsModal'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
 import { IDriversData } from '../../store/auth'
@@ -38,12 +38,14 @@ interface ISingleEvent {
   button: JSX.Element
   linkShow: boolean
   eventInfo: string
-  users: { number: string; fullName: string; venchleClass: string }[]
+  users: { number: string; fullName: string; carModel: string }[]
 }
 
 const SingleEvent: FC<ISingleEventPage> = ({ eventId }) => {
   const dispatch = useDispatch()
   const user = useSelector<RootState, IDriversData | null>(state => state.auth.user)
+  const cars = useSelector((state: RootState) => state.auth.cars)
+  const driversData = useSelector<RootState, IDriversData | null>(state => state.auth.driversData)
   const [partTabelOpen, setPartTabelOpen] = useState(false)
   const [event, setEvent] = useState<ISingleEvent | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -52,8 +54,12 @@ const SingleEvent: FC<ISingleEventPage> = ({ eventId }) => {
   }
 
   const regToEventHandler = useCallback(() => {
-    dispatch(uiActions.toggleEventRegister())
-  }, [dispatch])
+    if(!cars || !driversData || cars.length === 0) {
+      console.log("You need to have cars and driversData")
+    } else {
+      dispatch(uiActions.toggleEventRegister())
+    }
+  }, [dispatch, cars, driversData])
 
   const openLogForm = useCallback(() => {
     dispatch(uiActions.toggleLog())
@@ -98,14 +104,14 @@ const SingleEvent: FC<ISingleEventPage> = ({ eventId }) => {
       button: ButtonApply,
       linkShow: false,
       eventInfo: reqData.data.event.eventInfo,
-      users: reqData.data.event.users.map((user: any) => ({
-        number:
-          '' + user['event-participants'].desiredPartNumber
-            ? user['event-participants'].desiredPartNumber
-            : user['event-participants'].id,
-        fullName: user.fullName,
-        venchleClass: user['event-participants'].vehicleClass,
-      })),
+      users: reqData.data.event.eventParicipants?.split(';').map((user: any) => {
+        const tmpUser = JSON.parse(user)
+        return {
+          number: tmpUser.partNumber,
+          fullName: tmpUser.userName,
+          carModel: tmpUser.carModel,
+        }
+      }),
     })
     setIsLoading(false)
   }, [eventId, ButtonApply])
@@ -118,7 +124,7 @@ const SingleEvent: FC<ISingleEventPage> = ({ eventId }) => {
     <>
       {!isLoading && event && (
         <Box width="100%" paddingBottom="100px">
-          <PartisipantsTable
+          <ParticipantsModal
             open={partTabelOpen}
             handleClose={toggleParticipants}
             users={event.users}

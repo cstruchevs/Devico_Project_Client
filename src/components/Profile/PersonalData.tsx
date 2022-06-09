@@ -111,7 +111,6 @@ const PersonalData: FC<IPersonalData> = () => {
 
   const onSubmitHandler = useCallback(
     async (data: any) => {
-      console.log('profile', data)
       const id = userData?.id
       dispatch({
         type: sagaActions.UPDATE_USER_SAGA,

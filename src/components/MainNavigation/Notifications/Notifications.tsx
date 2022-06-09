@@ -49,7 +49,7 @@ const Notifications: FC<INotification> = ({
   const notificationList = (
     <Stack pl={2} pr={2}>
       {notifications.map((el: INotifications, index: number) => {
-        return <NotificationElement message={el.message} status={el.status} index={index} date={el.date}/>
+        return <NotificationElement message={el.message} status={el.status} index={index} date={el.date} key={index}/>
       })}
     </Stack>
   )

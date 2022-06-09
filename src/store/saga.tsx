@@ -10,6 +10,8 @@ import moment from 'moment'
 import { ActionReducer } from './index'
 import { ICar, IDriversData, ILicenseType } from './auth'
 import { TakeableChannel } from 'redux-saga'
+import { IEvents } from '../pages/WelcomePage/WelcomePage'
+import { eventsActions } from './events'
 
 const addUserToLocalStorage = ({
   user,
@@ -24,6 +26,7 @@ const addUserToLocalStorage = ({
 
 const { setUser, setCar, addCar, setDriversData, setLicenseTypeData } = authActions
 const { setNews } = newsActions
+const { setUpcomingEvents, setYearsEvents, setCalendarEvents } = eventsActions
 const { toggleCongratAuth, toggleLogReg, toggleAlertDialog, toggleNotifications } = uiActions
 const { setNotification } = notificationActions
 
@@ -329,6 +332,47 @@ export function* facebookAuth(action: Effect) {
   }
 }
 
+export function* getUpcomngEvents() {
+  try {
+    const reqData: AxiosResponse = yield call(callApi.get, '/events/', {})
+
+    const today = new Date()
+    const tmpUpcoming: IEvents[] = []
+    for (let i = 0; i < reqData.data.length; i++) {
+      if (new Date(reqData.data[i].event.date) >= today) {
+        tmpUpcoming.push(reqData.data[i])
+      }
+    }
+    yield put(setUpcomingEvents({ upcomingEvents: tmpUpcoming }))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export function* getYearsEvents() {
+  try {
+    const reqData: AxiosResponse = yield call(callApi.get, '/events/yearsEvents', {})
+    yield put(setYearsEvents({ yearsEvents: reqData.data }))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export function* getCalendarEvents() {
+  try {
+    const reqData: AxiosResponse = yield call(callApi.get, '/events/calendar', {})
+    yield put(setCalendarEvents({ calendarEvents: reqData.data }))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export function* cancelEvent(action: Effect) {
+  yield alert(
+    `You try to cancel event: ${action.payload.eventId} with reason: ${action.payload.reason}`,
+  )
+}
+
 export default function* rootSaga() {
   yield takeEvery(sagaActions.USER_SETUP_SAGA, userSetupSaga)
   yield takeEvery(sagaActions.USER_LOGIN_SAGA, userLoginSaga)
@@ -345,4 +389,8 @@ export default function* rootSaga() {
   yield takeEvery(sagaActions.REGISTER_TO_LICENSE, registerToLicense)
   yield takeEvery(sagaActions.GOOGLE_AUTH, googleAuth)
   yield takeEvery(sagaActions.FACEBOOK_AUTH, facebookAuth)
+  yield takeEvery(sagaActions.GET_UPCOMING_EVENTS, getUpcomngEvents)
+  yield takeEvery(sagaActions.GET_YEARS_EVENTS, getYearsEvents)
+  yield takeEvery(sagaActions.GET_CALENDAR_EVENTS, getCalendarEvents)
+  yield takeEvery(sagaActions.CANCEL_EVENT, cancelEvent)
 }

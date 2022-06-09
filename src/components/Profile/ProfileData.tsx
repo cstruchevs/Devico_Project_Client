@@ -1,9 +1,4 @@
-import {
-  Stack,
-  Typography,
-  MenuItem,
-  SelectChangeEvent,
-} from '@mui/material'
+import { Stack, Typography, MenuItem, SelectChangeEvent } from '@mui/material'
 import {
   ProfileConfirmBox,
   ProfileConfirmButton,
@@ -21,12 +16,14 @@ import { FC, memo, useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { uiActions } from '../../store/ui-slice'
 import { StackProfileFormWrapper, StackProfileWrapper } from './StylesProfileData'
-import CarList from './DragAndDropCars/CarList'
+import { CarList } from './DragAndDropCars/CarList'
 import { sagaActions } from '../../store/sagaActions'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store'
 import { IDriversData } from '../../store/auth'
 import InpurtErrorHandler from '../InputErrosHandler'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
 interface IDataProfile {
   representiveFullName: string
@@ -107,7 +104,9 @@ const ProfileData: FC<IProfileData> = () => {
       <form onSubmit={handleSubmit(onSubmitHandler)}>
         <Box>
           <StyledTypographyProfile variant="h5">My Cars</StyledTypographyProfile>
-          <CarList />
+          <DndProvider backend={HTML5Backend}>
+            <CarList />
+          </DndProvider>
           <StyledButtonPersonal onClick={toggleAddCar}>Add Cars</StyledButtonPersonal>
         </Box>
         <Box mt={2.5}>

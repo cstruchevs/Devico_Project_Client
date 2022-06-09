@@ -20,7 +20,7 @@ function App() {
     if (user && token) {
       dispatch(authActions.setUser({ user, token }))
     }
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     dispatch({ type: sagaActions.GET_CAR_SAGA, payload: { id: userId } })
