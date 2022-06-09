@@ -10,6 +10,7 @@ export interface IUserInterface {
 }
 
 export interface ICar {
+  id: string,
   model: string
   year: string
   capaciteEngine: string

@@ -1,5 +1,7 @@
 import axios from 'axios'
 import React, { useCallback, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import AllEventsSection from '../../components/WelcomePageComponents/AllEventsSection/AllEventsSection'
 import CalendarSection from '../../components/WelcomePageComponents/CalendarSection/CalendarSection'
 import NewsSection from '../../components/WelcomePageComponents/NewsSection/NewsSection'
@@ -7,6 +9,9 @@ import PatrnersSection from '../../components/WelcomePageComponents/PartnersSect
 import UpcomingEventsSection from '../../components/WelcomePageComponents/UpcomingEventsSection/UpcomingEventsSection'
 import WelcomeSection from '../../components/WelcomePageComponents/WelcomeSection/WelcomeSection'
 import YearEventsSection from '../../components/WelcomePageComponents/YearEventsSection/YearEventsSection'
+import { RootState } from '../../store'
+import { ICalendarEvent } from '../../store/events'
+import { sagaActions } from '../../store/sagaActions'
 
 export interface IEvent {
   id: string
@@ -22,7 +27,6 @@ export interface IEvent {
   statusProgress: string
   createdAt: string
   updatedAt: string
-  users: string[]
 }
 
 export interface IEvents {
@@ -31,49 +35,28 @@ export interface IEvents {
 }
 
 const WelcomePage = () => {
-  const [events, setEvents] = useState<IEvents[]>([])
-  const [nextEvent, setNextEvent] = useState<IEvents>()
-  const [upcomingEvents, setUpcomingEvents] = useState<IEvents[]>([])
-  const [eventsForYear, setEventsForYear] = useState<IEvents[]>([])
-
-  const getEventsHandler = useCallback(async () => {
-    const reqData = await axios.get('http://localhost:5000/events/')
-    const sortedEvents = reqData.data.sort((a: IEvents, b: IEvents) => {
-      return new Date(a.event.date).getTime() - new Date(b.event.date).getTime()
-    })
-    setEvents(sortedEvents)
-
-    const today = new Date()
-    const tmpUpcoming: IEvents[] = []
-    for (let i = 0; i < sortedEvents.length; i++) {
-      if (new Date(sortedEvents[i].event.date) > today) {
-        tmpUpcoming.push(sortedEvents[i])
-      }
-    }
-    const tmpYears: IEvents[] = []
-    for (let i = 0; i < sortedEvents.length; i++) {
-      if (new Date(sortedEvents[i].event.date).getFullYear() === today.getFullYear()) {
-        tmpYears.push(sortedEvents[i])
-      }
-    }
-    setNextEvent(tmpUpcoming[0])
-    setUpcomingEvents(tmpUpcoming)
-    setEventsForYear(tmpYears)
-  }, [])
+  const dispatch = useDispatch()
+  const upcomingEvents: IEvents[] = useSelector((state: RootState) => state.events.upcomingEvents)
+  const yearsEvents: IEvents[] = useSelector((state: RootState) => state.events.yearsEvents)
+  const calendarEvents: ICalendarEvent[] = useSelector(
+    (state: RootState) => state.events.calendarEvents,
+  )
 
   useEffect(() => {
-    getEventsHandler()
-  }, [getEventsHandler])
+    dispatch({ type: sagaActions.GET_UPCOMING_EVENTS })
+    dispatch({ type: sagaActions.GET_YEARS_EVENTS })
+    dispatch({ type: sagaActions.GET_CALENDAR_EVENTS })
+  }, [dispatch])
 
   return (
     <>
-      {nextEvent && <WelcomeSection event={nextEvent} />}
-      <UpcomingEventsSection events={upcomingEvents} />
-      <CalendarSection  events={events}/>
-      <AllEventsSection events={events}/>
+      {upcomingEvents.length !== 0 && <WelcomeSection event={upcomingEvents[0]} />}
+      {upcomingEvents.length !== 0 && <UpcomingEventsSection events={upcomingEvents} />}
+      <CalendarSection events={calendarEvents} />
+      <AllEventsSection events={upcomingEvents} />
       <NewsSection />
       <PatrnersSection />
-      <YearEventsSection events={eventsForYear} />
+      {yearsEvents.length !== 0 && <YearEventsSection events={yearsEvents} />}
     </>
   )
 }

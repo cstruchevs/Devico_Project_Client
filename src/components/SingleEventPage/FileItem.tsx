@@ -6,6 +6,7 @@ interface IFileItem {
   text: string
 }
 const FileItem: FC<IFileItem> = ({ text }) => {
+
   return (
     <ListItem disablePadding sx={{ marginBlock: '10px' }}>
       <ListItemIcon>

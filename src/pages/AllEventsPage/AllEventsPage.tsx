@@ -1,13 +1,17 @@
-import { Box } from '@mui/material';
-import React from 'react';
-import AllEvents from '../../components/AllEventsPageComponents/AllEvents';
+import { Box } from '@mui/material'
+import { FC } from 'react'
+import AllEvents, { EventEnum } from '../../components/AllEventsPageComponents/AllEvents'
 
-const AllEventsPage = () => {
-    return (
-        <Box component={'section'}>
-            <AllEvents />
-        </Box>
-    );
-};
+interface IAllEvents {
+  type: EventEnum
+}
 
-export default AllEventsPage;
+const AllEventsPage: FC<IAllEvents> = ({ type }) => {
+  return (
+    <Box component={'section'}>
+      <AllEvents type={type} />
+    </Box>
+  )
+}
+
+export default AllEventsPage

@@ -7,6 +7,7 @@ import axios from 'axios'
 import callApi from '../services/callApi'
 import { notificationActions, NotificationStatus } from './notifications'
 import moment from 'moment'
+import { eventsActions } from './events'
 
 const addUserToLocalStorage = ({ user, token }) => {
   localStorage.setItem('user', JSON.stringify(user))
@@ -14,6 +15,7 @@ const addUserToLocalStorage = ({ user, token }) => {
 }
 const { setUser, setCar, addCar, setDriversData, setLicenseTypeData } = authActions
 const { setNews } = newsActions
+const { setUpcomingEvents, setYearsEvents, setCalendarEvents } = eventsActions
 const { toggleCongratAuth, toggleLogReg, toggleAlertDialog } = uiActions
 const { setNotification } = notificationActions
 
@@ -141,13 +143,17 @@ export function* getDriversDataSaga(action) {
   try {
     const data = yield call(() => {
       const id = action.payload.id
-      return callApi.get(`/driversData/${id}`, {
+      return callApi.get(`user/driversData/${id}`, {
         params: {
           id: id,
         },
       })
     })
-    yield put(setDriversData(data.data))
+    const driversData = {
+      ...data.data,
+      dob: new Date(data.data.dob).toISOString().split('T')[0],
+    }
+    yield put(setDriversData(driversData))
   } catch (error) {
     console.log(error)
   }
@@ -156,9 +162,13 @@ export function* getDriversDataSaga(action) {
 export function* postDriversDataSaga(action) {
   try {
     const data = yield call(() => {
-      return callApi.post('/driversData', { ...action.payload })
+      return callApi.post('user/driversData', { ...action.payload })
     })
-    yield put(setDriversData(data.data))
+    const driversData = {
+      ...data.data,
+      dob: new Date(data.data.dob).toISOString().split('T')[0],
+    }
+    yield put(setDriversData(driversData))
   } catch (error) {
     console.log(error)
   }
@@ -180,8 +190,6 @@ export function* postLicense(action) {
     const data = yield call(() => {
       return callApi.post('/license', { ...action.payload })
     })
-    console.log(data)
-    console.log(data.data.id)
     yield call(() => {
       return callApi.post('/license/registerToLicense', {
         licenseId: data.data.id,
@@ -253,6 +261,52 @@ export function* facebookAuth(action) {
   }
 }
 
+export function* getUpcomngEvents() {
+  try {
+    const reqData = yield call(() => {
+      return callApi.get('/events/')
+    })
+    const today = yield new Date()
+    const tmpUpcoming = yield []
+    for (let i = 0; i < reqData.data.length; i++) {
+      if (new Date(reqData.data[i].event.date) >= today) {
+        tmpUpcoming.push(reqData.data[i])
+      }
+    }
+    yield put(setUpcomingEvents({ upcomingEvents: tmpUpcoming }))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export function* getYearsEvents() {
+  try {
+    const reqData = yield call(() => {
+      return callApi.get('/events/yearsEvents')
+    })
+    yield put(setYearsEvents({ yearsEvents: reqData.data }))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export function* getCalendarEvents() {
+  try {
+    const reqData = yield call(() => {
+      return callApi.get('/events/calendar')
+    })
+    yield put(setCalendarEvents({ calendarEvents: reqData.data }))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export function* cancelEvent(action) {
+  yield alert(
+    `You try to cancel event: ${action.payload.eventId} with reason: ${action.payload.reason}`,
+  )
+}
+
 export default function* rootSaga() {
   yield takeEvery(sagaActions.USER_SETUP_SAGA, userSetupSaga)
   yield takeEvery(sagaActions.USER_LOGIN_SAGA, userLoginSaga)
@@ -269,4 +323,8 @@ export default function* rootSaga() {
   yield takeEvery(sagaActions.REGISTER_TO_LICENSE, registerToLicense)
   yield takeEvery(sagaActions.GOOGLE_AUTH, googleAuth)
   yield takeEvery(sagaActions.FACEBOOK_AUTH, facebookAuth)
+  yield takeEvery(sagaActions.GET_UPCOMING_EVENTS, getUpcomngEvents)
+  yield takeEvery(sagaActions.GET_YEARS_EVENTS, getYearsEvents)
+  yield takeEvery(sagaActions.GET_CALENDAR_EVENTS, getCalendarEvents)
+  yield takeEvery(sagaActions.CANCEL_EVENT, cancelEvent)
 }

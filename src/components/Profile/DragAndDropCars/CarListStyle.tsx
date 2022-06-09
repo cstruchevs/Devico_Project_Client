@@ -4,9 +4,10 @@ export const BoxList = styled(Box)(({ theme }) => ({
   background: '#F8F8F8',
   borderRadius: '9px',
   boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px',
-  maxWidth: "800px",
+  maxWidth: '860px',
   '&:hover': {
-    outline: '1.5px solid #509bf7',
+    outline: `1.5px solid ${theme.palette.primary.main}`,
+    cursor: 'pointer',
   },
 }))
 
@@ -24,7 +25,7 @@ export const StackElText = styled(Typography)(({ theme }) => ({
   alignContent: 'center',
   justifyContent: 'center',
   justifyItems: 'center',
-  flex: 3
+  flex: 3,
 }))
 
 export const StackElIcons = styled(Typography)(({ theme }) => ({
@@ -32,7 +33,7 @@ export const StackElIcons = styled(Typography)(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   justifyItems: 'center',
-  flex: 1
+  flex: 1,
 }))
 
 export const StackElIcon = styled(Typography)(({ theme }) => ({
@@ -40,6 +41,7 @@ export const StackElIcon = styled(Typography)(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   alignContent: 'center',
-  gap:"10px",
-  flex: 1
+  gap: '10px',
+  minWidth: '150px',
+  flex: 1,
 }))

@@ -2,6 +2,7 @@ import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import createSagaMiddleware from 'redux-saga'
 import authSlice from './auth'
 import newsSlice from './news'
+import eventsSlice from './events'
 import notificationSlice from './notifications'
 import saga from './saga'
 import uiSlice from './ui-slice'
@@ -23,6 +24,7 @@ const store = configureStore({
     ui: uiSlice.reducer,
     auth: authSlice.reducer,
     news: newsSlice.reducer,
+    events: eventsSlice.reducer,
     notifications: notificationSlice.reducer,
   },
   middleware,

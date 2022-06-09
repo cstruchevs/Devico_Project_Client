@@ -4,28 +4,24 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import { Box } from '@mui/system'
 import { SectionWrappperStyled } from './CalendarSectionStyles'
 import './CalnedarStylesOverride.css'
-import { IEvent, IEvents } from '../../../pages/WelcomePage/WelcomePage'
-// const events = [
-//   { title: "today's event dqwdqwd qwfqwf wqf", date: new Date() },
-//   { title: "today's event", date: new Date() },
-//   { title: "today's event", date: new Date() },
-//   { title: "today's event", date: new Date() },
-//   { title: "today's event", date: new Date() },
-//   { title: "today's event", date: new Date() },
-// ]
+import { ICalendarEvent } from '../../../store/events'
 
 interface ICalendarSection {
-  events: IEvents[]
+  events: ICalendarEvent[]
 }
 
 const CalendarSection: FC<ICalendarSection> = ({ events }) => {
   const [allEvents, setAllEvents] = useState<{ title: string; date: Date }[]>([])
 
+  document.querySelector('.fc-prev-button')?.addEventListener('click', () => {
+    console.log('Prev')
+  })
+
   useEffect(() => {
     setAllEvents(
-      events.map((event: IEvents) => ({
-        title: event.event.name,
-        date: new Date(event.event.date),
+      events.map((event: ICalendarEvent) => ({
+        title: event.name,
+        date: new Date(event.date),
       })),
     )
   }, [events])

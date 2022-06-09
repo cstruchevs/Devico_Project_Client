@@ -51,7 +51,20 @@ export const BowOuterStyled = styled(Box)(({ theme }) => ({
   },
 }))
 
-export const RegButtonStyled = styled(Button)(({ theme }) => ({
-  width: '130px',
-  paddingBlock: '5px',
+export const UserEventsStack = styled(Stack)(({ theme }) => ({
+  width: '100%',
+  marginTop: '34px',
+  flexFlow: 'row wrap',
+  gap: '1rem',
+}))
+
+export const BoxOuterStyled = styled(Box)(({ theme }) => ({
+  fontSize: '12px',
+  flex: '1 1 100%',
+  [theme.breakpoints.up(850)]: {
+    flexBasis: 'calc((100% / 2) - 1rem)',
+  },
+  [theme.breakpoints.up(1300)]: {
+    flexBasis: 'calc((100% / 3) - 2rem)',
+  },
 }))

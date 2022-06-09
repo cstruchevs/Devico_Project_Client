@@ -127,7 +127,7 @@ const MainNavigation: FC<IMainNavigation> = () => {
                       <StyledLink to="/profile">My Profile</StyledLink>{' '}
                     </StyledButton>
                     <StyledButton size="medium" href="/events">
-                      <StyledLink to="/events"> My Events</StyledLink>
+                      <StyledLink to="/user-events"> My Events</StyledLink>
                     </StyledButton>
                     <StyledButton onClick={logOutUser} size="medium">
                       Sign Out

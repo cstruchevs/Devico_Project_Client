@@ -1,11 +1,9 @@
 import { Link, Stack, Button } from '@mui/material'
-import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react'
+import { FC, memo, useEffect, useState } from 'react'
 import Carousel from '../../Carousel/Carousel'
 import { SectionHeaderStyled, SectionWrappperStyled } from './UpcomingEventsSectionStyles'
-import { FakeUpcomingEvents } from '../../../FakeUpcomingEvents'
-import UpcomingEventCard, { IUpcomingEventCard } from '../../UpcomingEventCard/UpcomingEventCard'
-import { IEvent, IEvents } from '../../../pages/WelcomePage/WelcomePage'
-import axios from 'axios'
+import UpcomingEventCard from '../../UpcomingEventCard/UpcomingEventCard'
+import { IEvents } from '../../../pages/WelcomePage/WelcomePage'
 
 interface IUpcomingEventsSection {
   events: IEvents[]
@@ -14,13 +12,14 @@ interface IUpcomingEventsSection {
 const UpcomingEventsSection: FC<IUpcomingEventsSection> = ({ events }) => {
   const [upcomingCard, setUpcomingCard] = useState<JSX.Element[]>([])
 
-  const ButtonReg = useMemo(
-    () => (
-      <Button sx={{ width: '130px', paddingBlock: '5px' }} variant="contained">
-        Register
-      </Button>
-    ),
-    [],
+  const ButtonReg = (eventId: string) => (
+    <Button
+      sx={{ width: '130px', paddingBlock: '5px' }}
+      variant="contained"
+      href={`/event/${eventId}`}
+    >
+      Register
+    </Button>
   )
 
   useEffect(() => {
@@ -31,20 +30,20 @@ const UpcomingEventsSection: FC<IUpcomingEventsSection> = ({ events }) => {
           <UpcomingEventCard
             eventLabel="Next Event"
             title={event.event.name}
-            date={`${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`}
+            date={`${date.getUTCDate()}.${date.getUTCMonth() + 1}.${date.getUTCFullYear()}`}
             address={event.event.place}
             backgroundImage={event.url}
             discipline={event.event.discipline}
             status={event.event.status}
             series={event.event.series}
             eventId={event.event.id}
-            button={ButtonReg}
+            button={ButtonReg(event.event.id)}
             linkShow={true}
           />
         )
       }),
     )
-  }, [events, ButtonReg])
+  }, [events])
 
   return (
     <SectionWrappperStyled component={'section'} id="upcoming">
@@ -55,7 +54,7 @@ const UpcomingEventsSection: FC<IUpcomingEventsSection> = ({ events }) => {
         alignItems={'baseline'}
       >
         <SectionHeaderStyled variant="h4">Upcoming events</SectionHeaderStyled>
-        <Link href={'/events'}>View all</Link>
+        <Link href={'/upcoming-events'}>View all</Link>
       </Stack>
       <Carousel items={upcomingCard} />
     </SectionWrappperStyled>
