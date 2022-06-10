@@ -14,7 +14,11 @@ import axios from 'axios'
 import SmallEventCard from '../SmallEventCard/SmallEventCard'
 import { useDispatch } from 'react-redux'
 import { uiActions } from '../../store/ui-slice'
-import CancelButton from './CancelButton'
+import CancelButton from '../EventButtons/CancelButton'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../store'
+import { sagaActions } from '../../store/sagaActions'
+import NoEvents from '../../assets/imgs/NoEvents.jpg'
 
 interface IUserEvents {}
 
@@ -27,10 +31,13 @@ export enum UserEventsFilter {
 }
 
 const UserEvents: FC<IUserEvents> = () => {
+  const dispatch = useDispatch()
+
   const [filter, setFilter] = useState<UserEventsFilter | null>(null)
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
   const [openFilter, setOpenFilter] = useState<boolean>(false)
-  const [events, setEvents] = useState<IEvents[]>([])
+  const auth = useSelector((state: RootState) => state.auth)
+  const userEvents = useSelector((state: RootState) => state.events.userEvents)
 
   const toggleFilterPoperHandler = useCallback((event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
@@ -47,14 +54,12 @@ const UserEvents: FC<IUserEvents> = () => {
     [filter],
   )
 
-  const getUSerEventsHandler = useCallback(async () => {
-    const reqData = await axios.get(`http://localhost:5000/events/usersEvents/${1}`)
-    setEvents(reqData.data.events)
-  }, [])
-
   useEffect(() => {
-    getUSerEventsHandler()
-  }, [getUSerEventsHandler])
+    dispatch({
+      type: sagaActions.GET_USER_EVENTS,
+      payload: { userId: auth?.user?.id, token: auth?.token },
+    })
+  }, [dispatch, auth?.user?.id, auth?.token])
 
   return (
     <Box width="100%" sx={{ paddingBottom: '50px' }}>
@@ -72,25 +77,29 @@ const UserEvents: FC<IUserEvents> = () => {
         </ToolStackStyled>
       </HeaderStackStyled>
       <UserEventsStack>
-        {events.map((event: IEvents) => {
-          const date = new Date(event.event.date)
-          return (
-            <BoxOuterStyled key={event.event.id}>
-              <SmallEventCard
-                eventLabel="Next Event"
-                title={event.event.name}
-                date={`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}
-                address={event.event.place}
-                backgroundImage={event.url}
-                discipline={event.event.discipline}
-                status={event.event.status}
-                series={event.event.series}
-                eventId={event.event.id}
-                button={<CancelButton eventId={event.event.id} />}
-              />
-            </BoxOuterStyled>
-          )
-        })}
+        {userEvents.length === 0 ? (
+          <div>No events</div>
+        ) : (
+          userEvents.map((event: IEvents) => {
+            const date = new Date(event.event.date)
+            return (
+              <BoxOuterStyled key={event.event.id}>
+                <SmallEventCard
+                  eventLabel="Next Event"
+                  title={event.event.name}
+                  date={`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}
+                  address={event.event.place}
+                  backgroundImage={event.url}
+                  discipline={event.event.discipline}
+                  status={event.event.status}
+                  series={event.event.series}
+                  eventId={event.event.id}
+                  button={<CancelButton eventId={event.event.id} />}
+                />
+              </BoxOuterStyled>
+            )
+          })
+        )}
       </UserEventsStack>
     </Box>
   )

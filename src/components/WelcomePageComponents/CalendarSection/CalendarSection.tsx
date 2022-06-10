@@ -13,11 +13,8 @@ interface ICalendarSection {
 const CalendarSection: FC<ICalendarSection> = ({ events }) => {
   const [allEvents, setAllEvents] = useState<{ title: string; date: Date }[]>([])
 
-  document.querySelector('.fc-prev-button')?.addEventListener('click', () => {
-    console.log('Prev')
-  })
-
   useEffect(() => {
+    console.log(events)
     setAllEvents(
       events.map((event: ICalendarEvent) => ({
         title: event.name,

@@ -13,6 +13,7 @@ function App() {
   searchParams.get('token')
 
   const userId: string | undefined = useSelector((state: RootState) => state.auth.user?.id)
+  const token: string | undefined = useSelector((state: RootState) => state.auth.token)
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user') || '{}')
@@ -26,7 +27,12 @@ function App() {
     dispatch({ type: sagaActions.GET_CAR_SAGA, payload: { id: userId } })
     dispatch({ type: sagaActions.GET_DRIVERS_DATA_SAGA, payload: { id: userId } })
     dispatch({ type: sagaActions.GET_LICENSES })
+    dispatch({
+      type: sagaActions.GET_USER_EVENTS,
+      payload: { userId: userId, token: token },
+    })
   })
+
   return (
     <Layout>
       <PageRoutes />

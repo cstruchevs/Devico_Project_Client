@@ -14,7 +14,6 @@ import {
 } from '@mui/material'
 import { ChangeEvent, FC, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useLocation } from 'react-router-dom'
 import callApi from '../../../services/callApi'
 import { RootState } from '../../../store'
 import { IDriversData } from '../../../store/auth'
@@ -29,10 +28,10 @@ const RegToEvent: FC<IReagToEvent> = () => {
   const cars = useSelector((state: RootState) => state.auth.cars)
   const driversData = useSelector<RootState, IDriversData | null>(state => state.auth.driversData)
   const user = useSelector((state: RootState) => state.auth.user)
+  const regEventId: string | null = useSelector((state: RootState) => state.ui.eventRegisterId)
   const [car, setCar] = useState<string>('')
   const [vehicleClass, setVehicleClass] = useState<string>('')
   const [partNumber, setPartNumber] = useState<string>('')
-  let location = useLocation()
 
   const carChangeHandler = (event: SelectChangeEvent) => {
     setCar(event.target.value as string)
@@ -47,13 +46,13 @@ const RegToEvent: FC<IReagToEvent> = () => {
   }
 
   const handleClose = () => {
-    dispatch(uiActions.toggleEventRegister())
+    dispatch(uiActions.toggleEventRegister({eventId: null}))
   }
 
   const regToEventHandler = async () => {
     const data = await callApi.post('events/reg', {
       id: user?.id,
-      eventId: location.pathname.match(/\d+/)![0],
+      eventId: regEventId,
       carId: car,
       vehicleClass: vehicleClass,
       desiredPartNumber: partNumber,

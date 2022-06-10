@@ -10,7 +10,6 @@ import { RootState } from '../../../store'
 import { INews } from '../../../store/news'
 import { sagaActions } from '../../../store/sagaActions'
 
-
 interface INewsSection {}
 
 const NewsSection: FC<INewsSection> = () => {
@@ -30,8 +29,6 @@ const NewsSection: FC<INewsSection> = () => {
     }
   }, [matchSm, matchMd])
 
-
-
   const settings = useMemo(
     () => ({
       dots: false,
@@ -43,7 +40,6 @@ const NewsSection: FC<INewsSection> = () => {
       prevArrow: <SamplePrevArrow />,
     }),
     [slidesNumbers],
-    
   )
 
   useEffect(() => {
@@ -54,16 +50,18 @@ const NewsSection: FC<INewsSection> = () => {
     <SectionWrappperStyled component="section" id="news">
       <SectionHeaderStyled variant="h4">News</SectionHeaderStyled>
       <Box width="100%" mt="20px">
-        <Slider {...settings}>
-          {news.map((item) => (
-            <OuterBoxStyled key={item.news.id}>
-              <NewsCard {...item} />
-            </OuterBoxStyled>
-          ))}
-        </Slider>
+        {news.length !== 0 && (
+          <Slider {...settings}>
+            {news.map(item => (
+              <OuterBoxStyled key={item.news.id}>
+                <NewsCard {...item} />
+              </OuterBoxStyled>
+            ))}
+          </Slider>
+        )}
       </Box>
     </SectionWrappperStyled>
   )
 }
 
-export default memo(NewsSection) 
+export default memo(NewsSection)
