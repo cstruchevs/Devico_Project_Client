@@ -4,6 +4,7 @@ import Carousel from '../../Carousel/Carousel'
 import { SectionHeaderStyled, SectionWrappperStyled } from './UpcomingEventsSectionStyles'
 import UpcomingEventCard from '../../UpcomingEventCard/UpcomingEventCard'
 import { IEvents } from '../../../pages/WelcomePage/WelcomePage'
+import ApplyButton from '../../EventButtons/ApplyButton'
 
 interface IUpcomingEventsSection {
   events: IEvents[]
@@ -11,16 +12,6 @@ interface IUpcomingEventsSection {
 
 const UpcomingEventsSection: FC<IUpcomingEventsSection> = ({ events }) => {
   const [upcomingCard, setUpcomingCard] = useState<JSX.Element[]>([])
-
-  const ButtonReg = (eventId: string) => (
-    <Button
-      sx={{ width: '130px', paddingBlock: '5px' }}
-      variant="contained"
-      href={`/event/${eventId}`}
-    >
-      Register
-    </Button>
-  )
 
   useEffect(() => {
     setUpcomingCard(
@@ -37,7 +28,7 @@ const UpcomingEventsSection: FC<IUpcomingEventsSection> = ({ events }) => {
             status={event.event.status}
             series={event.event.series}
             eventId={event.event.id}
-            button={ButtonReg(event.event.id)}
+            button={<ApplyButton eventId={event.event.id} />}
             linkShow={true}
           />
         )

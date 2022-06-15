@@ -15,7 +15,7 @@ import BackButton from '../BackButton/BackButton'
 import { IEvents } from '../../pages/WelcomePage/WelcomePage'
 import axios from 'axios'
 import EventsSortPoper from './EventsSortPoper'
-import RegButton from './RegButton'
+import ApplyButton from '../EventButtons/ApplyButton'
 
 export enum EventEnum {
   upcoming = 'upcoming',
@@ -122,7 +122,7 @@ const AllEvents: FC<IAllEvents> = ({ type }) => {
                 status={event.event.status}
                 series={event.event.series}
                 eventId={event.event.id}
-                button={<RegButton eventId={event.event.id} />}
+                button={<ApplyButton eventId={event.event.id} />}
               />
             </BowOuterStyled>
           )

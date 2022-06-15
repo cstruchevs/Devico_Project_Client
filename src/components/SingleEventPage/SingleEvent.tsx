@@ -22,6 +22,8 @@ import { IDriversData } from '../../store/auth'
 import { RootState } from '../../store'
 import { useDispatch } from 'react-redux'
 import { uiActions } from '../../store/ui-slice'
+import ApplyButton from '../EventButtons/ApplyButton'
+import { sagaActions } from '../../store/sagaActions'
 interface ISingleEventPage {
   eventId: string | undefined
 }
@@ -43,41 +45,13 @@ interface ISingleEvent {
 
 const SingleEvent: FC<ISingleEventPage> = ({ eventId }) => {
   const dispatch = useDispatch()
-  const user = useSelector<RootState, IDriversData | null>(state => state.auth.user)
-  const cars = useSelector((state: RootState) => state.auth.cars)
-  const driversData = useSelector<RootState, IDriversData | null>(state => state.auth.driversData)
   const [partTabelOpen, setPartTabelOpen] = useState(false)
   const [event, setEvent] = useState<ISingleEvent | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
+
   const toggleParticipants = () => {
     setPartTabelOpen(prevState => !prevState)
   }
-
-  const regToEventHandler = useCallback(() => {
-    if(!cars || !driversData || cars.length === 0) {
-      console.log("You need to have cars and driversData")
-    } else {
-      dispatch(uiActions.toggleEventRegister())
-    }
-  }, [dispatch, cars, driversData])
-
-  const openLogForm = useCallback(() => {
-    dispatch(uiActions.toggleLog())
-  }, [dispatch])
-
-  const ButtonApply = useMemo(
-    () =>
-      user ? (
-        <ApplyButtonStyled variant="contained" onClick={regToEventHandler}>
-          Apply event
-        </ApplyButtonStyled>
-      ) : (
-        <ApplyButtonStyled variant="contained" onClick={openLogForm}>
-          Sign in to apply
-        </ApplyButtonStyled>
-      ),
-    [user, regToEventHandler, openLogForm],
-  )
 
   const getEventHandler = useCallback(async () => {
     setIsLoading(true)
@@ -101,24 +75,21 @@ const SingleEvent: FC<ISingleEventPage> = ({ eventId }) => {
       status: reqData.data.event.status,
       series: reqData.data.event.series,
       eventId: reqData.data.event.id,
-      button: ButtonApply,
+      button: <ApplyButton eventId={reqData.data.event.id} />,
       linkShow: false,
       eventInfo: reqData.data.event.eventInfo,
-      users: reqData.data.event.eventParicipants?.split(';').map((user: any) => {
-        const tmpUser = JSON.parse(user)
-        return {
-          number: tmpUser.partNumber,
-          fullName: tmpUser.userName,
-          carModel: tmpUser.carModel,
-        }
-      }),
+      users: reqData.data.event.event_participants?.map((participant: any) => ({
+        number: participant.desiredPartNumber,
+        fullName: participant.user.fullName,
+        carModel: participant.car.model,
+      })),
     })
     setIsLoading(false)
-  }, [eventId, ButtonApply])
+  }, [eventId])
 
   useEffect(() => {
     getEventHandler()
-  }, [getEventHandler])
+  }, [getEventHandler, dispatch, eventId])
 
   return (
     <>

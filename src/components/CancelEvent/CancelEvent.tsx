@@ -19,6 +19,7 @@ const CancelEvent = () => {
   const dispatch = useDispatch()
   const isShowEventCancel: boolean = useSelector((state: RootState) => state.ui.eventCancel)
   const cancelEventId: string | null = useSelector((state: RootState) => state.ui.eventCancelId)
+  const userId: string | undefined = useSelector((state: RootState) => state.auth?.user?.id)
   const [reason, setReason] = useState<string>('')
 
   const handleClose = useCallback(() => {
@@ -32,11 +33,11 @@ const CancelEvent = () => {
   const cancelEventHAndler = useCallback(() => {
     dispatch({
       type: sagaActions.CANCEL_EVENT,
-      payload: { eventId: cancelEventId, reason: reason },
+      payload: { eventId: cancelEventId, reason, userId },
     })
     setReason('')
     handleClose()
-  }, [dispatch, cancelEventId, reason, handleClose])
+  }, [dispatch, cancelEventId, reason, handleClose, userId])
 
   return (
     <Dialog open={isShowEventCancel} onClose={handleClose}>

@@ -9,13 +9,15 @@ export interface ICalendarEvent {
 interface IAuthSlice {
   upcomingEvents: IEvents[]
   yearsEvents: IEvents[]
-  calendarEvents: ICalendarEvent[],
+  calendarEvents: ICalendarEvent[]
+  userEvents: IEvents[]
 }
 
 const initialState: IAuthSlice = {
   upcomingEvents: [],
   yearsEvents: [],
   calendarEvents: [],
+  userEvents: [],
 }
 
 const eventsSlice = createSlice({
@@ -30,6 +32,9 @@ const eventsSlice = createSlice({
     },
     setCalendarEvents(state, action: ActionReducer<{ calendarEvents: ICalendarEvent[] }>) {
       return { ...state, calendarEvents: [...action.payload.calendarEvents] }
+    },
+    setUserEvents(state, action: ActionReducer<{ userEvents: IEvents[] }>) {
+      return { ...state, userEvents: [...action.payload.userEvents] }
     },
   },
 })

@@ -12,6 +12,7 @@ import { ICar, IDriversData, ILicenseType } from './auth'
 import { TakeableChannel } from 'redux-saga'
 import { IEvents } from '../pages/WelcomePage/WelcomePage'
 import { eventsActions } from './events'
+import { socket } from '../App'
 
 const addUserToLocalStorage = ({
   user,
@@ -26,7 +27,7 @@ const addUserToLocalStorage = ({
 
 const { setUser, setCar, addCar, setDriversData, setLicenseTypeData } = authActions
 const { setNews } = newsActions
-const { setUpcomingEvents, setYearsEvents, setCalendarEvents } = eventsActions
+const { setUpcomingEvents, setYearsEvents, setCalendarEvents, setUserEvents } = eventsActions
 const { toggleCongratAuth, toggleLogReg, toggleAlertDialog, toggleNotifications } = uiActions
 const { setNotification } = notificationActions
 
@@ -367,9 +368,62 @@ export function* getCalendarEvents() {
   }
 }
 
+export function* getUserEvents(action: Effect) {
+  try {
+    const reqData: AxiosResponse = yield call(
+      callApi.get,
+      `/events/usersEvents/${action.payload.userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${action.payload.token}`,
+        },
+      },
+    )
+    yield put(setUserEvents({ userEvents: reqData.data.events }))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export function* getSingleEvent(action: Effect) {
+  try {
+    const reqData: AxiosResponse = yield call(callApi.get, `/events/${action.payload.eventId}`, {})
+    console.log('saga', reqData.data)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export function* getNotifications(action: Effect) {
+  try {
+    const resData: AxiosResponse = yield call(
+      callApi.get,
+      `/notifications/${action.payload.userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${action.payload.token}`,
+        },
+      },
+    )
+    for (let i = 0; i < resData.data.length; i++) {
+      yield put(
+        setNotification({
+          notification: {
+            message: resData.data[i].text,
+            status: NotificationStatus.info,
+            date: moment(resData.data[i].updatedAt),
+          },
+        }),
+      )
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export function* cancelEvent(action: Effect) {
   yield alert(
-    `You try to cancel event: ${action.payload.eventId} with reason: ${action.payload.reason}`,
+    `User wit id: ${action.payload.userId} try to cancel event: ${action.payload.eventId} \nReason: ${action.payload.reason}`,
   )
 }
 
@@ -392,5 +446,8 @@ export default function* rootSaga() {
   yield takeEvery(sagaActions.GET_UPCOMING_EVENTS, getUpcomngEvents)
   yield takeEvery(sagaActions.GET_YEARS_EVENTS, getYearsEvents)
   yield takeEvery(sagaActions.GET_CALENDAR_EVENTS, getCalendarEvents)
+  yield takeEvery(sagaActions.GET_USER_EVENTS, getUserEvents)
+  yield takeEvery(sagaActions.GET_SINGLE_EVENT, getSingleEvent)
   yield takeEvery(sagaActions.CANCEL_EVENT, cancelEvent)
+  yield takeEvery(sagaActions.GET_NOTIFICATIONS, getNotifications)
 }

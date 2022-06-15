@@ -11,6 +11,7 @@ type SliceState = {
   editCar: boolean
   alertDialog: boolean
   eventRegister: boolean
+  eventRegisterId: string | null
   notifications: boolean
   eventCancel: boolean
   eventCancelId: string | null
@@ -27,6 +28,7 @@ const initialState: SliceState = {
   editCar: false,
   alertDialog: false,
   eventRegister: false,
+  eventRegisterId: null,
   notifications: false,
   eventCancel: false,
   eventCancelId: null,
@@ -67,8 +69,9 @@ const uiSlice = createSlice({
     toggleAlertDialog(state) {
       state.alertDialog = !state.alertDialog
     },
-    toggleEventRegister(state) {
+    toggleEventRegister(state, action) {
       state.eventRegister = !state.eventRegister
+      state.eventRegisterId = action.payload.eventId
     },
     toggleNotifications(state) {
       state.notifications = !state.notifications
