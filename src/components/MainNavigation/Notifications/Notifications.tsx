@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useMemo } from 'react'
+import { FC, memo, useCallback, useEffect, useMemo } from 'react'
 import { Typography, Stack, Box } from '@mui/material'
 import {
   StyledNotificationBox,
@@ -49,7 +49,15 @@ const Notifications: FC<INotification> = ({
   const notificationList = (
     <Stack pl={2} pr={2}>
       {notifications.map((el: INotifications, index: number) => {
-        return <NotificationElement message={el.message} status={el.status} index={index} date={el.date} key={index}/>
+        return (
+          <NotificationElement
+            message={el.message}
+            status={el.status}
+            index={index}
+            date={el.date}
+            key={index}
+          />
+        )
       })}
     </Stack>
   )

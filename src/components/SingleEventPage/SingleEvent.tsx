@@ -23,6 +23,7 @@ import { RootState } from '../../store'
 import { useDispatch } from 'react-redux'
 import { uiActions } from '../../store/ui-slice'
 import ApplyButton from '../EventButtons/ApplyButton'
+import { sagaActions } from '../../store/sagaActions'
 interface ISingleEventPage {
   eventId: string | undefined
 }
@@ -43,6 +44,7 @@ interface ISingleEvent {
 }
 
 const SingleEvent: FC<ISingleEventPage> = ({ eventId }) => {
+  const dispatch = useDispatch()
   const [partTabelOpen, setPartTabelOpen] = useState(false)
   const [event, setEvent] = useState<ISingleEvent | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -76,21 +78,18 @@ const SingleEvent: FC<ISingleEventPage> = ({ eventId }) => {
       button: <ApplyButton eventId={reqData.data.event.id} />,
       linkShow: false,
       eventInfo: reqData.data.event.eventInfo,
-      users: reqData.data.event.eventParicipants?.split(';').map((user: any) => {
-        const tmpUser = JSON.parse(user)
-        return {
-          number: tmpUser.partNumber,
-          fullName: tmpUser.userName,
-          carModel: tmpUser.carModel,
-        }
-      }),
+      users: reqData.data.event.event_participants?.map((participant: any) => ({
+        number: participant.desiredPartNumber,
+        fullName: participant.user.fullName,
+        carModel: participant.car.model,
+      })),
     })
     setIsLoading(false)
   }, [eventId])
 
   useEffect(() => {
     getEventHandler()
-  }, [getEventHandler])
+  }, [getEventHandler, dispatch, eventId])
 
   return (
     <>

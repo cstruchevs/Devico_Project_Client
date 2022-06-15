@@ -12,6 +12,7 @@ import { ICar, IDriversData, ILicenseType } from './auth'
 import { TakeableChannel } from 'redux-saga'
 import { IEvents } from '../pages/WelcomePage/WelcomePage'
 import { eventsActions } from './events'
+import { socket } from '../App'
 
 const addUserToLocalStorage = ({
   user,
@@ -384,6 +385,42 @@ export function* getUserEvents(action: Effect) {
   }
 }
 
+export function* getSingleEvent(action: Effect) {
+  try {
+    const reqData: AxiosResponse = yield call(callApi.get, `/events/${action.payload.eventId}`, {})
+    console.log('saga', reqData.data)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export function* getNotifications(action: Effect) {
+  try {
+    const resData: AxiosResponse = yield call(
+      callApi.get,
+      `/notifications/${action.payload.userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${action.payload.token}`,
+        },
+      },
+    )
+    for (let i = 0; i < resData.data.length; i++) {
+      yield put(
+        setNotification({
+          notification: {
+            message: resData.data[i].text,
+            status: NotificationStatus.info,
+            date: moment(resData.data[i].updatedAt),
+          },
+        }),
+      )
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export function* cancelEvent(action: Effect) {
   yield alert(
     `User wit id: ${action.payload.userId} try to cancel event: ${action.payload.eventId} \nReason: ${action.payload.reason}`,
@@ -410,5 +447,7 @@ export default function* rootSaga() {
   yield takeEvery(sagaActions.GET_YEARS_EVENTS, getYearsEvents)
   yield takeEvery(sagaActions.GET_CALENDAR_EVENTS, getCalendarEvents)
   yield takeEvery(sagaActions.GET_USER_EVENTS, getUserEvents)
+  yield takeEvery(sagaActions.GET_SINGLE_EVENT, getSingleEvent)
   yield takeEvery(sagaActions.CANCEL_EVENT, cancelEvent)
+  yield takeEvery(sagaActions.GET_NOTIFICATIONS, getNotifications)
 }

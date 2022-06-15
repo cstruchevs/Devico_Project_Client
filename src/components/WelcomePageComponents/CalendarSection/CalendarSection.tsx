@@ -14,7 +14,6 @@ const CalendarSection: FC<ICalendarSection> = ({ events }) => {
   const [allEvents, setAllEvents] = useState<{ title: string; date: Date }[]>([])
 
   useEffect(() => {
-    console.log(events)
     setAllEvents(
       events.map((event: ICalendarEvent) => ({
         title: event.name,
